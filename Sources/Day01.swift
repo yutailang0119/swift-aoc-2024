@@ -18,4 +18,17 @@ struct Day01: AdventDay {
       .map { abs($0.1 - $0.0) }
       .reduce(0, +)
   }
+
+  func part2() async throws -> Any {
+    let lists = entities.transposed()
+    let leftList = lists[0]
+    let rightList = lists[1]
+
+    return leftList
+      .map { left in
+        let count = rightList.count { $0 == left }
+        return left * count
+      }
+      .reduce(0, +)
+  }
 }
