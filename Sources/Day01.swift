@@ -10,6 +10,12 @@ struct Day01: AdventDay {
   }
 
   func part1() async throws -> Any {
-    0
+    let lists = entities.transposed()
+    let leftList = lists[0]
+    let rightList = lists[1]
+
+    return zip(leftList.sorted(), rightList.sorted())
+      .map { abs($0.1 - $0.0) }
+      .reduce(0, +)
   }
 }
