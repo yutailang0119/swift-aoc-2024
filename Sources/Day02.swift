@@ -12,11 +12,7 @@ struct Day02: AdventDay {
   func part1() async throws -> Any {
     var safes = 0
     for entity in entities {
-      let report = Report(line: entity)
-      let distances = report.distances
-      let sign = distances.allSatisfy { $0 > 0 } || distances.allSatisfy { $0 < 0 }
-      let differ = distances.allSatisfy { abs($0) <= 3 }
-      if sign && differ {
+      if Report(line: entity).isSafe {
         safes += 1
       }
     }
@@ -28,7 +24,13 @@ extension Day02 {
   private struct Report {
     var line: [Int]
 
-    var distances: [Int] {
+    var isSafe: Bool {
+      let sign = distances.allSatisfy { $0 > 0 } || distances.allSatisfy { $0 < 0 }
+      let differ = distances.allSatisfy { abs($0) <= 3 }
+      return sign && differ
+    }
+
+    private var distances: [Int] {
       var distances: [Int] = []
       var current: Int?
       for n in line {
