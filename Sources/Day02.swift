@@ -41,5 +41,15 @@ extension Day02 {
       }
       return distances
     }
+
+    var tolerates: [[Int]] {
+      var removed: [[Int]] = []
+      for i in (0..<line.count) {
+        var l = line
+        l.remove(at: i)
+        removed.append(l)
+      }
+      return removed
+    }
   }
 }
