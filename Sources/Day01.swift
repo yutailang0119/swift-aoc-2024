@@ -24,7 +24,8 @@ struct Day01: AdventDay {
     let leftList = lists[0]
     let rightList = lists[1]
 
-    return leftList
+    return
+      leftList
       .map { left in
         let count = rightList.count { $0 == left }
         return left * count
