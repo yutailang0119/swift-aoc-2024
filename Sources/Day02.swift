@@ -10,7 +10,17 @@ struct Day02: AdventDay {
   }
 
   func part1() async throws -> Any {
-    fatalError()
+    var safes = 0
+    for entity in entities {
+      let report = Report(line: entity)
+      let distances = report.distances
+      let sign = distances.allSatisfy { $0 > 0 } || distances.allSatisfy { $0 < 0 }
+      let differ = distances.allSatisfy { abs($0) <= 3 }
+      if sign && differ {
+        safes += 1
+      }
+    }
+    return safes
   }
 }
 
