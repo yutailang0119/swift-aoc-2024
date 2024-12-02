@@ -18,6 +18,24 @@ struct Day02: AdventDay {
     }
     return safes
   }
+
+  func part2() async throws -> Any {
+    var safes = 0
+    for entity in entities {
+      let report = Report(line: entity)
+      if report.isSafe {
+        safes += 1
+      } else {
+        for removed in report.tolerates {
+          if Report(line: removed).isSafe {
+            safes += 1
+            break
+          }
+        }
+      }
+    }
+    return safes
+  }
 }
 
 extension Day02 {
