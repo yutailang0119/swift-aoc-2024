@@ -13,3 +13,21 @@ struct Day02: AdventDay {
     fatalError()
   }
 }
+
+extension Day02 {
+  private struct Report {
+    var line: [Int]
+
+    var distances: [Int] {
+      var distances: [Int] = []
+      var current: Int?
+      for n in line {
+        if let c = current {
+          distances.append(n - c)
+        }
+        current = n
+      }
+      return distances
+    }
+  }
+}
