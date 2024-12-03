@@ -20,8 +20,7 @@ struct Day03: AdventDay {
 
     let muls: [Mul] = dos.flatMap(\.muls)
 
-    return muls
-      .reduce(into: 0) { $0 += $1.left * $1.right }
+    return muls.reduce(into: 0) { $0 += $1.left * $1.right }
   }
 }
 
