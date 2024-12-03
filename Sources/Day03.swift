@@ -5,7 +5,8 @@ struct Day03: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    0
+    data.muls
+      .reduce(into: 0) { $0 += $1.left * $1.right }
   }
 }
 
