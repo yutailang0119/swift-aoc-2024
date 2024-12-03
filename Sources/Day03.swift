@@ -8,6 +8,21 @@ struct Day03: AdventDay {
     data.muls
       .reduce(into: 0) { $0 += $1.left * $1.right }
   }
+
+  func part2() async throws -> Any {
+    var donts = data.split(separator: "don't()")
+    var dos: [String] = [String(donts.removeFirst())]
+    for dont in donts {
+      for d in dont.split(separator: "do()").dropFirst() {
+        dos.append(String(d))
+      }
+    }
+
+    let muls: [Mul] = dos.flatMap(\.muls)
+
+    return muls
+      .reduce(into: 0) { $0 += $1.left * $1.right }
+  }
 }
 
 private extension Day03 {
