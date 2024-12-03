@@ -45,9 +45,8 @@ extension Day02 {
 
     var isSafe: Bool {
       let diffs = self.diffs
-      let sign = diffs.allSatisfy { $0 > 0 } || diffs.allSatisfy { $0 < 0 }
-      let differ = diffs.allSatisfy { abs($0) <= 3 }
-      return sign && differ
+      return diffs.allSatisfy { -3..<0 ~= $0 }
+        || diffs.allSatisfy { 1...3 ~= $0 }
     }
 
     private var diffs: [Int] {
