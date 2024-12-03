@@ -44,12 +44,13 @@ extension Day02 {
     var line: [Int]
 
     var isSafe: Bool {
-      let sign = distances.allSatisfy { $0 > 0 } || distances.allSatisfy { $0 < 0 }
-      let differ = distances.allSatisfy { abs($0) <= 3 }
+      let diffs = self.diffs
+      let sign = diffs.allSatisfy { $0 > 0 } || diffs.allSatisfy { $0 < 0 }
+      let differ = diffs.allSatisfy { abs($0) <= 3 }
       return sign && differ
     }
 
-    private var distances: [Int] {
+    private var diffs: [Int] {
       line.adjacentPairs()
         .map { $0.1 - $0.0 }
     }
