@@ -7,3 +7,10 @@ struct Day03: AdventDay {
     0
   }
 }
+
+private extension Day03 {
+  struct Mul {
+    var left: Int
+    var right: Int
+  }
+}
