@@ -1,3 +1,4 @@
+import Algorithms
 import Foundation
 
 struct Day02: AdventDay {
@@ -26,8 +27,8 @@ struct Day02: AdventDay {
       if report.isSafe {
         safes += 1
       } else {
-        for removed in report.tolerates {
-          if Report(line: removed).isSafe {
+        for combination in report.combinations {
+          if Report(line: combination).isSafe {
             safes += 1
             break
           }
@@ -43,31 +44,18 @@ extension Day02 {
     var line: [Int]
 
     var isSafe: Bool {
-      let sign = distances.allSatisfy { $0 > 0 } || distances.allSatisfy { $0 < 0 }
-      let differ = distances.allSatisfy { abs($0) <= 3 }
-      return sign && differ
+      let diffs = self.diffs
+      return diffs.allSatisfy { -3..<0 ~= $0 }
+        || diffs.allSatisfy { 1...3 ~= $0 }
     }
 
-    private var distances: [Int] {
-      var distances: [Int] = []
-      var current: Int?
-      for n in line {
-        if let c = current {
-          distances.append(n - c)
-        }
-        current = n
-      }
-      return distances
+    private var diffs: [Int] {
+      line.adjacentPairs()
+        .map { $0.1 - $0.0 }
     }
 
-    var tolerates: [[Int]] {
-      var removed: [[Int]] = []
-      for i in (0..<line.count) {
-        var l = line
-        l.remove(at: i)
-        removed.append(l)
-      }
-      return removed
+    var combinations: [[Int]] {
+      Array(line.combinations(ofCount: line.count - 1))
     }
   }
 }
