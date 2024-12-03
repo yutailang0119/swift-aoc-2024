@@ -27,8 +27,8 @@ struct Day02: AdventDay {
       if report.isSafe {
         safes += 1
       } else {
-        for removed in report.tolerates {
-          if Report(line: removed).isSafe {
+        for combination in report.combinations {
+          if Report(line: combination).isSafe {
             safes += 1
             break
           }
@@ -55,7 +55,7 @@ extension Day02 {
         .map { $0.1 - $0.0 }
     }
 
-    var tolerates: [[Int]] {
+    var combinations: [[Int]] {
       Array(line.combinations(ofCount: line.count - 1))
     }
   }
