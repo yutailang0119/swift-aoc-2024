@@ -50,15 +50,8 @@ extension Day02 {
     }
 
     private var distances: [Int] {
-      var distances: [Int] = []
-      var current: Int?
-      for n in line {
-        if let c = current {
-          distances.append(n - c)
-        }
-        current = n
-      }
-      return distances
+      line.adjacentPairs()
+        .map { $0.1 - $0.0 }
     }
 
     var tolerates: [[Int]] {
