@@ -56,13 +56,7 @@ extension Day02 {
     }
 
     var tolerates: [[Int]] {
-      var removed: [[Int]] = []
-      for i in (0..<line.count) {
-        var l = line
-        l.remove(at: i)
-        removed.append(l)
-      }
-      return removed
+      Array(line.combinations(ofCount: line.count - 1))
     }
   }
 }
