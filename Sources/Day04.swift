@@ -9,7 +9,39 @@ struct Day04: AdventDay {
   }
 
   func part1() async throws -> Any {
-    0
+    let lines = entities.map { $0.compactMap(Word.init(rawValue:)) }
+    let table = Puzzle.Table<Word>(lines: lines)
+
+    let directions: [Puzzle.Direction] = [
+      .top,
+      .bottom,
+      .left,
+      .right,
+      [.top, .left],
+      [.top, .right],
+      [.bottom, .left],
+      [.bottom, .right],
+    ]
+
+    var count = 0
+    for x in table.positions(for: .x) {
+      for direction in directions {
+        var cursor: Cursor? = Cursor(word: .x, position: x)
+        while let c = cursor {
+          guard let nextWord = c.word.next else {
+            count += 1
+            break
+          }
+          let nextPosition = c.position.moved(to: direction)
+          if nextWord == table.element(at: nextPosition) {
+            cursor = Cursor(word: nextWord, position: nextPosition)
+          } else {
+            cursor = nil
+          }
+        }
+      }
+    }
+    return count
   }
 }
 
