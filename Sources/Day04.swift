@@ -43,6 +43,32 @@ struct Day04: AdventDay {
     }
     return count
   }
+
+  func part2() async throws -> Any {
+    let lines = entities.map { $0.compactMap(Word.init(rawValue:)) }
+    let table = Puzzle.Table<Word>(lines: lines)
+
+    var count = 0
+    for a in table.positions(for: .a) {
+      let mas1 = Set([
+        table.element(at: a.moved(to: [.top, .left])),
+        table.element(at: a),
+        table.element(at: a.moved(to: [.bottom, .right])),
+      ])
+      let mas2 = Set([
+        table.element(at: a.moved(to: [.top, .right])),
+        table.element(at: a),
+        table.element(at: a.moved(to: [.bottom, .left])),
+      ])
+      let expected = Set<Word>([.m, .a, .s])
+      if mas1 == expected,
+        mas2 == expected
+      {
+        count += 1
+      }
+    }
+    return count
+  }
 }
 
 private extension Day04 {
