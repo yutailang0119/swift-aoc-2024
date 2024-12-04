@@ -30,6 +30,7 @@ struct Day04: AdventDay {
         while let c = cursor {
           guard let nextWord = c.word.next else {
             count += 1
+            cursor = nil
             break
           }
           let nextPosition = c.position.moved(to: direction)
