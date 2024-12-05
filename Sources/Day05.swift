@@ -45,6 +45,34 @@ struct Day05: AdventDay {
 
     return rightUpdates.reduce(0) { $0 + ($1.pages.center ?? 0) }
   }
+
+  func part2() async throws -> Any {
+    let orderingRules = self.orderingRules
+    let updates = self.updates
+
+    var incorrectlyUpdates: [Update] = []
+    loop: for update in updates {
+      var afters = update.pages
+      while !afters.isEmpty {
+        let page = afters.removeFirst()
+        let beforeRules = orderingRules.filter { $0.y == page }.map(\.x)
+        if afters.contains(where: { beforeRules.contains($0) }) {
+          incorrectlyUpdates.append(update)
+          continue loop
+        }
+      }
+    }
+
+    var reorderedUpdates: [Update] = []
+    for incorrectlyUpdate in incorrectlyUpdates {
+      let pages = incorrectlyUpdate.pages.sorted { lhs, rhs in
+          orderingRules.contains(where: { $0.x == lhs && $0.y == rhs })
+        }
+      reorderedUpdates.append(Update(pages: pages))
+    }
+
+    return reorderedUpdates.reduce(0) { $0 + ($1.pages.center ?? 0) }
+  }
 }
 
 private extension Day05 {
