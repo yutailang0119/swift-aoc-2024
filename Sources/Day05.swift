@@ -12,3 +12,10 @@ struct Day05: AdventDay {
     0
   }
 }
+
+private extension Day05 {
+  struct OrderingRule {
+    var x: Int
+    var y: Int
+  }
+}
