@@ -43,6 +43,10 @@ private extension Day05 {
     var x: Int
     var y: Int
   }
+
+  struct Update {
+    var pages: [Int]
+  }
 }
 
 private extension Array {
