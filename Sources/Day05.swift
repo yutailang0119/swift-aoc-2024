@@ -31,16 +31,13 @@ struct Day05: AdventDay {
     let updates = self.updates
 
     var rightUpdates: [Update] = []
-    loop: for update in updates {
-      var afters = update.pages
-      while !afters.isEmpty {
-        let page = afters.removeFirst()
-        let beforeRules = orderingRules.filter { $0.y == page }.map(\.x)
-        if afters.contains(where: { beforeRules.contains($0) }) {
-          continue loop
-        }
+    for update in updates {
+      let isValid = update.pages
+        .adjacentPairs()
+        .allSatisfy { orderingRules.contains(OrderingRule(x: $0.0, y: $0.1)) }
+      if isValid {
+        rightUpdates.append(update)
       }
-      rightUpdates.append(update)
     }
 
     return rightUpdates.reduce(0) { $0 + ($1.pages.center ?? 0) }
