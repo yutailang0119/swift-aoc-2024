@@ -18,11 +18,14 @@ struct Day05: AdventDay {
       }
     let updates = entities[1]
       .split(separator: "\n")
-      .map { $0.split(separator: ",").compactMap { Int($0) } }
+      .map {
+        let pages = $0.split(separator: ",").compactMap { Int($0) }
+        return Update(pages: pages)
+      }
 
-    var sum = 0
+    var rightUpdates: [Update] = []
     loop: for update in updates {
-      var pages = update
+      var pages = update.pages
       while !pages.isEmpty {
         let page = pages.removeFirst()
         let xRules = orderingRules.filter { $0.x == page }.map(\.y)
@@ -31,10 +34,10 @@ struct Day05: AdventDay {
           continue loop
         }
       }
-      sum += update.center ?? 0
+      rightUpdates.append(update)
     }
 
-    return sum
+    return rightUpdates.reduce(0) { $0 + ($1.pages.center ?? 0) }
   }
 }
 
