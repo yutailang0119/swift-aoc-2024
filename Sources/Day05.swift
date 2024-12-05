@@ -47,22 +47,17 @@ struct Day05: AdventDay {
     let orderingRules = self.orderingRules
     let updates = self.updates
 
-    var incorrectlyUpdates: [Update] = []
+    var reorderedUpdates: [Update] = []
     for update in updates {
       let isValid = update.pages
         .adjacentPairs()
         .allSatisfy { orderingRules.contains(OrderingRule(x: $0.0, y: $0.1)) }
       if !isValid {
-        incorrectlyUpdates.append(update)
-      }
-    }
-
-    var reorderedUpdates: [Update] = []
-    for incorrectlyUpdate in incorrectlyUpdates {
-      let pages = incorrectlyUpdate.pages.sorted { lhs, rhs in
-          orderingRules.contains(where: { $0.x == lhs && $0.y == rhs })
+        let pages = update.pages.sorted { lhs, rhs in
+          orderingRules.contains { $0.x == lhs && $0.y == rhs }
         }
-      reorderedUpdates.append(Update(pages: pages))
+        reorderedUpdates.append(Update(pages: pages))
+      }
     }
 
     return reorderedUpdates.reduce(0) { $0 + ($1.pages.center ?? 0) }
