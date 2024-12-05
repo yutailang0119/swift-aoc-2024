@@ -30,17 +30,17 @@ struct Day05: AdventDay {
     let orderingRules = self.orderingRules
     let updates = self.updates
 
-    var rightUpdates: [Update] = []
+    var correctlyUpdates: [Update] = []
     for update in updates {
       let isValid = update.pages
         .adjacentPairs()
         .allSatisfy { orderingRules.contains(OrderingRule(x: $0.0, y: $0.1)) }
       if isValid {
-        rightUpdates.append(update)
+        correctlyUpdates.append(update)
       }
     }
 
-    return rightUpdates.reduce(0) { $0 + ($1.pages.center ?? 0) }
+    return correctlyUpdates.reduce(0) { $0 + ($1.pages.center ?? 0) }
   }
 
   func part2() async throws -> Any {
