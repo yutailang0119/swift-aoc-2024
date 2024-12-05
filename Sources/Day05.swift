@@ -8,20 +8,27 @@ struct Day05: AdventDay {
       .map(String.init)
   }
 
-  func part1() async throws -> Any {
-    let entities = self.entities
-    let orderingRules = entities[0]
+  private var orderingRules: [OrderingRule] {
+    entities[0]
       .split(separator: "\n")
       .map {
         let pages = $0.split(separator: "|").compactMap { Int($0) }
         return OrderingRule(x: pages[0], y: pages[1])
       }
-    let updates = entities[1]
+  }
+
+  private var updates: [Update] {
+    entities[1]
       .split(separator: "\n")
       .map {
         let pages = $0.split(separator: ",").compactMap { Int($0) }
         return Update(pages: pages)
       }
+  }
+
+  func part1() async throws -> Any {
+    let orderingRules = self.orderingRules
+    let updates = self.updates
 
     var rightUpdates: [Update] = []
     loop: for update in updates {
