@@ -32,12 +32,11 @@ struct Day05: AdventDay {
 
     var rightUpdates: [Update] = []
     loop: for update in updates {
-      var pages = update.pages
-      while !pages.isEmpty {
-        let page = pages.removeFirst()
-        let xRules = orderingRules.filter { $0.x == page }.map(\.y)
-        let yRules = orderingRules.filter { $0.y == page }.map(\.x)
-        if !pages.allSatisfy({ xRules.contains($0) && !yRules.contains($0) }) {
+      var afters = update.pages
+      while !afters.isEmpty {
+        let page = afters.removeFirst()
+        let beforeRules = orderingRules.filter { $0.y == page }.map(\.x)
+        if afters.contains(where: { beforeRules.contains($0) }) {
           continue loop
         }
       }
