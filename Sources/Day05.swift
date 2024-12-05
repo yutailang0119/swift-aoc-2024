@@ -76,7 +76,7 @@ struct Day05: AdventDay {
 }
 
 private extension Day05 {
-  struct OrderingRule {
+  struct OrderingRule: Equatable {
     var x: Int
     var y: Int
   }
