@@ -12,3 +12,11 @@ struct Day06: AdventDay {
     0
   }
 }
+
+private extension Day06 {
+  enum Grid: String {
+    case `guard` = "^"
+    case obstruction = "#"
+    case dot = "."
+  }
+}
