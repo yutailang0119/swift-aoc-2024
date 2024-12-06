@@ -21,7 +21,7 @@ extension Puzzle {
     }
   }
 
-  struct Position {
+  struct Position: Hashable {
     var x: Int
     var y: Int
 
