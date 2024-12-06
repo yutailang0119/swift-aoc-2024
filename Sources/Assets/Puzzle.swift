@@ -62,3 +62,27 @@ extension Puzzle.Position {
     }
   }
 }
+
+extension Puzzle.Direction {
+  var rightDegrees: Self {
+    switch self {
+    case .top: return .right
+    case .right: return .bottom
+    case .bottom: return .left
+    case .left: return .top
+    default:
+      fatalError()
+    }
+  }
+
+  var leftDegrees: Self {
+    switch self {
+    case .top: return .left
+    case .left: return .bottom
+    case .bottom: return .right
+    case .right: return .top
+    default:
+      fatalError()
+    }
+  }
+}
