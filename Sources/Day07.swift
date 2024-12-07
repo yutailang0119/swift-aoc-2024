@@ -14,7 +14,7 @@ struct Day07: AdventDay {
     for equation in equations {
       var numbers = equation.numbers
       let first = numbers.removeFirst()
-      let calculates = calculate(from: first, for: numbers)
+      let calculates = calculate(from: first, for: numbers, by: [.add, .multiple])
       if calculates.contains(equation.test) {
         sum += equation.test
       }
@@ -22,7 +22,7 @@ struct Day07: AdventDay {
     return sum
   }
 
-  private func calculate(from num: Int, for numbers: [Int]) -> [Int] {
+  private func calculate(from num: Int, for numbers: [Int], by operators: [Operator]) -> [Int] {
     guard !numbers.isEmpty else {
       return [num]
     }
@@ -30,15 +30,15 @@ struct Day07: AdventDay {
     let rhs = remains.removeFirst()
 
     var calculated: [Int] = []
-    for `operator` in [Operator.add, .multiple] {
+    for `operator` in operators {
       switch `operator` {
       case .add:
         calculated.append(
-          contentsOf: calculate(from: num + rhs, for: remains)
+          contentsOf: calculate(from: num + rhs, for: remains, by: operators)
         )
       case .multiple:
         calculated.append(
-          contentsOf: calculate(from: num * rhs, for: remains)
+          contentsOf: calculate(from: num * rhs, for: remains, by: operators)
         )
       }
     }
