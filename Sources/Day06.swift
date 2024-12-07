@@ -11,25 +11,32 @@ struct Day06: AdventDay {
   func part1() async throws -> Any {
     let grids = entities.map { $0.compactMap(Grid.init) }
     let table = Puzzle.Table<Grid>(lines: grids)
-    guard var cursor = table.positions(for: .guard).first else {
-      fatalError("No guard found")
-    }
+    let route = self.route(in: table)
+    return Set(route).count
+  }
 
-    var routes: Set<Puzzle.Position> = []
-    var direction: Puzzle.Direction? = .top
-    while let d = direction {
-      let route = table.route(from: cursor, to: d, until: .obstruction)
-      routes.formUnion(route)
-      if let last = route.last,
-         table.element(at: last.moved(to: d)) != nil {
-        cursor = last
-        direction = d.rightDegrees
+  private func route(in table: Puzzle.Table<Grid>) -> [Puzzle.Position] {
+    var routes: [[Puzzle.Position]] = []
+    var direction: Puzzle.Direction = .top
+    var cursor: Puzzle.Position? = table.positions(for: .guard).first
+    while let c = cursor {
+      let route = table.route(from: c, to: direction, until: .obstruction)
+      if routes.contains(route) {
+        cursor = nil
       } else {
-        direction = nil
+        if !route.isEmpty {
+          routes.append(route)
+        }
+        if let last = routes.flatMap({ $0 }).last,
+           table.element(at: last.moved(to: direction)) == .obstruction {
+          cursor = last
+          direction = direction.rightDegrees
+        } else {
+          cursor = nil
+        }
       }
     }
-
-    return routes.count
+    return routes.flatMap { $0 }
   }
 }
 
