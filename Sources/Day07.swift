@@ -40,6 +40,10 @@ struct Day07: AdventDay {
         calculated.append(
           contentsOf: calculate(from: num * rhs, for: remains, by: operators)
         )
+      case .concatenation:
+        calculated.append(
+          contentsOf: calculate(from: Int("\(num)\(rhs)")!, for: remains, by: operators)
+        )
       }
     }
     return calculated
@@ -66,5 +70,6 @@ private extension Day07 {
   enum Operator {
     case add
     case multiple
+    case concatenation
   }
 }
