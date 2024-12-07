@@ -31,8 +31,8 @@ struct Day06: AdventDay {
       t.lines[position.y][position.x] = .obstruction
 
       var routes: [[Puzzle.Position]] = []
-      var direction: Puzzle.Direction = .top
       var cursor: Puzzle.Position? = `guard`
+      var direction: Puzzle.Direction = .top
       while let c = cursor {
         let route = t.route(from: c, to: direction, until: .obstruction)
         if routes.contains(route) {
@@ -57,8 +57,8 @@ struct Day06: AdventDay {
 
   private func route(in table: Puzzle.Table<Grid>) -> [Puzzle.Position] {
     var routes: [[Puzzle.Position]] = []
-    var direction: Puzzle.Direction = .top
     var cursor: Puzzle.Position? = table.positions(for: .guard).first
+    var direction: Puzzle.Direction = .top
     while let c = cursor {
       let route = table.route(from: c, to: direction, until: .obstruction)
       if routes.contains(route) {
