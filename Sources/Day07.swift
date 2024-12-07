@@ -22,6 +22,20 @@ struct Day07: AdventDay {
     return sum
   }
 
+  func part2() async throws -> Any {
+    let equations = self.equations
+    var sum = 0
+    for equation in equations {
+      var numbers = equation.numbers
+      let first = numbers.removeFirst()
+      let calculates = calculate(from: first, for: numbers, by: [.add, .multiple, .concatenation])
+      if calculates.contains(equation.test) {
+        sum += equation.test
+      }
+    }
+    return sum
+  }
+
   private func calculate(from num: Int, for numbers: [Int], by operators: [Operator]) -> [Int] {
     guard !numbers.isEmpty else {
       return [num]
