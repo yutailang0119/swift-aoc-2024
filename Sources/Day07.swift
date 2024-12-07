@@ -65,7 +65,7 @@ struct Day07: AdventDay {
 
   private var equations: [Equation] {
     entities.compactMap {
-      let splited =  $0.split(separator: ": ")
+      let splited = $0.split(separator: ": ")
       guard let test = Int(splited[0]) else {
         return nil
       }
