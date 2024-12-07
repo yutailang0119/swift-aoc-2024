@@ -32,13 +32,13 @@ struct Day06: AdventDay {
           t.lines[position.y][position.x] = .obstruction
 
           var routes: [[Puzzle.Position]] = []
-          var cursor: Puzzle.Position? = `guard`
+          var cursor = `guard`
           var direction: Puzzle.Direction = .top
-          while let c = cursor {
-            let route = t.route(from: c, to: direction, until: .obstruction)
+          var looped: Bool? = nil
+          while looped == nil {
+            let route = t.route(from: cursor, to: direction, until: .obstruction)
             if routes.contains(route) {
-              cursor = nil
-              return true
+              looped = true
             } else {
               if !route.isEmpty {
                 routes.append(route)
@@ -48,12 +48,11 @@ struct Day06: AdventDay {
                 cursor = last
                 direction = direction.rightDegrees
               } else {
-                cursor = nil
-                return false
+                looped = false
               }
             }
           }
-          fatalError()
+          return looped!
         }
       }
 
