@@ -44,7 +44,8 @@ struct Day06: AdventDay {
                 routes.append(route)
               }
               if let last = routes.flatMap({ $0 }).last,
-                 t.element(at: last.moved(to: direction)) == .obstruction {
+                t.element(at: last.moved(to: direction)) == .obstruction
+              {
                 cursor = last
                 direction = direction.rightDegrees
               } else {
@@ -79,7 +80,8 @@ struct Day06: AdventDay {
           routes.append(route)
         }
         if let last = routes.flatMap({ $0 }).last,
-           table.element(at: last.moved(to: direction)) == .obstruction {
+          table.element(at: last.moved(to: direction)) == .obstruction
+        {
           cursor = last
           direction = direction.rightDegrees
         } else {

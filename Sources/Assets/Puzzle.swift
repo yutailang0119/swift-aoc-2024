@@ -52,7 +52,11 @@ extension Puzzle.Table {
 }
 
 extension Puzzle.Table where Element: Equatable {
-  func route(from start: Puzzle.Position, to direction: Puzzle.Direction, until element: Element? = nil) -> [Puzzle.Position] {
+  func route(
+    from start: Puzzle.Position,
+    to direction: Puzzle.Direction,
+    until element: Element? = nil
+  ) -> [Puzzle.Position] {
     var positions: [Puzzle.Position] = []
     var p = start
     var next = self.element(at: p.moved(to: direction))
