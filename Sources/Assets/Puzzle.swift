@@ -3,7 +3,7 @@ import Foundation
 enum Puzzle {}
 
 extension Puzzle {
-  struct Table<Element: Equatable> {
+  struct Table<Element>: Sendable where Element: Sendable, Element: Equatable {
     var lines: [[Element]]
   }
 
