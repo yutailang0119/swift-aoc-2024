@@ -7,3 +7,15 @@ struct Day07: AdventDay {
     0
   }
 }
+
+private extension Day07 {
+  struct Equation {
+    var test: Int
+    var numbers: [Int]
+  }
+
+  enum Operator {
+    case add
+    case multiple
+  }
+}
