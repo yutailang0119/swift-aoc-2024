@@ -1,3 +1,5 @@
+import Foundation
+
 enum Puzzle {}
 
 extension Puzzle {
@@ -17,6 +19,13 @@ extension Puzzle {
     static let bottom = Direction(rawValue: 1 << 1)
     static let left = Direction(rawValue: 1 << 2)
     static let right = Direction(rawValue: 1 << 3)
+  }
+}
+
+extension Puzzle.Table: CustomStringConvertible where Element: CustomStringConvertible {
+  var description: String {
+    lines.map { $0.map(\.description).joined() }
+      .joined(separator: "\n")
   }
 }
 
