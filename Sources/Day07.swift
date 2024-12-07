@@ -9,7 +9,17 @@ struct Day07: AdventDay {
   }
 
   func part1() async throws -> Any {
-    0
+    let equations = self.equations
+    var sum = 0
+    for equation in equations {
+      var numbers = equation.numbers
+      let first = numbers.removeFirst()
+      let calculates = calculate(from: first, for: numbers)
+      if calculates.contains(equation.test) {
+        sum += equation.test
+      }
+    }
+    return sum
   }
 
   private func calculate(from num: Int, for numbers: [Int]) -> [Int] {
