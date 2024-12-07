@@ -37,11 +37,11 @@ private extension String {
       One("mul")
       One("(")
       Capture {
-        ZeroOrMore(.digit)
+        OneOrMore(.digit)
       }
       One(",")
       Capture {
-        ZeroOrMore(.digit)
+        OneOrMore(.digit)
       }
       One(")")
     }
