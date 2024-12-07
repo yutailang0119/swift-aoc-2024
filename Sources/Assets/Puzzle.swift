@@ -21,6 +21,10 @@ extension Puzzle {
 }
 
 extension Puzzle.Table {
+  var count: Int {
+    lines.reduce(0) { $0 + $1.count }
+  }
+
   func element(at position: Puzzle.Position) -> Element? {
     lines[safe: position.y]?[safe: position.x]
   }
