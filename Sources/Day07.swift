@@ -12,6 +12,29 @@ struct Day07: AdventDay {
     0
   }
 
+  private func calculate(from num: Int, for numbers: [Int]) -> [Int] {
+    guard !numbers.isEmpty else {
+      return [num]
+    }
+    var remains = numbers
+    let rhs = remains.removeFirst()
+
+    var calculated: [Int] = []
+    for `operator` in [Operator.add, .multiple] {
+      switch `operator` {
+      case .add:
+        calculated.append(
+          contentsOf: calculate(from: num + rhs, for: remains)
+        )
+      case .multiple:
+        calculated.append(
+          contentsOf: calculate(from: num * rhs, for: remains)
+        )
+      }
+    }
+    return calculated
+  }
+
   private var equations: [Equation] {
     entities.compactMap {
       let splited =  $0.split(separator: ": ")
