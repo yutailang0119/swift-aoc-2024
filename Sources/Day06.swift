@@ -34,9 +34,13 @@ struct Day06: AdventDay {
 }
 
 private extension Day06 {
-  enum Grid: String {
+  enum Grid: String, CustomStringConvertible {
     case `guard` = "^"
     case obstruction = "#"
     case dot = "."
+
+    var description: String {
+      self.rawValue
+    }
   }
 }
