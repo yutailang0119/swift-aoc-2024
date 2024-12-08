@@ -20,15 +20,14 @@ struct Day08: AdventDay {
         let lhs = combination[0]
         let rhs = combination[1]
 
-        let x = lhs.x - rhs.x
-        let y = lhs.y - rhs.y
+        let p = Puzzle.Position(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
 
-        let antinode1 = Puzzle.Position(x: lhs.x + x, y: lhs.y + y)
+        let antinode1 = lhs + p
         if table.element(at: antinode1) != nil {
           antinodes.insert(antinode1)
         }
 
-        let antinode2 = Puzzle.Position(x: rhs.x - x, y: rhs.y - y)
+        let antinode2 = rhs - p
         if table.element(at: antinode2) != nil {
           antinodes.insert(antinode2)
         }
@@ -50,24 +49,23 @@ struct Day08: AdventDay {
         let lhs = combination[0]
         let rhs = combination[1]
 
-        let x = lhs.x - rhs.x
-        let y = lhs.y - rhs.y
+        let p = Puzzle.Position(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
 
-        var antinode1: Puzzle.Position? = Puzzle.Position(x: lhs.x + x, y: lhs.y + y)
+        var antinode1: Puzzle.Position? = lhs + p
         while let a = antinode1 {
           if table.element(at: a) != nil {
             antinodes.insert(a)
-            antinode1 = Puzzle.Position(x: a.x + x, y: a.y + y)
+            antinode1 = a + p
           } else {
             antinode1 = nil
           }
         }
 
-        var antinode2: Puzzle.Position? = Puzzle.Position(x: rhs.x - x, y: rhs.y - y)
+        var antinode2: Puzzle.Position? = rhs - p
         while let a = antinode2 {
           if table.element(at: a) != nil {
             antinodes.insert(a)
-            antinode2 = Puzzle.Position(x: a.x - x, y: a.y - y)
+            antinode2 = a - p
           } else {
             antinode2 = nil
           }
