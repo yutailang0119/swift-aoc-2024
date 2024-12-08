@@ -9,6 +9,32 @@ struct Day08: AdventDay {
   }
 
   func part1() async throws -> Any {
-    0
+    let entities = self.entities
+    let frequencies = Set(entities.flatMap { $0 }).filter { $0 != "." }
+    let table = Puzzle.Table(lines: entities)
+
+    var antinodes: Set<Puzzle.Position> = []
+    for frequency in frequencies {
+      let antennas = table.positions(for: frequency)
+      for combination in antennas.combinations(ofCount: 2) {
+        let lhs = combination[0]
+        let rhs = combination[1]
+
+        let x = lhs.x - rhs.x
+        let y = lhs.y - rhs.y
+
+        let antinode1 = Puzzle.Position(x: lhs.x + x, y: lhs.y + y)
+        if table.element(at: antinode1) != nil {
+          antinodes.insert(antinode1)
+        }
+
+        let antinode2 = Puzzle.Position(x: rhs.x - x, y: rhs.y - y)
+        if table.element(at: antinode2) != nil {
+          antinodes.insert(antinode2)
+        }
+      }
+    }
+
+    return antinodes.count
   }
 }
