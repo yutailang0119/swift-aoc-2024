@@ -70,6 +70,14 @@ extension Puzzle.Table where Element: Equatable {
 }
 
 extension Puzzle.Position {
+  static func + (lhs: Self, rhs: Self) -> Self {
+    Self(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
+  }
+
+  static func - (lhs: Self, rhs: Self) -> Self {
+    Self(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
+  }
+
   func moved(to direction: Puzzle.Direction) -> Self {
     switch direction {
     case .top:
