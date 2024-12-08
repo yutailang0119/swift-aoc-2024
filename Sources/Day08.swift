@@ -20,7 +20,7 @@ struct Day08: AdventDay {
         let lhs = combination[0]
         let rhs = combination[1]
 
-        let p = Puzzle.Position(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
+        let p = lhs - rhs
 
         let antinode1 = lhs + p
         if table.element(at: antinode1) != nil {
@@ -49,7 +49,7 @@ struct Day08: AdventDay {
         let lhs = combination[0]
         let rhs = combination[1]
 
-        let p = Puzzle.Position(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
+        let p = lhs - rhs
 
         var antinode1: Puzzle.Position? = lhs + p
         while let a = antinode1 {
