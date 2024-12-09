@@ -15,7 +15,7 @@ struct Day09: AdventDay {
           blocks.append(contentsOf: Array(repeating: Block.number(enumerated.offset), count: file))
         }
         if let space = chunk[safe: 1] {
-          blocks.append(contentsOf: Array(repeating: Block.space, count: space))
+          blocks.append(contentsOf: Array(repeating: Block.space(count: 1), count: space))
         }
       }
     var diskMap = DiskMap(blocks: blocks)
@@ -56,7 +56,7 @@ private extension Day09 {
 
   enum Block: CustomStringConvertible {
     case number(Int)
-    case space
+    case space(count: Int)
 
     var isSpace: Bool {
       switch self {
@@ -74,8 +74,10 @@ private extension Day09 {
 
     var description: String {
       switch self {
-      case .number(let n): return "\(n)"
-      case .space: return "."
+      case .number(let num):
+        return "\(num)"
+      case .space(let count):
+        return  Array(repeating: ".", count: count).joined()
       }
     }
   }
