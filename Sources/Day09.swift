@@ -59,7 +59,7 @@ private extension Day09 {
     }
   }
 
-  enum Block: CustomStringConvertible {
+  enum Block: Equatable, CustomStringConvertible {
     case zero(count: Int)
     case number(Int, count: Int)
     case space(count: Int)
