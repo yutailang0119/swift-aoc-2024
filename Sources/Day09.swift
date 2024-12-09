@@ -12,7 +12,11 @@ struct Day09: AdventDay {
       .reduce(into: []) { blocks, enumerated in
         let chunk = Array(enumerated.element)
         if let file = chunk[safe: 0] {
-          blocks.append(contentsOf: Array(repeating: Block.number(Int(enumerated.offset), count: 1), count: file))
+          if enumerated.offset == 0 {
+            blocks.append(contentsOf: Array(repeating: .zero(count: 1), count: file))
+          } else {
+            blocks.append(contentsOf: Array(repeating: Block.number(Int(enumerated.offset), count: 1), count: file))
+          }
         }
         if let space = chunk[safe: 1] {
           blocks.append(contentsOf: Array(repeating: Block.space(count: 1), count: space))
@@ -56,11 +60,13 @@ private extension Day09 {
   }
 
   enum Block: CustomStringConvertible {
+    case zero(count: Int)
     case number(Int, count: Int)
     case space(count: Int)
 
     var isSpace: Bool {
       switch self {
+      case .zero: return false
       case .number: return false
       case .space: return true
       }
@@ -68,6 +74,8 @@ private extension Day09 {
 
     var nums: [Int] {
       switch self {
+      case .zero(let count):
+        return Array(repeating: 0, count: count)
       case .number(let num, let count):
         return Array(repeating: num, count: count)
       case .space(let count):
@@ -77,6 +85,8 @@ private extension Day09 {
 
     var description: String {
       switch self {
+      case .zero(let count):
+        return Array(repeating: "0", count: count).joined()
       case .number(let num, let count):
         return Array(repeating: "\(num)", count: count).joined()
       case .space(let count):
