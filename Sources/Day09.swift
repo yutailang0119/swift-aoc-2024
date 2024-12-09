@@ -68,11 +68,11 @@ struct Day09: AdventDay {
         }
       }
 
-      if let index,
-        let remaining, remaining >= 0
-      {
+      if let index {
         swapped[index] = .number(num, count: count)
-        swapped.insert(.space(count: remaining), at: index + 1)
+        if let remaining, remaining > 0 {
+          swapped.insert(.space(count: remaining), at: index + 1)
+        }
         if let lastIndex = swapped.lastIndex(where: { $0 == block }) {
           swapped[lastIndex] = .space(count: count)
         }
