@@ -137,7 +137,7 @@ private extension Day09 {
       case .number(let num, let count):
         return Array(repeating: "\(num)", count: count).joined()
       case .space(let count):
-        return  Array(repeating: ".", count: count).joined()
+        return Array(repeating: ".", count: count).joined()
       }
     }
   }
