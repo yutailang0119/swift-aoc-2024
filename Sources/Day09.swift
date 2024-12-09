@@ -58,8 +58,8 @@ struct Day09: AdventDay {
       guard case .number(let num, let count) = block else { continue }
       var index: Int?
       var remaining: Int?
-      for (offset, s) in swapped.enumerated() {
-        if case .space(let c) = s {
+      for (offset, swp) in swapped.enumerated() {
+        if case .space(let c) = swp {
           if c >= count {
             index = offset
             remaining = c - count
@@ -68,11 +68,11 @@ struct Day09: AdventDay {
         }
       }
 
-      if let index,
-        let remaining, remaining >= 0
-      {
+      if let index {
         swapped[index] = .number(num, count: count)
-        swapped.insert(.space(count: remaining), at: index + 1)
+        if let remaining, remaining > 0 {
+          swapped.insert(.space(count: remaining), at: index + 1)
+        }
         if let lastIndex = swapped.lastIndex(where: { $0 == block }) {
           swapped[lastIndex] = .space(count: count)
         }
