@@ -59,32 +59,28 @@ struct Day09: AdventDay {
 
     var swapped: [Block] = diskMap.blocks
     for block in diskMap.blocks.reversed() {
-      switch block {
-      case .number(let num, let count):
-        var index: Int?
-        var remaining: Int?
-        for (offset, s) in swapped.enumerated() {
-          if case .space(let c) = s {
-            if c >= count {
-              index = offset
-              remaining = c - count
-              break
-            }
+      guard case .number(let num, let count) = block else { continue }
+      var index: Int?
+      var remaining: Int?
+      for (offset, s) in swapped.enumerated() {
+        if case .space(let c) = s {
+          if c >= count {
+            index = offset
+            remaining = c - count
+            break
           }
         }
-
-        if let index,
-           let remaining, remaining >= 0 {
-          swapped[index] = .number(num, count: count)
-          swapped.insert(.space(count: remaining), at: index + 1)
-          if let lastIndex = swapped.lastIndex(where: { $0 == block }) {
-            swapped[lastIndex] = .space(count: count)
-          }
-        }
-      case .zero, .space:
-        break
       }
-      print(block)
+
+      if let index,
+        let remaining, remaining >= 0
+      {
+        swapped[index] = .number(num, count: count)
+        swapped.insert(.space(count: remaining), at: index + 1)
+        if let lastIndex = swapped.lastIndex(where: { $0 == block }) {
+          swapped[lastIndex] = .space(count: count)
+        }
+      }
     }
     diskMap.blocks = swapped
 
