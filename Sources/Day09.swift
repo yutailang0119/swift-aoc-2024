@@ -8,17 +8,16 @@ struct Day09: AdventDay {
   }
 
   func part1() async throws -> Any {
-    var blocks: [Block] = []
-    for (offset, chunk) in entities.chunks(ofCount: 2).enumerated() {
-      let c = Array(chunk)
-      if let file = c[safe: 0] {
-        blocks.append(contentsOf: Array(repeating: Block.number(offset), count: file))
+    let blocks: [Block] = entities.chunks(ofCount: 2).enumerated()
+      .reduce(into: []) { blocks, enumerated in
+        let chunk = Array(enumerated.element)
+        if let file = chunk[safe: 0] {
+          blocks.append(contentsOf: Array(repeating: Block.number(enumerated.offset), count: file))
+        }
+        if let space = chunk[safe: 1] {
+          blocks.append(contentsOf: Array(repeating: Block.space, count: space))
+        }
       }
-      if let space = c[safe: 1] {
-        blocks.append(contentsOf: Array(repeating: Block.space, count: space))
-      }
-    }
-
     var diskMap = DiskMap(blocks: blocks)
 
     var swapped: [Block] = diskMap.blocks
@@ -32,7 +31,6 @@ struct Day09: AdventDay {
         break
       }
     }
-
     diskMap.blocks = swapped
 
     return diskMap.checksum
