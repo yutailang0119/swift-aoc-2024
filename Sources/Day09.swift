@@ -12,7 +12,7 @@ struct Day09: AdventDay {
       .reduce(into: []) { blocks, enumerated in
         let chunk = Array(enumerated.element)
         if let file = chunk[safe: 0] {
-          blocks.append(contentsOf: Array(repeating: Block.number(enumerated.offset), count: file))
+          blocks.append(contentsOf: Array(repeating: Block.number(Int(enumerated.offset), count: 1), count: file))
         }
         if let space = chunk[safe: 1] {
           blocks.append(contentsOf: Array(repeating: Block.space(count: 1), count: space))
@@ -43,8 +43,9 @@ private extension Day09 {
 
     var checksum: Int {
       var checksum = 0
-      for (offset, block) in blocks.enumerated() {
-        checksum += offset * block.num
+      let nums = blocks.flatMap(\.nums)
+      for (offset, num) in nums.enumerated() {
+        checksum += offset * num
       }
       return checksum
     }
@@ -55,7 +56,7 @@ private extension Day09 {
   }
 
   enum Block: CustomStringConvertible {
-    case number(Int)
+    case number(Int, count: Int)
     case space(count: Int)
 
     var isSpace: Bool {
@@ -65,17 +66,19 @@ private extension Day09 {
       }
     }
 
-    var num: Int {
+    var nums: [Int] {
       switch self {
-      case .number(let num): return num
-      case .space: return 0
+      case .number(let num, let count):
+        return Array(repeating: num, count: count)
+      case .space(let count):
+        return Array(repeating: 0, count: count)
       }
     }
 
     var description: String {
       switch self {
-      case .number(let num):
-        return "\(num)"
+      case .number(let num, let count):
+        return Array(repeating: "\(num)", count: count).joined()
       case .space(let count):
         return  Array(repeating: ".", count: count).joined()
       }
