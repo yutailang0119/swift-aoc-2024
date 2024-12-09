@@ -3,12 +3,6 @@ import Foundation
 struct Day01: AdventDay {
   var data: String
 
-  var entities: [[Int]] {
-    data.split(separator: "\n").map {
-      $0.split(separator: "   ").compactMap { Int($0) }
-    }
-  }
-
   func part1() async throws -> Any {
     let lists = entities.transposed()
     let leftList = lists[0]
@@ -31,5 +25,13 @@ struct Day01: AdventDay {
         return left * count
       }
       .reduce(0, +)
+  }
+}
+
+private extension Day01 {
+  var entities: [[Int]] {
+    data.split(separator: "\n").map {
+      $0.split(separator: "   ").compactMap { Int($0) }
+    }
   }
 }

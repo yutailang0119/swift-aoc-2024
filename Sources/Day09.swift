@@ -3,10 +3,6 @@ import Foundation
 struct Day09: AdventDay {
   var data: String
 
-  var entities: [Int] {
-    data.compactMap { Int(String($0)) }
-  }
-
   func part1() async throws -> Any {
     let blocks: [Block] = entities.chunks(ofCount: 2).enumerated()
       .reduce(into: []) { blocks, enumerated in
@@ -85,6 +81,12 @@ struct Day09: AdventDay {
     diskMap.blocks = swapped
 
     return diskMap.checksum
+  }
+}
+
+private extension Day09 {
+  var entities: [Int] {
+    data.compactMap { Int(String($0)) }
   }
 }
 

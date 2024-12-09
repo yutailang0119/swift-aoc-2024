@@ -3,11 +3,6 @@ import Foundation
 struct Day04: AdventDay {
   var data: String
 
-  var entities: [[String]] {
-    data.split(separator: "\n")
-      .map { $0.map(String.init) }
-  }
-
   func part1() async throws -> Any {
     let lines = entities.map { $0.compactMap(Word.init(rawValue:)) }
     let table = Puzzle.Table<Word>(lines: lines)
@@ -69,6 +64,13 @@ struct Day04: AdventDay {
       }
     }
     return count
+  }
+}
+
+private extension Day04 {
+  var entities: [[String]] {
+    data.split(separator: "\n")
+      .map { $0.map(String.init) }
   }
 }
 

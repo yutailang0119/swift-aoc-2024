@@ -3,11 +3,6 @@ import Foundation
 struct Day05: AdventDay {
   var data: String
 
-  var entities: [String] {
-    data.split(separator: "\n\n")
-      .map(String.init)
-  }
-
   private var orderingRules: [OrderingRule] {
     entities[0]
       .split(separator: "\n")
@@ -61,6 +56,13 @@ struct Day05: AdventDay {
     }
 
     return reorderedUpdates.reduce(0) { $0 + ($1.pages.center ?? 0) }
+  }
+}
+
+private extension Day05 {
+  var entities: [String] {
+    data.split(separator: "\n\n")
+      .map(String.init)
   }
 }
 

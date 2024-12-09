@@ -3,11 +3,6 @@ import Foundation
 struct Day06: AdventDay {
   var data: String
 
-  var entities: [[String]] {
-    data.split(separator: "\n")
-      .map { $0.map(String.init) }
-  }
-
   func part1() async throws -> Any {
     let grids = entities.map { $0.compactMap(Grid.init) }
     let table = Puzzle.Table<Grid>(lines: grids)
@@ -66,8 +61,15 @@ struct Day06: AdventDay {
 
     return looped.count { $0 }
   }
+}
 
-  private func route(in table: Puzzle.Table<Grid>) -> [Puzzle.Position] {
+private extension Day06 {
+  var entities: [[String]] {
+    data.split(separator: "\n")
+      .map { $0.map(String.init) }
+  }
+
+  func route(in table: Puzzle.Table<Grid>) -> [Puzzle.Position] {
     var routes: [[Puzzle.Position]] = []
     var cursor: Puzzle.Position? = table.positions(for: .guard).first
     var direction: Puzzle.Direction = .top

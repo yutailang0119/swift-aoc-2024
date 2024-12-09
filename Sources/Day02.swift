@@ -4,12 +4,6 @@ import Foundation
 struct Day02: AdventDay {
   var data: String
 
-  var entities: [[Int]] {
-    data.split(separator: "\n").map {
-      $0.split(separator: " ").compactMap { Int($0) }
-    }
-  }
-
   func part1() async throws -> Any {
     var safes = 0
     for entity in entities {
@@ -39,8 +33,16 @@ struct Day02: AdventDay {
   }
 }
 
-extension Day02 {
-  private struct Report {
+private extension Day02 {
+  private var entities: [[Int]] {
+    data.split(separator: "\n").map {
+      $0.split(separator: " ").compactMap { Int($0) }
+    }
+  }
+}
+
+private extension Day02 {
+  struct Report {
     var line: [Int]
 
     var isSafe: Bool {

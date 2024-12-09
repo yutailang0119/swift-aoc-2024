@@ -3,11 +3,6 @@ import Foundation
 struct Day07: AdventDay {
   var data: String
 
-  var entities: [String] {
-    data.split(separator: "\n")
-      .map(String.init)
-  }
-
   func part1() async throws -> Any {
     let equations = self.equations
     var sum = 0
@@ -35,8 +30,26 @@ struct Day07: AdventDay {
     }
     return sum
   }
+}
 
-  private func calculate(from num: Int, for numbers: [Int], by operators: [Operator]) -> [Int] {
+private extension Day07 {
+  var entities: [String] {
+    data.split(separator: "\n")
+      .map(String.init)
+  }
+
+  var equations: [Equation] {
+    entities.compactMap {
+      let splited = $0.split(separator: ": ")
+      guard let test = Int(splited[0]) else {
+        return nil
+      }
+      let numbers = splited[1].split(separator: " ").compactMap { Int($0) }
+      return Equation(test: test, numbers: numbers)
+    }
+  }
+
+  func calculate(from num: Int, for numbers: [Int], by operators: [Operator]) -> [Int] {
     guard !numbers.isEmpty else {
       return [num]
     }
@@ -61,17 +74,6 @@ struct Day07: AdventDay {
       }
     }
     return calculated
-  }
-
-  private var equations: [Equation] {
-    entities.compactMap {
-      let splited = $0.split(separator: ": ")
-      guard let test = Int(splited[0]) else {
-        return nil
-      }
-      let numbers = splited[1].split(separator: " ").compactMap { Int($0) }
-      return Equation(test: test, numbers: numbers)
-    }
   }
 }
 

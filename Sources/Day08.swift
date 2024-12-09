@@ -3,11 +3,6 @@ import Foundation
 struct Day08: AdventDay {
   var data: String
 
-  var entities: [[String]] {
-    data.split(separator: "\n")
-      .map { $0.map(String.init) }
-  }
-
   func part1() async throws -> Any {
     let entities = self.entities
     let frequencies = Set(entities.flatMap { $0 }).filter { $0 != "." }
@@ -83,5 +78,12 @@ struct Day08: AdventDay {
     }
 
     return count
+  }
+}
+
+private extension Day08 {
+  var entities: [[String]] {
+    data.split(separator: "\n")
+      .map { $0.map(String.init) }
   }
 }
