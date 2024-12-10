@@ -17,8 +17,12 @@ private extension Day10 {
 }
 
 private extension Day10 {
-  struct Height: Hashable {
+  struct Height: Hashable, CustomStringConvertible {
     var scale: Int
     var position: Puzzle.Position
+
+    var description: String {
+      "\(scale): (\(position.x), \(position.y))"
+    }
   }
 }
