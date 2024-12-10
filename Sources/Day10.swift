@@ -15,3 +15,10 @@ private extension Day10 {
     }
   }
 }
+
+private extension Day10 {
+  struct Height {
+    var scale: Int
+    var position: Puzzle.Position
+  }
+}
