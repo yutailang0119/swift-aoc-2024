@@ -5,7 +5,7 @@ struct Day08: AdventDay {
 
   func part1() async throws -> Any {
     let entities = self.entities
-    let frequencies = Set(entities.flatMap { $0 }).filter { $0 != "." }
+    let frequencies = Set(entities.joined()).filter { $0 != "." }
     let table = Puzzle.Table(lines: entities)
 
     var antinodes: Set<Puzzle.Position> = []
@@ -34,7 +34,7 @@ struct Day08: AdventDay {
 
   func part2() async throws -> Any {
     let entities = self.entities
-    let frequencies = Set(entities.flatMap { $0 }).filter { $0 != "." }
+    let frequencies = Set(entities.joined()).filter { $0 != "." }
     let table = Puzzle.Table(lines: entities)
 
     var antinodes: Set<Puzzle.Position> = []
