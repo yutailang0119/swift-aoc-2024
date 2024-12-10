@@ -38,7 +38,7 @@ struct Day06: AdventDay {
               if !route.isEmpty {
                 routes.append(route)
               }
-              if let last = routes.flatMap({ $0 }).last,
+              if let last = routes.joined().last,
                 t.element(at: last.moved(to: direction)) == .obstruction
               {
                 cursor = last
@@ -81,7 +81,7 @@ private extension Day06 {
         if !route.isEmpty {
           routes.append(route)
         }
-        if let last = routes.flatMap({ $0 }).last,
+        if let last = routes.joined().last,
           table.element(at: last.moved(to: direction)) == .obstruction
         {
           cursor = last
@@ -91,7 +91,7 @@ private extension Day06 {
         }
       }
     }
-    return routes.flatMap { $0 }
+    return Array(routes.joined())
   }
 }
 
