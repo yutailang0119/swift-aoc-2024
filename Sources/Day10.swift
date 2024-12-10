@@ -14,6 +14,28 @@ private extension Day10 {
       $0.compactMap { Int(String($0)) }
     }
   }
+
+  func steps(from routes: [Height], to directions: [Puzzle.Direction], in table: Puzzle.Table<Int>) -> [[Height]] {
+    guard let last = routes.last,
+      last.scale < 9
+    else {
+      return [routes]
+    }
+    var stps: [[Height]] = []
+    for direction in directions {
+      let p = last.position.moved(to: direction)
+      guard let scl = table.element(at: p) else {
+        continue
+      }
+      let next = Height(scale: scl, position: p)
+      if next.scale == last.scale + 1 {
+        stps.append(contentsOf: steps(from: routes + [next], to: directions, in: table))
+      } else {
+        stps.append(routes + [next])
+      }
+    }
+    return stps
+  }
 }
 
 private extension Day10 {
