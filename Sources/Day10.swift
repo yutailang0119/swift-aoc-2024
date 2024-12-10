@@ -4,7 +4,20 @@ struct Day10: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    0
+    let table = Puzzle.Table(lines: entities)
+
+    let trailheads = table.positions(for: 0)
+      .map { Height(scale: 0, position: $0) }
+
+    var sum = 0
+    for trailhead in trailheads {
+      let stps = steps(from: [trailhead], to: [.top, .bottom, .left, .right], in: table)
+      let reaches = stps.compactMap {
+        $0.map(\.scale) == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] ? $0.last : nil
+      }
+      sum += Set(reaches).count
+    }
+    return sum
   }
 }
 
