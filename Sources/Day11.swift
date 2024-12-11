@@ -4,7 +4,8 @@ struct Day11: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    0
+    let stones = self.entities
+    return rearrangement(for: stones, to: 25).count
   }
 }
 
