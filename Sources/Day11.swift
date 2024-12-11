@@ -7,6 +7,11 @@ struct Day11: AdventDay {
     let stones = self.entities
     return count(for: stones, to: 25)
   }
+
+  func part2() async throws -> Any {
+    let stones = self.entities
+    return count(for: stones, to: 75)
+  }
 }
 
 private extension Day11 {
