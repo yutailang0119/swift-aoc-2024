@@ -14,6 +14,21 @@ private extension Day11 {
       Int($0.trimmingCharacters(in: .newlines))
     }
   }
+
+  func rearrangement(for stones: [Int], to count: Int) -> [Int] {
+    var stns = stones
+    for _ in 0..<count {
+      let s = stns.reduce(into: [Int]()) {
+        let divided = $1.divided
+        $0.append(divided.leading)
+        if let trailing = divided.trailing {
+          $0.append(trailing)
+        }
+      }
+      stns = s
+    }
+    return stns
+  }
 }
 
 private extension Int {
