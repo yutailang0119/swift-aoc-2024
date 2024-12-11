@@ -5,7 +5,7 @@ struct Day11: AdventDay {
 
   func part1() async throws -> Any {
     let stones = self.entities
-    return await rearrangement(for: stones, to: 25).count
+    return rearrangement(for: stones, to: 25).count
   }
 }
 
@@ -16,31 +16,28 @@ private extension Day11 {
     }
   }
 
-  func rearrangement(for stones: [Int], to count: Int) async -> [Int] {
-    await withTaskGroup(of: [Int].self) { group in
-      var outputs: [Int] = []
-      for stone in stones {
-        group.addTask {
-          var stns = [stone]
-          for _ in 0..<count {
-            let s = stns.reduce(into: [Int]()) {
-              let divided = $1.divided
-              $0.append(divided.leading)
-              if let trailing = divided.trailing {
-                $0.append(trailing)
-              }
-            }
-            stns = s
+  func rearrangement(for stones: [Int], to count: Int) -> [Int] {
+    var dictionary: [Int: Divided] = [:]
+    var stns = stones
+    for i in 0..<count {
+      let s = stns.reduce(into: [Int]()) {
+        if let divided = dictionary[$1] {
+          $0.append(divided.leading)
+          if let trailing = divided.trailing {
+            $0.append(trailing)
           }
-          return stns
-        }
-
-        for await g in group {
-          outputs.append(contentsOf: g)
+        } else {
+          let divided = $1.divided
+          $0.append(divided.leading)
+          if let trailing = divided.trailing {
+            $0.append(trailing)
+          }
+          dictionary[$1] = divided
         }
       }
-      return outputs
+      stns = s
     }
+    return stns
   }
 }
 
