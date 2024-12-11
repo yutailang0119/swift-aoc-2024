@@ -5,7 +5,7 @@ struct Day11: AdventDay {
 
   func part1() async throws -> Any {
     let stones = self.entities
-    return rearrangement(for: stones, to: 25).count
+    return count(for: stones, to: 25)
   }
 }
 
