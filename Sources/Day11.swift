@@ -7,3 +7,11 @@ struct Day11: AdventDay {
     0
   }
 }
+
+private extension Day11 {
+  var entities: [Int] {
+    data.split(separator: " ").compactMap {
+      Int($0.trimmingCharacters(in: .newlines))
+    }
+  }
+}
