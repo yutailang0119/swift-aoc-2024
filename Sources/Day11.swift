@@ -46,7 +46,7 @@ private extension Int {
     guard self != 0 else {
       return (1, nil)
     }
-    let text = Array("\(self)")
+    let text = "\(self)"
     let digits = text.count
     if digits.isMultiple(of: 2) {
       let center = digits / 2
