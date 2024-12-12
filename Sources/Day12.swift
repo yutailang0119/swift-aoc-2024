@@ -126,3 +126,9 @@ private extension Day12 {
     }
   }
 }
+
+private func < (lhs: Puzzle.Position, rhs: Puzzle.Position) -> Bool {
+  if lhs.y < rhs.y { return true }
+  if lhs.y > rhs.y { return false }
+  return lhs.x < rhs.x
+}
