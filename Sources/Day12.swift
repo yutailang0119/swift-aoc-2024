@@ -16,7 +16,7 @@ private extension Day12 {
 }
 
 private extension Day12 {
-  struct Plant {
+  struct Plant: Hashable {
     var element: String
     var position: Puzzle.Position
   }
