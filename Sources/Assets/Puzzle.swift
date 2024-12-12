@@ -49,6 +49,16 @@ extension Puzzle.Table {
     }
     return positions
   }
+
+  var positions: [[(Element, Puzzle.Position)]] {
+    lines.enumerated().reduce(into: [[(Element, Puzzle.Position)]]()) { lns, y in
+      lns.append(
+        y.element.enumerated().map {
+          ($0.element, Puzzle.Position(x: $0.offset, y: y.offset))
+        }
+      )
+    }
+  }
 }
 
 extension Puzzle.Table where Element: Equatable {
