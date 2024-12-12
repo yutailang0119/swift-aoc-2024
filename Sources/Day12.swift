@@ -25,7 +25,11 @@ struct Day12: AdventDay {
   }
 
   func part2() async throws -> Any {
-    0
+    let table = Puzzle.Table<Plant>(lines: Puzzle.Table(lines: entities).positions.map { $0.map(Plant.init) })
+
+    return regions(in: table).reduce(into: 0) {
+      $0 += sides(for: $1, in: table) * $1.count
+    }
   }
 }
 
