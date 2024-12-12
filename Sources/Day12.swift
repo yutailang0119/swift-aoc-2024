@@ -14,3 +14,10 @@ private extension Day12 {
       .map { $0.map(String.init) }
   }
 }
+
+private extension Day12 {
+  struct Plant {
+    var element: String
+    var position: Puzzle.Position
+  }
+}
