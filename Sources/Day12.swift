@@ -58,7 +58,8 @@ private extension Day12 {
               plnt = nil
             } else {
               if let element = table.element(at: position),
-                 element.element == plant.element {
+                element.element == plant.element
+              {
                 contained.insert(position)
                 xs.insert(element)
                 plnt = element
@@ -80,7 +81,8 @@ private extension Day12 {
               plnt = nil
             } else {
               if let element = table.element(at: position),
-                 element.element == plant.element {
+                element.element == plant.element
+              {
                 contained.insert(position)
                 ys.insert(element)
                 plnt = element
@@ -129,11 +131,11 @@ private extension Day12 {
           do {
             let moved = r.position.moved(to: direction.leftDegrees)
             if let rotated = table.element(at: moved),
-               region.contains(rotated)
+              region.contains(rotated)
             {
               let e = table.element(at: moved.moved(to: direction))
               if e.flatMap({ !region.contains($0) }) ?? true,
-                 moved < r.position
+                moved < r.position
               {
                 continue
               }
@@ -143,10 +145,11 @@ private extension Day12 {
           do {
             let moved = r.position.moved(to: direction.rightDegrees)
             if let rotated = table.element(at: moved),
-               region.contains(rotated) {
+              region.contains(rotated)
+            {
               let e = table.element(at: moved.moved(to: direction))
               if e.flatMap({ !region.contains($0) }) ?? true,
-                 moved < r.position
+                moved < r.position
               {
                 continue
               }
