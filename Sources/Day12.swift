@@ -114,6 +114,45 @@ private extension Day12 {
     }
     return regions
   }
+
+  func sides(for region: Set<Day12.Plant>, in table: Puzzle.Table<Day12.Plant>) -> Int {
+    var sides = 0
+    for r in region {
+      for direction in [Puzzle.Direction.top, .right, .bottom, .left] {
+        let next = table.element(at: r.position.moved(to: direction))
+        if next.flatMap({ !region.contains($0) }) ?? true {
+          do {
+            let moved = r.position.moved(to: direction.leftDegrees)
+            if let rotated = table.element(at: moved),
+               region.contains(rotated)
+            {
+              let e = table.element(at: moved.moved(to: direction))
+              if e.flatMap({ !region.contains($0) }) ?? true,
+                 moved < r.position
+              {
+                continue
+              }
+            }
+          }
+
+          do {
+            let moved = r.position.moved(to: direction.rightDegrees)
+            if let rotated = table.element(at: moved),
+               region.contains(rotated) {
+              let e = table.element(at: moved.moved(to: direction))
+              if e.flatMap({ !region.contains($0) }) ?? true,
+                 moved < r.position
+              {
+                continue
+              }
+            }
+          }
+          sides += 1
+        }
+      }
+    }
+    return sides
+  }
 }
 
 private extension Day12 {
