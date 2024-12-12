@@ -6,22 +6,9 @@ struct Day12: AdventDay {
   func part1() async throws -> Any {
     let table = Puzzle.Table<Plant>(lines: Puzzle.Table(lines: entities).positions.map { $0.map(Plant.init) })
 
-    var sum = 0
-    for region in regions(in: table) {
-      var perimeters = 0
-      for r in region {
-        for direction in [Puzzle.Direction.top, .right, .bottom, .left] {
-          let position = r.position.moved(to: direction)
-          let next = table.element(at: position)
-          if next?.element != r.element {
-            perimeters += 1
-          }
-        }
-      }
-      sum += region.count * perimeters
+    return regions(in: table).reduce(into: 0) {
+      $0 += perimeters(for: $1, in: table) * $1.count
     }
-
-    return sum
   }
 
   func part2() async throws -> Any {
