@@ -119,6 +119,20 @@ private extension Day12 {
     return regions
   }
 
+  func perimeters(for region: Set<Day12.Plant>, in table: Puzzle.Table<Day12.Plant>) -> Int {
+    var perimeters = 0
+    for r in region {
+      for direction in [Puzzle.Direction.top, .right, .bottom, .left] {
+        let position = r.position.moved(to: direction)
+        let next = table.element(at: position)
+        if next?.element != r.element {
+          perimeters += 1
+        }
+      }
+    }
+    return perimeters
+  }
+
   func sides(for region: Set<Day12.Plant>, in table: Puzzle.Table<Day12.Plant>) -> Int {
     var sides = 0
     for r in region {
