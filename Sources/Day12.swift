@@ -16,8 +16,12 @@ private extension Day12 {
 }
 
 private extension Day12 {
-  struct Plant: Hashable {
+  struct Plant: Hashable, CustomStringConvertible {
     var element: String
     var position: Puzzle.Position
+
+    var description: String {
+      "\(element): (\(position.x), \(position.y))"
+    }
   }
 }
