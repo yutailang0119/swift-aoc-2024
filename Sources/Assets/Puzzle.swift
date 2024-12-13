@@ -49,6 +49,16 @@ extension Puzzle.Table {
     }
     return positions
   }
+
+  var positions: [[(Element, Puzzle.Position)]] {
+    lines.enumerated().reduce(into: [[(Element, Puzzle.Position)]]()) { lns, y in
+      lns.append(
+        y.element.enumerated().map {
+          ($0.element, Puzzle.Position(x: $0.offset, y: y.offset))
+        }
+      )
+    }
+  }
 }
 
 extension Puzzle.Table where Element: Equatable {
@@ -122,6 +132,30 @@ extension Puzzle.Direction {
     case .right: return .top
     default:
       fatalError()
+    }
+  }
+}
+
+extension Puzzle.Direction: CustomStringConvertible {
+  var description: String {
+    switch self {
+    case .top: return ".top"
+    case .bottom: return ".bottom"
+    case .left: return ".left"
+    case .right: return ".right"
+    case [.top, .bottom]: return "[.top, .bottom]"
+    case [.top, .left]: return "[.top, .left]"
+    case [.top, .right]: return "[.top, .right]"
+    case [.bottom, .left]: return "[.bottom, .leftt]"
+    case [.bottom, .right]: return "[.bottom, .right]"
+    case [.top, .bottom]: return "[.top, .bottom]"
+    case [.left, .right]: return "[.left, .right]"
+    case [.top, .bottom, .left]: return "[.top, .bottom, .left]"
+    case [.top, .bottom, .right]: return "[.top, .bottom, .right]"
+    case [.top, .left, .right]: return "[.top, .left, .right]"
+    case [.bottom, .left, .right]: return "[.bottom, .left, .right]"
+    case [.top, .bottom, .left, .right]: return "[.top, .bottom, .left, .right]"
+    default: return ""
     }
   }
 }
