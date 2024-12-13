@@ -10,6 +10,16 @@ struct Day13: AdventDay {
 
     return machines.reduce(0) { $0 + $1.token }
   }
+
+  func part2() async throws -> Any {
+    let entities = self.entities
+    let machines = entities.compactMap(\.machine)
+      .map {
+        Machine(a: $0.a, b: $0.b, prize: Machine.Claw(x: $0.prize.x + 10000000000000, y: $0.prize.y + 10000000000000))
+      }
+
+    return machines.reduce(0) { $0 + $1.token }
+  }
 }
 
 private extension Day13 {
