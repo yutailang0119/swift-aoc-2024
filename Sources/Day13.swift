@@ -41,12 +41,12 @@ private extension Day13 {
     var prize: Claw
 
     var token: Int {
-      guard (b.y * a.x - b.x * a.y) != 0,
-        (prize.y * a.x - a.y * prize.x) % (b.y * a.x - b.x * a.y) == 0
+      guard (a.y * b.x - b.y * a.x) != 0,
+        (prize.y * a.x - a.y * prize.x) % (b.y * a.x - a.y * b.x) == 0
       else {
         return 0
       }
-      let pushingA = (prize.y * b.x - b.y * prize.x) / (a.y * b.x - a.x * b.y)
+      let pushingA = (prize.y * b.x - b.y * prize.x) / (a.y * b.x - b.y * a.x)
       guard (prize.x - a.x * pushingA) % b.x == 0 else {
         return 0
       }
