@@ -135,7 +135,7 @@ private extension Day12 {
             {
               let e = table.element(at: moved.moved(to: direction))
               if e.flatMap({ !region.contains($0) }) ?? true,
-                moved < r.position
+                moved < r
               {
                 continue
               }
@@ -149,7 +149,7 @@ private extension Day12 {
             {
               let e = table.element(at: moved.moved(to: direction))
               if e.flatMap({ !region.contains($0) }) ?? true,
-                moved < r.position
+                moved < r
               {
                 continue
               }
@@ -174,8 +174,8 @@ private extension Day12 {
   }
 }
 
-private func < (lhs: Puzzle.Position, rhs: Puzzle.Position) -> Bool {
-  if lhs.y < rhs.y { return true }
-  if lhs.y > rhs.y { return false }
-  return lhs.x < rhs.x
+private func < (position: Puzzle.Position, plant: Day12.Plant) -> Bool {
+  if position.y < plant.position.y { return true }
+  if position.y > plant.position.y { return false }
+  return position.x < plant.position.x
 }
