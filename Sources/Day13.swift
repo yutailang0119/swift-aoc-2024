@@ -23,8 +23,8 @@ private extension Day13 {
       var y: Int
     }
 
-    var buttonA: Claw
-    var buttonB: Claw
+    var a: Claw
+    var b: Claw
     var prize: Claw
   }
 }
@@ -75,8 +75,8 @@ private extension String {
     }
 
     return Day13.Machine(
-      buttonA: Day13.Machine.Claw(x: buttonA.x, y: buttonA.y),
-      buttonB: Day13.Machine.Claw(x: buttonB.x, y: buttonB.y),
+      a: Day13.Machine.Claw(x: buttonA.x, y: buttonA.y),
+      b: Day13.Machine.Claw(x: buttonB.x, y: buttonB.y),
       prize: Day13.Machine.Claw(x: prize.x, y: prize.y)
     )
   }
