@@ -46,11 +46,11 @@ private extension Day13 {
       else {
         return 0
       }
-      let pushingB = (prize.y * a.x - a.y * prize.x) / (b.y * a.x - b.x * a.y)
-      guard (prize.x - b.x * pushingB) % a.x == 0 else {
+      let pushingA = (prize.y * b.x - b.y * prize.x) / (a.y * b.x - a.x * b.y)
+      guard (prize.x - a.x * pushingA) % b.x == 0 else {
         return 0
       }
-      let pushingA = (prize.x - b.x * pushingB) / a.x
+      let pushingB = (prize.x - a.x * pushingA) / b.x
 
       return pushingA * 3 + pushingB
     }
