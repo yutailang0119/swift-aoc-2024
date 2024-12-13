@@ -8,20 +8,7 @@ struct Day13: AdventDay {
     let entities = self.entities
     let machines = entities.compactMap(\.machine)
 
-    var sum = 0
-    for machine in machines {
-      let i = machine.prize.x * machine.b.y - machine.prize.y * machine.b.x
-      let j = machine.a.x * machine.b.y - machine.a.y * machine.b.x
-      let pushingA = Double(i) / Double(j)
-      let pushingB = (Double(machine.prize.y) - pushingA * Double(machine.a.y)) / Double(machine.b.y)
-      if pushingA.truncatingRemainder(dividingBy: 1).isLess(than: .ulpOfOne)
-        && pushingB.truncatingRemainder(dividingBy: 1).isLess(than: .ulpOfOne)
-      {
-        sum += Int(pushingA * 3 + pushingB)
-      }
-    }
-
-    return sum
+    return machines.reduce(0) { $0 + $1.token }
   }
 }
 
