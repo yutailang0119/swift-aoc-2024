@@ -45,67 +45,69 @@ private extension Day12 {
 
   func region(from plant: Plant, in table: Puzzle.Table<Plant>) -> Set<Plant> {
     var contained: Set<Puzzle.Position> = []
-
-    func explore(from plants: Set<Plant>, in table: Puzzle.Table<Plant>) -> (xs: Set<Plant>, ys: Set<Plant>) {
-      var xs: Set<Plant> = plants
-      contained.formUnion(plants.map(\.position))
-      for plant in plants {
-        for direction in [Puzzle.Direction.left, .right] {
-          var plnt: Plant? = plant
-          while let p = plnt {
-            let position = p.position.moved(to: direction)
-            if contained.contains(position) {
-              plnt = nil
-            } else {
-              if let element = table.element(at: position),
-                element.element == plant.element
-              {
-                contained.insert(position)
-                xs.insert(element)
-                plnt = element
-              } else {
-                plnt = nil
-              }
-            }
-          }
-        }
-      }
-
-      var ys: Set<Plant> = []
-      for x in xs {
-        for direction in [Puzzle.Direction.top, .bottom] {
-          var plnt: Plant? = x
-          while let p = plnt {
-            let position = p.position.moved(to: direction)
-            if contained.contains(position) {
-              plnt = nil
-            } else {
-              if let element = table.element(at: position),
-                element.element == plant.element
-              {
-                contained.insert(position)
-                ys.insert(element)
-                plnt = element
-              } else {
-                plnt = nil
-              }
-            }
-          }
-        }
-      }
-
-      return (xs, ys)
-    }
-
     var regions: Set<Plant> = []
     var line: Set<Plant> = [plant]
     while !line.isEmpty {
-      let (xs, ys) = explore(from: line, in: table)
+      let (xs, ys) = explore(from: line, with: &contained, in: table)
       regions.formUnion(xs)
       regions.formUnion(ys)
       line = ys
     }
     return regions
+  }
+
+  func explore(from plants: Set<Plant>, with contained: inout Set<Puzzle.Position>, in table: Puzzle.Table<Plant>) -> (xs: Set<Plant>, ys: Set<Plant>) {
+    guard let plant = plants.first else {
+      return (plants, [])
+    }
+    var xs: Set<Plant> = plants
+    contained.formUnion(plants.map(\.position))
+    for plant in plants {
+      for direction in [Puzzle.Direction.left, .right] {
+        var plnt: Plant? = plant
+        while let p = plnt {
+          let position = p.position.moved(to: direction)
+          if contained.contains(position) {
+            plnt = nil
+          } else {
+            if let element = table.element(at: position),
+              element.element == plant.element
+            {
+              contained.insert(position)
+              xs.insert(element)
+              plnt = element
+            } else {
+              plnt = nil
+            }
+          }
+        }
+      }
+    }
+
+    var ys: Set<Plant> = []
+    for x in xs {
+      for direction in [Puzzle.Direction.top, .bottom] {
+        var plnt: Plant? = x
+        while let p = plnt {
+          let position = p.position.moved(to: direction)
+          if contained.contains(position) {
+            plnt = nil
+          } else {
+            if let element = table.element(at: position),
+              element.element == plant.element
+            {
+              contained.insert(position)
+              ys.insert(element)
+              plnt = element
+            } else {
+              plnt = nil
+            }
+          }
+        }
+      }
+    }
+
+    return (xs, ys)
   }
 
   func perimeters(for region: Set<Day12.Plant>, in table: Puzzle.Table<Day12.Plant>) -> Int {
