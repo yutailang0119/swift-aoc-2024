@@ -41,17 +41,18 @@ private extension Day13 {
     var prize: Claw
 
     var token: Int {
-      let i = prize.x * b.y - prize.y * b.x
-      let j = a.x * b.y - a.y * b.x
-      let pushingA = Double(i) / Double(j)
-      let pushingB = (Double(prize.y) - pushingA * Double(a.y)) / Double(b.y)
-      if pushingA.truncatingRemainder(dividingBy: 1).isLess(than: .ulpOfOne)
-        && pushingB.truncatingRemainder(dividingBy: 1).isLess(than: .ulpOfOne)
-      {
-        return Int(pushingA * 3 + pushingB)
-      } else {
+      guard (a.y * b.x - b.y * a.x) != 0,
+        (prize.y * a.x - a.y * prize.x) % (b.y * a.x - a.y * b.x) == 0
+      else {
         return 0
       }
+      let pushingA = (prize.y * b.x - b.y * prize.x) / (a.y * b.x - b.y * a.x)
+      guard (prize.x - a.x * pushingA) % b.x == 0 else {
+        return 0
+      }
+      let pushingB = (prize.x - a.x * pushingA) / b.x
+
+      return pushingA * 3 + pushingB
     }
   }
 }
