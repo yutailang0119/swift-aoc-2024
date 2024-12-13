@@ -56,7 +56,11 @@ private extension Day12 {
     return regions
   }
 
-  func explore(from plants: Set<Plant>, with contained: inout Set<Puzzle.Position>, in table: Puzzle.Table<Plant>) -> (xs: Set<Plant>, ys: Set<Plant>) {
+  func explore(
+    from plants: Set<Plant>,
+    with contained: inout Set<Puzzle.Position>,
+    in table: Puzzle.Table<Plant>
+  ) -> (xs: Set<Plant>, ys: Set<Plant>) {
     guard let plant = plants.first else {
       return (plants, [])
     }
