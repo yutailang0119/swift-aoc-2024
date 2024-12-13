@@ -14,3 +14,16 @@ private extension Day13 {
       .map(String.init)
   }
 }
+
+private extension Day13 {
+  struct Machine {
+    struct Claw {
+      var x: Int
+      var y: Int
+    }
+
+    var buttonA: Claw
+    var buttonB: Claw
+    var prize: Claw
+  }
+}
