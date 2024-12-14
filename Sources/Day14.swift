@@ -5,7 +5,10 @@ struct Day14: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    0
+    let space = Space(wide: 101, tall: 103)
+    let quadrant = place(after: 100, in: space)
+
+    return quadrant.all.count * quadrant.science.count * quadrant.teachers.count * quadrant.crazy.count
   }
 
   func place(after seconds: Int, in space: Day14.Space) -> Quadrant {
