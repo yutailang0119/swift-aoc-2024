@@ -6,37 +6,32 @@ struct Day14: AdventDay {
 
   func part1() async throws -> Any {
     let space = Space(wide: 101, tall: 103)
-    let quadrant = place(after: 100, in: space)
-
-    return quadrant.all.count * quadrant.science.count * quadrant.teachers.count * quadrant.crazy.count
+    return _part1(after: 100, in: space)
   }
 
-  func place(after seconds: Int, in space: Day14.Space) -> Quadrant {
-    let robots = entities.compactMap(\.robot)
-
-    var rbts: [Robot] = []
-    for var robot in robots {
-      robot.position = robot.move(seconds: seconds, in: space)
-      rbts.append(robot)
-    }
+  func _part1(after: Int, in space: Space) -> Any {
+    let robots = robots(after: after, in: space)
 
     let xAxis = space.wide / 2
     let yAxis = space.tall / 2
 
-    var quadrant = Quadrant()
-    for rbt in rbts {
-      if rbt.position.x > xAxis && rbt.position.y > yAxis {
-        quadrant.all.append(rbt.position)
-      } else if rbt.position.x < xAxis && rbt.position.y > yAxis {
-        quadrant.science.append(rbt.position)
-      } else if rbt.position.x < xAxis && rbt.position.y < yAxis {
-        quadrant.teachers.append(rbt.position)
-      } else if rbt.position.x > xAxis && rbt.position.y < yAxis {
-        quadrant.crazy.append(rbt.position)
+    var all: [Puzzle.Position] = []
+    var science: [Puzzle.Position] = []
+    var teachers: [Puzzle.Position] = []
+    var crazy: [Puzzle.Position] = []
+    for robot in robots {
+      if robot.position.x > xAxis && robot.position.y > yAxis {
+        all.append(robot.position)
+      } else if robot.position.x < xAxis && robot.position.y > yAxis {
+       science.append(robot.position)
+      } else if robot.position.x < xAxis && robot.position.y < yAxis {
+        teachers.append(robot.position)
+      } else if robot.position.x > xAxis && robot.position.y < yAxis {
+        crazy.append(robot.position)
       }
     }
 
-    return quadrant
+    return all.count * science.count * teachers.count * crazy.count
   }
 }
 
