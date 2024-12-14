@@ -13,3 +13,15 @@ private extension Day14 {
     data.split(separator: "\n").map(String.init)
   }
 }
+
+private extension Day14 {
+  struct Robot {
+    struct Velocity {
+      var x: Int
+      var y: Int
+    }
+
+    var position: Puzzle.Position
+    var velocity: Velocity
+  }
+}
