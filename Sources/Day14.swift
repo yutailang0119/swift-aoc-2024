@@ -34,6 +34,35 @@ private extension Day14 {
   }
 }
 
+private extension Day14.Robot {
+  func move(seconds: Int, in space: Day14.Space) -> Puzzle.Position {
+    var position = self.position
+    let movedX = (position.x + velocity.x * seconds) % space.wide
+    let movedY = (position.y + velocity.y * seconds) % space.tall
+
+    if movedX < 0 {
+      position.x = space.wide + movedX
+    } else if movedX >= space.wide {
+      position.x = movedX
+    } else {
+      position.x = movedX
+    }
+
+    if movedY < 0 {
+      position.y = space.tall + movedY
+    } else if movedY >= space.tall {
+      position.y = movedY
+    } else {
+      position.y = movedY
+    }
+
+    assert(0..<space.wide ~= position.x)
+    assert(0..<space.tall ~= position.y)
+
+    return position
+  }
+}
+
 private extension String {
   var robot: Day14.Robot? {
     let regex = Regex {
