@@ -7,6 +7,34 @@ struct Day14: AdventDay {
   func part1() async throws -> Any {
     0
   }
+
+  func place(after seconds: Int, in space: Day14.Space) -> Quadrant {
+    let robots = entities.compactMap(\.robot)
+
+    var rbts: [Robot] = []
+    for var robot in robots {
+      robot.position = robot.move(seconds: seconds, in: space)
+      rbts.append(robot)
+    }
+
+    let xAxis = space.wide / 2
+    let yAxis = space.tall / 2
+
+    var quadrant = Quadrant()
+    for rbt in rbts {
+      if rbt.position.x > xAxis && rbt.position.y > yAxis {
+        quadrant.all.append(rbt.position)
+      } else if rbt.position.x < xAxis && rbt.position.y > yAxis {
+        quadrant.science.append(rbt.position)
+      } else if rbt.position.x < xAxis && rbt.position.y < yAxis {
+        quadrant.teachers.append(rbt.position)
+      } else if rbt.position.x > xAxis && rbt.position.y < yAxis {
+        quadrant.crazy.append(rbt.position)
+      }
+    }
+
+    return quadrant
+  }
 }
 
 extension Day14 {
