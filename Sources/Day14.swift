@@ -9,6 +9,13 @@ struct Day14: AdventDay {
   }
 }
 
+extension Day14 {
+  struct Space {
+    var wide: Int
+    var tall: Int
+  }
+}
+
 private extension Day14 {
   var entities: [String] {
     data.split(separator: "\n").map(String.init)
