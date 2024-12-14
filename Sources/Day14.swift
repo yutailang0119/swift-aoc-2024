@@ -40,13 +40,6 @@ extension Day14 {
     var wide: Int
     var tall: Int
   }
-
-  struct Quadrant {
-    var all: [Puzzle.Position] = []
-    var science: [Puzzle.Position] = []
-    var teachers: [Puzzle.Position] = []
-    var crazy: [Puzzle.Position] = []
-  }
 }
 
 private extension Day14 {
