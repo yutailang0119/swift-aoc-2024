@@ -22,8 +22,11 @@ struct Day14Tests {
   @Test func testPart1() async throws {
     do {
       let challenge = Day14(data: testData)
-      let quadrant = challenge.place(after: 100, in: Day14.Space(wide: 11, tall: 7))
-      #expect(String(describing: quadrant.all.count * quadrant.science.count * quadrant.teachers.count * quadrant.crazy.count) == "12")
+      #expect(String(describing: challenge._part1(after: 100, in: Day14.Space(wide: 11, tall: 7))) == "12")
+    }
+    do {
+      let challenge = Day14(data: testData)
+      try await #expect(String(describing: challenge.part1()) == "21")
     }
   }
 }
