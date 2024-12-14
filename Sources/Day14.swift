@@ -58,6 +58,18 @@ private extension Day14 {
   var entities: [String] {
     data.split(separator: "\n").map(String.init)
   }
+
+  func robots(after seconds: Int, in space: Day14.Space) -> [Robot] {
+    let robots = entities.compactMap(\.robot)
+
+    var moved: [Robot] = []
+    for var robot in robots {
+      robot.position = robot.move(seconds: seconds, in: space)
+      moved.append(robot)
+    }
+
+    return moved
+  }
 }
 
 private extension Day14.Space {
