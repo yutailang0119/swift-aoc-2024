@@ -28,7 +28,7 @@ struct Day14: AdventDay {
       if robot.position.x > xAxis && robot.position.y > yAxis {
         all.append(robot.position)
       } else if robot.position.x < xAxis && robot.position.y > yAxis {
-       science.append(robot.position)
+        science.append(robot.position)
       } else if robot.position.x < xAxis && robot.position.y < yAxis {
         teachers.append(robot.position)
       } else if robot.position.x > xAxis && robot.position.y < yAxis {
