@@ -7,3 +7,9 @@ struct Day15: AdventDay {
     0
   }
 }
+
+private extension Day15 {
+  var entities: [String] {
+    data.split(separator: "\n\n").map(String.init)
+  }
+}
