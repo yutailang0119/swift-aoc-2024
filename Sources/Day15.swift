@@ -48,3 +48,14 @@ private extension Day15 {
     }
   }
 }
+
+private extension Puzzle.Direction {
+  init(move: Day15.Move) {
+    switch move {
+    case .up: self = .top
+    case .down: self = .bottom
+    case .left: self = .left
+    case .right: self = .right
+    }
+  }
+}
