@@ -33,6 +33,40 @@ struct Day14: AdventDay {
 
     return all.count * science.count * teachers.count * crazy.count
   }
+
+  func _part2(in space: Space) -> Any {
+    var current = 0
+    var reference = 0
+    for second in 1..<space.wide * space.tall {
+      let robots = move(robots: entities.compactMap(\.robot), after: second, in: space)
+      let positions = Set(robots.map(\.position))
+      var horizontal = 0
+      for position in positions {
+        let left = position.moved(to: .left)
+        if positions.contains(where: { $0 == left }) {
+          horizontal += 1
+        }
+
+        let right = position.moved(to: .right)
+        if positions.contains(where: { $0 == right }) {
+          horizontal += 1
+        }
+      }
+
+      if horizontal > reference {
+        let lines = space.table(for: robots).lines.map { line in
+          line.map { $0 == 0 ? "." : "#" }
+        }
+        let t = Puzzle.Table<String>(lines: lines)
+        print("\(second): \(Array(repeating: "=", count: space.wide).joined())")
+        print(t)
+        print("\n")
+        reference = horizontal
+        current = second
+      }
+    }
+    return current
+  }
 }
 
 extension Day14 {
