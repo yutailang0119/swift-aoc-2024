@@ -10,7 +10,7 @@ struct Day14: AdventDay {
   }
 
   func _part1(after: Int, in space: Space) -> Any {
-    let robots = robots(after: after, in: space)
+    let robots = move(robots: entities.compactMap(\.robot), after: after, in: space)
 
     let xAxis = space.wide / 2
     let yAxis = space.tall / 2
@@ -47,9 +47,7 @@ private extension Day14 {
     data.split(separator: "\n").map(String.init)
   }
 
-  func robots(after seconds: Int, in space: Day14.Space) -> [Robot] {
-    let robots = entities.compactMap(\.robot)
-
+  func move(robots: [Robot], after seconds: Int, in space: Day14.Space) -> [Robot] {
     var moved: [Robot] = []
     for var robot in robots {
       robot.position = robot.move(seconds: seconds, in: space)
