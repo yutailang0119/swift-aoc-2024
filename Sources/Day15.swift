@@ -23,6 +23,44 @@ private extension Day15 {
   var moves: [Move] {
     entities[1].compactMap(Move.init(rawValue:))
   }
+
+  func attempt(move: Move, table: Puzzle.Table<Day15.Grid>) -> Puzzle.Table<Day15.Grid> {
+    struct Cursor {
+      var grid: Grid
+      var positon: Puzzle.Position
+    }
+    let direction = Puzzle.Direction(move: move)
+    let robot = table.positions(for: .robot).first!
+
+    var cursor: Cursor? = Cursor(grid: .robot, positon: robot)
+    var moved: [Cursor] = []
+    while let c = cursor {
+      let p = c.positon.moved(to: direction)
+      let g = table.element(at: p)!
+      switch g {
+      case .box:
+        moved.append(Cursor(grid: c.grid, positon: p))
+        cursor = Cursor(grid: .box, positon: p)
+      case .empty:
+        moved.append(Cursor(grid: c.grid, positon: p))
+        cursor = nil
+      case .robot, .wall:
+        moved.removeAll()
+        cursor = nil
+      }
+    }
+
+    guard !moved.isEmpty else {
+      return table
+    }
+
+    var t = table
+    t.lines[robot.y][robot.x] = .empty
+    for move in moved {
+      t.lines[move.positon.y][move.positon.x] = move.grid
+    }
+    return t
+  }
 }
 
 private extension Day15 {
