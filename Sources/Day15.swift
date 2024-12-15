@@ -58,12 +58,11 @@ private extension Day15 {
       }
     }
 
-    guard !moved.isEmpty else {
-      return table
+    if !moved.isEmpty {
+      moved.append(Cursor(grid: .empty, positon: robot))
     }
 
     var t = table
-    t.lines[robot.y][robot.x] = .empty
     for move in moved {
       t.lines[move.positon.y][move.positon.x] = move.grid
     }
