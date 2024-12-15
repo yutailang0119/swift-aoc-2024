@@ -9,6 +9,11 @@ struct Day14: AdventDay {
     return _part1(after: 100, in: space)
   }
 
+  func part2() async throws -> Any {
+    let space = Space(wide: 101, tall: 103)
+    return _part2(in: space)
+  }
+
   func _part1(after: Int, in space: Space) -> Any {
     let robots = move(robots: entities.compactMap(\.robot), after: after, in: space)
 
