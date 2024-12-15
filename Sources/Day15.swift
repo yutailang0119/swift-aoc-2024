@@ -15,17 +15,25 @@ private extension Day15 {
 }
 
 private extension Day15 {
-  enum Grid: Character {
+  enum Grid: Character, CustomStringConvertible {
     case robot = "@"
     case box = "O"
     case wall = "#"
     case empty = "."
+
+    var description: String {
+      String(rawValue)
+    }
   }
 
-  enum Move: Character {
+  enum Move: Character, CustomStringConvertible {
     case up = "^"
     case down = "v"
     case left = "<"
     case right = ">"
+
+    var description: String {
+      String(rawValue)
+    }
   }
 }
