@@ -4,7 +4,15 @@ struct Day15: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    0
+    var table = self.table
+    let moves = self.moves
+    for move in moves {
+      table = self.attempt(move: move, table: table)
+    }
+
+    return table.positions.joined()
+      .filter { $0.0 == .box }
+      .reduce(0) { $0 + 100 * $1.1.y + $1.1.x }
   }
 }
 
