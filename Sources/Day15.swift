@@ -12,6 +12,17 @@ private extension Day15 {
   var entities: [String] {
     data.split(separator: "\n\n").map(String.init)
   }
+
+  var table: Puzzle.Table<Grid> {
+    let lines = entities[0].split(separator: "\n").map { entity in
+      entity.compactMap(Day15.Grid.init(rawValue:))
+    }
+    return Puzzle.Table(lines: lines)
+  }
+
+  var moves: [Move] {
+    entities[1].compactMap(Move.init(rawValue:))
+  }
 }
 
 private extension Day15 {
