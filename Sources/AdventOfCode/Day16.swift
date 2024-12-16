@@ -15,3 +15,12 @@ private extension Day16 {
     }
   }
 }
+
+private extension Day16 {
+  enum Mark: Character {
+    case start = "S"
+    case end = "E"
+    case wall = "#"
+    case empty = "."
+  }
+}
