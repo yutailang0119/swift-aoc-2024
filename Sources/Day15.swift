@@ -125,7 +125,7 @@ struct Day15: AdventDay {
             targets.append(
               [
                 Cell(tile: nextTile, position: nextPosition),
-                Cell(tile: box, position: n)
+                Cell(tile: box, position: n),
               ]
             )
             cursor = Cell(tile: box, position: n)
