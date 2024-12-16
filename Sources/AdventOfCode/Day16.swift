@@ -17,10 +17,14 @@ private extension Day16 {
 }
 
 private extension Day16 {
-  enum Mark: Character {
+  enum Mark: Character, CustomStringConvertible {
     case start = "S"
     case end = "E"
     case wall = "#"
     case empty = "."
+
+    var description: String {
+      String(rawValue)
+    }
   }
 }
