@@ -1,10 +1,11 @@
 import Foundation
+import ToolKit
 
 struct Day12: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    let table = Puzzle.Table<Plant>(lines: Puzzle.Table(lines: entities).positions.map { $0.map(Plant.init) })
+    let table = Table<Plant>(lines: Table(lines: entities).positions.map { $0.map(Plant.init) })
 
     return regions(in: table).reduce(into: 0) {
       $0 += perimeters(for: $1, in: table) * $1.count
@@ -12,7 +13,7 @@ struct Day12: AdventDay {
   }
 
   func part2() async throws -> Any {
-    let table = Puzzle.Table<Plant>(lines: Puzzle.Table(lines: entities).positions.map { $0.map(Plant.init) })
+    let table = Table<Plant>(lines: Table(lines: entities).positions.map { $0.map(Plant.init) })
 
     return regions(in: table).reduce(into: 0) {
       $0 += sides(for: $1, in: table) * $1.count
@@ -26,7 +27,7 @@ private extension Day12 {
       .map { $0.map(String.init) }
   }
 
-  func regions(in table: Puzzle.Table<Plant>) -> [Set<Plant>] {
+  func regions(in table: Table<Plant>) -> [Set<Plant>] {
     var regions: [Set<Plant>] = []
     var contained: Set<Plant> = []
     for line in table.lines {
@@ -43,8 +44,8 @@ private extension Day12 {
     return regions
   }
 
-  func region(from plant: Plant, in table: Puzzle.Table<Plant>) -> Set<Plant> {
-    var contained: Set<Puzzle.Position> = []
+  func region(from plant: Plant, in table: Table<Plant>) -> Set<Plant> {
+    var contained: Set<Position> = []
     var regions: Set<Plant> = []
     var line: Set<Plant> = [plant]
     while !line.isEmpty {
@@ -58,8 +59,8 @@ private extension Day12 {
 
   func explore(
     from plants: Set<Plant>,
-    with contained: inout Set<Puzzle.Position>,
-    in table: Puzzle.Table<Plant>
+    with contained: inout Set<Position>,
+    in table: Table<Plant>
   ) -> (xs: Set<Plant>, ys: Set<Plant>) {
     guard let plant = plants.first else {
       return (plants, [])
@@ -67,7 +68,7 @@ private extension Day12 {
     var xs: Set<Plant> = plants
     contained.formUnion(plants.map(\.position))
     for plant in plants {
-      for direction in [Puzzle.Direction.left, .right] {
+      for direction in [Direction.left, .right] {
         var plnt: Plant? = plant
         while let p = plnt {
           let position = p.position.moved(to: direction)
@@ -90,7 +91,7 @@ private extension Day12 {
 
     var ys: Set<Plant> = []
     for x in xs {
-      for direction in [Puzzle.Direction.top, .bottom] {
+      for direction in [Direction.top, .bottom] {
         var plnt: Plant? = x
         while let p = plnt {
           let position = p.position.moved(to: direction)
@@ -114,10 +115,10 @@ private extension Day12 {
     return (xs, ys)
   }
 
-  func perimeters(for region: Set<Day12.Plant>, in table: Puzzle.Table<Day12.Plant>) -> Int {
+  func perimeters(for region: Set<Day12.Plant>, in table: Table<Day12.Plant>) -> Int {
     var perimeters = 0
     for r in region {
-      for direction in [Puzzle.Direction.top, .right, .bottom, .left] {
+      for direction in [Direction.top, .right, .bottom, .left] {
         let position = r.position.moved(to: direction)
         let next = table.element(at: position)
         if next?.element != r.element {
@@ -128,10 +129,10 @@ private extension Day12 {
     return perimeters
   }
 
-  func sides(for region: Set<Day12.Plant>, in table: Puzzle.Table<Day12.Plant>) -> Int {
+  func sides(for region: Set<Day12.Plant>, in table: Table<Day12.Plant>) -> Int {
     var sides = 0
     for r in region {
-      for direction in [Puzzle.Direction.top, .right, .bottom, .left] {
+      for direction in [Direction.top, .right, .bottom, .left] {
         let next = table.element(at: r.position.moved(to: direction))
         if next.flatMap({ !region.contains($0) }) ?? true {
           do {
@@ -170,9 +171,9 @@ private extension Day12 {
 }
 
 private extension Day12 {
-  struct Plant: Hashable, CustomStringConvertible {
+  struct Plant: Hashable, CustomStringConvertible, Sendable {
     var element: String
-    var position: Puzzle.Position
+    var position: Position
 
     var description: String {
       "\(element): (\(position.x), \(position.y))"
@@ -180,7 +181,7 @@ private extension Day12 {
   }
 }
 
-private func < (position: Puzzle.Position, plant: Day12.Plant) -> Bool {
+private func < (position: Position, plant: Day12.Plant) -> Bool {
   if position.y < plant.position.y { return true }
   if position.y > plant.position.y { return false }
   return position.x < plant.position.x

@@ -1,4 +1,5 @@
 import Foundation
+import ToolKit
 
 struct Day08: AdventDay {
   var data: String
@@ -6,9 +7,9 @@ struct Day08: AdventDay {
   func part1() async throws -> Any {
     let entities = self.entities
     let frequencies = Set(entities.joined()).filter { $0 != "." }
-    let table = Puzzle.Table(lines: entities)
+    let table = Table(lines: entities)
 
-    var antinodes: Set<Puzzle.Position> = []
+    var antinodes: Set<Position> = []
     for frequency in frequencies {
       let antennas = table.positions(for: frequency)
       for combination in antennas.combinations(ofCount: 2) {
@@ -35,9 +36,9 @@ struct Day08: AdventDay {
   func part2() async throws -> Any {
     let entities = self.entities
     let frequencies = Set(entities.joined()).filter { $0 != "." }
-    let table = Puzzle.Table(lines: entities)
+    let table = Table(lines: entities)
 
-    var antinodes: Set<Puzzle.Position> = []
+    var antinodes: Set<Position> = []
     for frequency in frequencies {
       let antennas = table.positions(for: frequency)
       for combination in antennas.combinations(ofCount: 2) {
@@ -46,7 +47,7 @@ struct Day08: AdventDay {
 
         let p = lhs - rhs
 
-        var antinode1: Puzzle.Position? = lhs + p
+        var antinode1: Position? = lhs + p
         while let a = antinode1 {
           if table.element(at: a) != nil {
             antinodes.insert(a)
@@ -56,7 +57,7 @@ struct Day08: AdventDay {
           }
         }
 
-        var antinode2: Puzzle.Position? = rhs - p
+        var antinode2: Position? = rhs - p
         while let a = antinode2 {
           if table.element(at: a) != nil {
             antinodes.insert(a)

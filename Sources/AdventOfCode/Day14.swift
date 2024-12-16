@@ -1,5 +1,6 @@
 import Foundation
 import RegexBuilder
+import ToolKit
 
 struct Day14: AdventDay {
   var data: String
@@ -20,10 +21,10 @@ struct Day14: AdventDay {
     let xAxis = space.wide / 2
     let yAxis = space.tall / 2
 
-    var all: [Puzzle.Position] = []
-    var science: [Puzzle.Position] = []
-    var teachers: [Puzzle.Position] = []
-    var crazy: [Puzzle.Position] = []
+    var all: [Position] = []
+    var science: [Position] = []
+    var teachers: [Position] = []
+    var crazy: [Position] = []
     for robot in robots {
       if robot.position.x > xAxis && robot.position.y > yAxis {
         all.append(robot.position)
@@ -62,7 +63,7 @@ struct Day14: AdventDay {
         let lines = space.table(for: robots).lines.map { line in
           line.map { $0 == 0 ? "." : "#" }
         }
-        let t = Puzzle.Table<String>(lines: lines)
+        let t = Table<String>(lines: lines)
         print("\(second): \(Array(repeating: "=", count: space.wide).joined())")
         print(t)
         print("\n")
@@ -98,8 +99,8 @@ private extension Day14 {
 }
 
 private extension Day14.Space {
-  func table(for robots: [Day14.Robot]) -> Puzzle.Table<Int> {
-    var table = Puzzle.Table<Int>(lines: Array(repeating: Array(repeating: 0, count: wide), count: tall))
+  func table(for robots: [Day14.Robot]) -> Table<Int> {
+    var table = Table<Int>(lines: Array(repeating: Array(repeating: 0, count: wide), count: tall))
     for robot in robots {
       table.lines[robot.position.y][robot.position.x] += 1
     }
@@ -114,13 +115,13 @@ private extension Day14 {
       var y: Int
     }
 
-    var position: Puzzle.Position
+    var position: Position
     var velocity: Velocity
   }
 }
 
 private extension Day14.Robot {
-  func move(seconds: Int, in space: Day14.Space) -> Puzzle.Position {
+  func move(seconds: Int, in space: Day14.Space) -> Position {
     var position = self.position
     let movedX = (position.x + velocity.x * seconds) % space.wide
     let movedY = (position.y + velocity.y * seconds) % space.tall
@@ -178,7 +179,7 @@ private extension String {
       return nil
     }
     return Day14.Robot(
-      position: Puzzle.Position(x: Int(match.1)!, y: Int(match.2)!),
+      position: Position(x: Int(match.1)!, y: Int(match.2)!),
       velocity: Day14.Robot.Velocity(x: Int(match.3)!, y: Int(match.4)!)
     )
   }
