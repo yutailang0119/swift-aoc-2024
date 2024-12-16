@@ -21,9 +21,9 @@ private extension Day15 {
     data.split(separator: "\n\n").map(String.init)
   }
 
-  var table: Puzzle.Table<Grid> {
+  var table: Puzzle.Table<Tile> {
     let lines = entities[0].split(separator: "\n").map { entity in
-      entity.compactMap(Day15.Grid.init(rawValue:))
+      entity.compactMap(Day15.Tile.init(rawValue:))
     }
     return Puzzle.Table(lines: lines)
   }
@@ -32,46 +32,47 @@ private extension Day15 {
     entities[1].compactMap(Move.init(rawValue:))
   }
 
-  func attempt(move: Move, table: Puzzle.Table<Day15.Grid>) -> Puzzle.Table<Day15.Grid> {
+  func attempt(move: Move, table: Puzzle.Table<Day15.Tile>) -> Puzzle.Table<Day15.Tile> {
     struct Cursor {
-      var grid: Grid
+      var tile: Tile
       var positon: Puzzle.Position
     }
     let direction = Puzzle.Direction(move: move)
     let robot = table.positions(for: .robot).first!
 
-    var cursor: Cursor? = Cursor(grid: .robot, positon: robot)
+    var cursor: Cursor? = Cursor(tile: .robot, positon: robot)
     var moved: [Cursor] = []
     while let c = cursor {
       let p = c.positon.moved(to: direction)
-      let g = table.element(at: p)!
-      switch g {
+      switch table.element(at: p) {
       case .box:
-        moved.append(Cursor(grid: c.grid, positon: p))
-        cursor = Cursor(grid: .box, positon: p)
+        moved.append(Cursor(tile: c.tile, positon: p))
+        cursor = Cursor(tile: .box, positon: p)
       case .empty:
-        moved.append(Cursor(grid: c.grid, positon: p))
+        moved.append(Cursor(tile: c.tile, positon: p))
         cursor = nil
-      case .robot, .wall:
+      case .wall:
         moved.removeAll()
+        cursor = nil
+      case .robot, nil:
         cursor = nil
       }
     }
 
     if !moved.isEmpty {
-      moved.append(Cursor(grid: .empty, positon: robot))
+      moved.append(Cursor(tile: .empty, positon: robot))
     }
 
     var t = table
     for move in moved {
-      t.lines[move.positon.y][move.positon.x] = move.grid
+      t.lines[move.positon.y][move.positon.x] = move.tile
     }
     return t
   }
 }
 
 private extension Day15 {
-  enum Grid: Character, CustomStringConvertible {
+  enum Tile: Character, CustomStringConvertible, Equatable {
     case robot = "@"
     case box = "O"
     case wall = "#"
