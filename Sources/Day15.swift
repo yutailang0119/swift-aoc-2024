@@ -4,7 +4,7 @@ struct Day15: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    var table = self.table
+    var table = self.tiles
     let moves = self.moves
     for move in moves {
       table = self.attempt(move: move, table: table)
@@ -21,7 +21,7 @@ private extension Day15 {
     data.split(separator: "\n\n").map(String.init)
   }
 
-  var table: Puzzle.Table<Tile> {
+  var tiles: Puzzle.Table<Tile> {
     let lines = entities[0].split(separator: "\n").map { entity in
       entity.compactMap(Day15.Tile.init(rawValue:))
     }
