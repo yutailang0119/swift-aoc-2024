@@ -86,6 +86,18 @@ private extension Day15 {
     }
   }
 
+  enum WideTile: Character, CustomStringConvertible {
+    case robot = "@"
+    case boxLeft = "["
+    case boxRight = "]"
+    case wall = "#"
+    case empty = "."
+
+    var description: String {
+      String(rawValue)
+    }
+  }
+
   enum Move: Character, CustomStringConvertible {
     case up = "^"
     case down = "v"
