@@ -55,6 +55,114 @@ struct Day15: AdventDay {
       .filter { $0.0 == .box }
       .reduce(0) { $0 + 100 * $1.1.y + $1.1.x }
   }
+
+  func part2() async throws -> Any {
+    func attempt(move: Move, table: Puzzle.Table<Day15.WideTile>) -> Puzzle.Table<Day15.WideTile> {
+      struct Cell {
+        var tile: WideTile
+        var position: Puzzle.Position
+
+        var description: String {
+          "\(tile.description): (x: \(position.x), y: \(position.y))"
+        }
+      }
+
+      let direction = Puzzle.Direction(move: move)
+      let robot = table.positions(for: .robot).first!
+
+      var targets: [[Cell]] = [[Cell(tile: .robot, position: robot)]]
+      switch direction {
+      case .top, .bottom:
+        var cursors: [Cell] = targets.last!
+        while !cursors.isEmpty {
+          var nexts: [Cell] = []
+          for c in cursors {
+            let nextPosition = c.position.moved(to: direction)
+            let nextTile = table.element(at: nextPosition)!
+            let next = Cell(tile: nextTile, position: nextPosition)
+
+            switch nextTile {
+            case .boxLeft:
+              nexts.append(next)
+              let right = nextPosition.moved(to: .right)
+              nexts.append(Cell(tile: .boxRight, position: right))
+              if c.tile == .robot || c.tile == .boxRight {
+                nexts.append(Cell(tile: .empty, position: right.moved(to: direction.reverse)))
+              }
+            case .boxRight:
+              nexts.append(next)
+              let left = nextPosition.moved(to: .left)
+              nexts.append(Cell(tile: .boxLeft, position: left))
+              if c.tile == .robot || c.tile == .boxLeft {
+                nexts.append(Cell(tile: .empty, position: left.moved(to: direction.reverse)))
+              }
+            case .wall:
+              nexts.append(next)
+            case .empty:
+              continue
+            case .robot:
+              fatalError("Found robot in \(nextPosition)")
+            }
+          }
+          if nexts.contains(where: { $0.tile == .wall }) {
+            targets.removeAll()
+            cursors.removeAll()
+          } else {
+            targets.append(nexts)
+            cursors = nexts
+          }
+          nexts.removeAll()
+        }
+      case .left, .right:
+        var cursor: Cell? = targets.last?.first
+        while let c = cursor {
+          let nextPosition = c.position.moved(to: direction)
+          let nextTile = table.element(at: nextPosition)!
+          switch nextTile {
+          case .boxLeft, .boxRight:
+            let n = nextPosition.moved(to: direction)
+            let box: WideTile = nextTile == .boxLeft ? .boxRight : .boxLeft
+            targets.append(
+              [
+                Cell(tile: nextTile, position: nextPosition),
+                Cell(tile: box, position: n)
+              ]
+            )
+            cursor = Cell(tile: box, position: n)
+          case .empty:
+            cursor = nil
+          case .wall:
+            targets.removeAll()
+            cursor = nil
+          case .robot:
+            cursor = nil
+          }
+        }
+      default:
+        break
+      }
+
+      var tbl = table
+      if !targets.isEmpty {
+        tbl.lines[robot.y][robot.x] = .empty
+      }
+      for target in targets.joined() {
+        let p = target.position.moved(to: direction)
+        tbl.lines[p.y][p.x] = target.tile
+      }
+      return tbl
+    }
+
+    var table = self.wideTiles
+    let moves = self.moves
+    for move in moves {
+      table = attempt(move: move, table: table)
+    }
+
+    return table.positions.joined()
+      .filter { $0.0 == .boxLeft }
+      .reduce(0) { $0 + 100 * $1.1.y + $1.1.x }
+  }
 }
 
 private extension Day15 {
