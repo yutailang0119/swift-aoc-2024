@@ -42,7 +42,7 @@ struct Day06: AdventDay {
                 t.element(at: last.moved(to: direction)) == .obstruction
               {
                 cursor = last
-                direction = direction.rightDegrees
+                direction = direction.clockwise
               } else {
                 looped = false
               }
@@ -85,7 +85,7 @@ private extension Day06 {
           table.element(at: last.moved(to: direction)) == .obstruction
         {
           cursor = last
-          direction = direction.rightDegrees
+          direction = direction.clockwise
         } else {
           cursor = nil
         }
