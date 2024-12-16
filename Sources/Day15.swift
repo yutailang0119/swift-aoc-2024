@@ -4,10 +4,51 @@ struct Day15: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
+    func attempt(move: Move, table: Puzzle.Table<Day15.Tile>) -> Puzzle.Table<Day15.Tile> {
+      struct Cell {
+        var tile: Tile
+        var position: Puzzle.Position
+      }
+
+      let direction = Puzzle.Direction(move: move)
+      let robot = table.positions(for: .robot).first!
+
+      var cursor: Cell? = Cell(tile: .robot, position: robot)
+      var targets: [Cell] = []
+      while let c = cursor {
+        let nextPosition = c.position.moved(to: direction)
+        let nextTile = table.element(at: nextPosition)!
+
+        switch nextTile {
+        case .box:
+          targets.append(Cell(tile: c.tile, position: nextPosition))
+          cursor = Cell(tile: .box, position: nextPosition)
+        case .empty:
+          targets.append(Cell(tile: c.tile, position: nextPosition))
+          cursor = nil
+        case .wall:
+          targets.removeAll()
+          cursor = nil
+        case .robot:
+          cursor = nil
+        }
+      }
+
+      if !targets.isEmpty {
+        targets.insert(Cell(tile: .empty, position: robot), at: 0)
+      }
+
+      var t = table
+      for target in targets {
+        t.lines[target.position.y][target.position.x] = target.tile
+      }
+      return t
+    }
+
     var table = self.tiles
     let moves = self.moves
     for move in moves {
-      table = self.attempt(move: move, table: table)
+      table = attempt(move: move, table: table)
     }
 
     return table.positions.joined()
@@ -30,46 +71,6 @@ private extension Day15 {
 
   var moves: [Move] {
     entities[1].compactMap(Move.init(rawValue:))
-  }
-
-  func attempt(move: Move, table: Puzzle.Table<Day15.Tile>) -> Puzzle.Table<Day15.Tile> {
-    struct Cell {
-      var tile: Tile
-      var position: Puzzle.Position
-    }
-
-    let direction = Puzzle.Direction(move: move)
-    let robot = table.positions(for: .robot).first!
-
-    var cursor: Cell? = Cell(tile: .robot, position: robot)
-    var moved: [Cell] = []
-    while let c = cursor {
-      let nextPosition = c.position.moved(to: direction)
-      let nextTile = table.element(at: nextPosition)!
-      switch nextTile {
-      case .box:
-        moved.append(Cell(tile: c.tile, position: nextPosition))
-        cursor = Cell(tile: .box, position: nextPosition)
-      case .empty:
-        moved.append(Cell(tile: c.tile, position: nextPosition))
-        cursor = nil
-      case .wall:
-        moved.removeAll()
-        cursor = nil
-      case .robot:
-        cursor = nil
-      }
-    }
-
-    if !moved.isEmpty {
-      moved.append(Cell(tile: .empty, position: robot))
-    }
-
-    var t = table
-    for move in moved {
-      t.lines[move.position.y][move.position.x] = move.tile
-    }
-    return t
   }
 }
 
