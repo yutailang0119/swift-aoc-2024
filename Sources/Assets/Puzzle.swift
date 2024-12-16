@@ -53,6 +53,18 @@ extension Puzzle.Table {
     return elements
   }
 
+  func route(from start: Puzzle.Position, to direction: Puzzle.Direction, until element: Element? = nil) -> [Puzzle.Position] {
+    var positions: [Puzzle.Position] = []
+    var p = start
+    var next = self.element(at: p.moved(to: direction))
+    while next != nil, next != element {
+      positions.append(p)
+      p = p.moved(to: direction)
+      next = self.element(at: p)
+    }
+    return positions
+  }
+
   func positions(for element: Element) -> [Puzzle.Position] {
     var positions: [Puzzle.Position] = []
     for line in lines.enumerated() {
@@ -85,24 +97,6 @@ extension Puzzle.Table {
     }
     lines[i.y][i.x] = je
     lines[j.y][j.x] = ie
-  }
-}
-
-extension Puzzle.Table where Element: Equatable {
-  func route(
-    from start: Puzzle.Position,
-    to direction: Puzzle.Direction,
-    until element: Element? = nil
-  ) -> [Puzzle.Position] {
-    var positions: [Puzzle.Position] = []
-    var p = start
-    var next = self.element(at: p.moved(to: direction))
-    while next != nil, next != element {
-      positions.append(p)
-      p = p.moved(to: direction)
-      next = self.element(at: p)
-    }
-    return positions
   }
 }
 
