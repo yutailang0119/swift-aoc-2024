@@ -29,10 +29,6 @@ let package = Package(
     ),
   ],
   targets: [
-    .target(
-      name: "ToolKit",
-      dependencies: dependencies
-    ),
     .executableTarget(
       name: "AdventOfCode",
       dependencies: ["ToolKit"] + dependencies,
@@ -41,6 +37,10 @@ let package = Package(
     .testTarget(
       name: "AdventOfCodeTests",
       dependencies: ["AdventOfCode"] + dependencies
+    ),
+    .target(
+      name: "ToolKit",
+      dependencies: dependencies
     ),
   ],
   swiftLanguageModes: [.v6]
