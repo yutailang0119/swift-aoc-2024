@@ -38,6 +38,21 @@ extension Puzzle.Table {
     lines[safe: position.y]?[safe: position.x]
   }
 
+  func elements(from start: Puzzle.Position, to direction: Puzzle.Direction) -> [Element] {
+    var elements: [Element] = []
+    var cursor: Puzzle.Position? = start
+    while let c = cursor {
+      let next = c.moved(to: direction)
+      if let element = element(at: next) {
+        elements.append(element)
+        cursor = next
+      } else {
+        cursor = nil
+      }
+    }
+    return elements
+  }
+
   func positions(for element: Element) -> [Puzzle.Position] {
     var positions: [Puzzle.Position] = []
     for line in lines.enumerated() {
