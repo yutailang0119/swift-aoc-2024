@@ -33,24 +33,25 @@ private extension Day15 {
   }
 
   func attempt(move: Move, table: Puzzle.Table<Day15.Tile>) -> Puzzle.Table<Day15.Tile> {
-    struct Cursor {
+    struct Cell {
       var tile: Tile
       var position: Puzzle.Position
     }
+
     let direction = Puzzle.Direction(move: move)
     let robot = table.positions(for: .robot).first!
 
-    var cursor: Cursor? = Cursor(tile: .robot, position: robot)
-    var moved: [Cursor] = []
+    var cursor: Cell? = Cell(tile: .robot, position: robot)
+    var moved: [Cell] = []
     while let c = cursor {
       let position = c.position.moved(to: direction)
       let tile = table.element(at: position)!
       switch tile {
       case .box:
-        moved.append(Cursor(tile: c.tile, position: position))
-        cursor = Cursor(tile: tile, position: position)
+        moved.append(Cell(tile: c.tile, position: position))
+        cursor = Cell(tile: tile, position: position)
       case .empty:
-        moved.append(Cursor(tile: c.tile, position: position))
+        moved.append(Cell(tile: c.tile, position: position))
         cursor = nil
       case .wall:
         moved.removeAll()
@@ -61,7 +62,7 @@ private extension Day15 {
     }
 
     if !moved.isEmpty {
-      moved.append(Cursor(tile: .empty, position: robot))
+      moved.append(Cell(tile: .empty, position: robot))
     }
 
     var t = table
@@ -93,6 +94,11 @@ private extension Day15 {
     var description: String {
       String(rawValue)
     }
+  }
+
+  struct Cell {
+    var tile: Tile
+    var position: Puzzle.Position
   }
 }
 
