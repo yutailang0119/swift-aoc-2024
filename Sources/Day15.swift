@@ -150,6 +150,18 @@ struct Day15: AdventDay {
         let p = target.position.moved(to: direction)
         tbl.lines[p.y][p.x] = target.tile
       }
+      for (y, line) in tbl.lines.enumerated() {
+        for (x, tile) in line.enumerated() {
+          switch tile {
+          case .boxLeft:
+            tbl.lines[y][x + 1] = .boxRight
+          case .boxRight:
+            tbl.lines[y][x - 1] = .boxLeft
+          default:
+            break
+          }
+        }
+      }
       return tbl
     }
 
