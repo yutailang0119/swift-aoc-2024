@@ -44,14 +44,14 @@ private extension Day15 {
     var cursor: Cell? = Cell(tile: .robot, position: robot)
     var moved: [Cell] = []
     while let c = cursor {
-      let position = c.position.moved(to: direction)
-      let tile = table.element(at: position)!
-      switch tile {
+      let nextPosition = c.position.moved(to: direction)
+      let nextTile = table.element(at: nextPosition)!
+      switch nextTile {
       case .box:
-        moved.append(Cell(tile: c.tile, position: position))
-        cursor = Cell(tile: tile, position: position)
+        moved.append(Cell(tile: c.tile, position: nextPosition))
+        cursor = Cell(tile: .box, position: nextPosition)
       case .empty:
-        moved.append(Cell(tile: c.tile, position: position))
+        moved.append(Cell(tile: c.tile, position: nextPosition))
         cursor = nil
       case .wall:
         moved.removeAll()
