@@ -95,11 +95,6 @@ private extension Day15 {
       String(rawValue)
     }
   }
-
-  struct Cell {
-    var tile: Tile
-    var position: Puzzle.Position
-  }
 }
 
 private extension Puzzle.Direction {
