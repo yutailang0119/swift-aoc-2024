@@ -7,3 +7,11 @@ struct Day16: AdventDay {
     0
   }
 }
+
+private extension Day16 {
+  var entities: [[Character]] {
+    data.split(separator: "\n").map {
+      Array($0)
+    }
+  }
+}
