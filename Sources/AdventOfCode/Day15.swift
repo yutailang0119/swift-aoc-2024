@@ -1,16 +1,17 @@
 import Foundation
+import ToolKit
 
 struct Day15: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    func attempt(move: Move, table: Puzzle.Table<Day15.Tile>) -> Puzzle.Table<Day15.Tile> {
+    func attempt(move: Move, table: Table<Day15.Tile>) -> Table<Day15.Tile> {
       struct Cell {
         var tile: Tile
-        var position: Puzzle.Position
+        var position: Position
       }
 
-      let direction = Puzzle.Direction(move: move)
+      let direction = Direction(move: move)
       let robot = table.positions(for: .robot).first!
 
       var cursor: Cell? = Cell(tile: .robot, position: robot)
@@ -57,17 +58,17 @@ struct Day15: AdventDay {
   }
 
   func part2() async throws -> Any {
-    func attempt(move: Move, table: Puzzle.Table<Day15.WideTile>) -> Puzzle.Table<Day15.WideTile> {
+    func attempt(move: Move, table: Table<Day15.WideTile>) -> Table<Day15.WideTile> {
       struct Cell {
         var tile: WideTile
-        var position: Puzzle.Position
+        var position: Position
 
         var description: String {
           "\(tile.description): (x: \(position.x), y: \(position.y))"
         }
       }
 
-      let direction = Puzzle.Direction(move: move)
+      let direction = Direction(move: move)
       let robot = table.positions(for: .robot).first!
 
       var targets: [[Cell]] = [[Cell(tile: .robot, position: robot)]]
@@ -182,14 +183,14 @@ private extension Day15 {
     data.split(separator: "\n\n").map(String.init)
   }
 
-  var tiles: Puzzle.Table<Tile> {
+  var tiles: Table<Tile> {
     let lines = entities[0].split(separator: "\n").map { entity in
       entity.compactMap(Day15.Tile.init(rawValue:))
     }
-    return Puzzle.Table(lines: lines)
+    return Table(lines)
   }
 
-  var wideTiles: Puzzle.Table<WideTile> {
+  var wideTiles: Table<WideTile> {
     let lines = entities[0].split(separator: "\n")
       .map { entity in entity.compactMap(Day15.Tile.init(rawValue:)) }
       .map { line in
@@ -202,7 +203,7 @@ private extension Day15 {
           }
         }
       }
-    return Puzzle.Table(lines: lines)
+    return Table(lines)
   }
 
   var moves: [Move] {
@@ -246,7 +247,7 @@ private extension Day15 {
   }
 }
 
-private extension Puzzle.Direction {
+private extension Direction {
   init(move: Day15.Move) {
     switch move {
     case .up: self = .top

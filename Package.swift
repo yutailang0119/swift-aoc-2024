@@ -29,9 +29,13 @@ let package = Package(
     ),
   ],
   targets: [
+    .target(
+      name: "ToolKit",
+      dependencies: dependencies
+    ),
     .executableTarget(
       name: "AdventOfCode",
-      dependencies: dependencies,
+      dependencies: ["ToolKit"] + dependencies,
       resources: [.copy("Data")]
     ),
     .testTarget(

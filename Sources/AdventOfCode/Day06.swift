@@ -1,18 +1,19 @@
 import Foundation
+import ToolKit
 
 struct Day06: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
     let grids = entities.map { $0.compactMap(Grid.init) }
-    let table = Puzzle.Table<Grid>(lines: grids)
+    let table = Table<Grid>(grids)
     let route = self.route(in: table)
     return Set(route).count
   }
 
   func part2() async throws -> Any {
     let grids = entities.map { $0.compactMap(Grid.init) }
-    let table = Puzzle.Table<Grid>(lines: grids)
+    let table = Table<Grid>(grids)
     var route = Set(self.route(in: table))
 
     guard let `guard` = table.positions(for: .guard).first else {
@@ -26,9 +27,9 @@ struct Day06: AdventDay {
           var t = table
           t.lines[position.y][position.x] = .obstruction
 
-          var routes: [[Puzzle.Position]] = []
+          var routes: [[Position]] = []
           var cursor = `guard`
-          var direction: Puzzle.Direction = .top
+          var direction: Direction = .top
           var looped: Bool? = nil
           while looped == nil {
             let route = t.route(from: cursor, to: direction, until: .obstruction)
@@ -69,10 +70,10 @@ private extension Day06 {
       .map { $0.map(String.init) }
   }
 
-  func route(in table: Puzzle.Table<Grid>) -> [Puzzle.Position] {
-    var routes: [[Puzzle.Position]] = []
-    var cursor: Puzzle.Position? = table.positions(for: .guard).first
-    var direction: Puzzle.Direction = .top
+  func route(in table: Table<Grid>) -> [Position] {
+    var routes: [[Position]] = []
+    var cursor: Position? = table.positions(for: .guard).first
+    var direction: Direction = .top
     while let c = cursor {
       let route = table.route(from: c, to: direction, until: .obstruction)
       if routes.contains(route) {

@@ -1,10 +1,11 @@
 import Foundation
+import ToolKit
 
 struct Day10: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    let table = Puzzle.Table(lines: entities)
+    let table = Table(entities)
 
     let trailheads = table.positions(for: 0)
       .map { Height(scale: 0, position: $0) }
@@ -21,7 +22,7 @@ struct Day10: AdventDay {
   }
 
   func part2() async throws -> Any {
-    let table = Puzzle.Table(lines: entities)
+    let table = Table(entities)
 
     let trailheads = table.positions(for: 0)
       .map { Height(scale: 0, position: $0) }
@@ -43,7 +44,7 @@ private extension Day10 {
     }
   }
 
-  func steps(from routes: [Height], to directions: [Puzzle.Direction], in table: Puzzle.Table<Int>) -> [[Height]] {
+  func steps(from routes: [Height], to directions: [Direction], in table: Table<Int>) -> [[Height]] {
     guard let last = routes.last,
       last.scale < 9
     else {
@@ -69,7 +70,7 @@ private extension Day10 {
 private extension Day10 {
   struct Height: Hashable, CustomStringConvertible {
     var scale: Int
-    var position: Puzzle.Position
+    var position: Position
 
     var description: String {
       "\(scale): (\(position.x), \(position.y))"

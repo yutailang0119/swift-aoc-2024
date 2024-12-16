@@ -1,13 +1,13 @@
 import Foundation
 
 extension Collection {
-  subscript(safe index: Index) -> Element? {
+  public subscript(safe index: Index) -> Element? {
     return indices.contains(index) ? self[index] : nil
   }
 }
 
 extension Collection where Index == Int {
-  var center: Element? {
+  public var center: Element? {
     switch count {
     case 0:
       return nil
@@ -20,7 +20,7 @@ extension Collection where Index == Int {
 }
 
 extension Collection where Element: RandomAccessCollection, Element.Index == Int {
-  func transposed() -> [[Element.Element]] {
+  public func transposed() -> [[Element.Element]] {
     guard !isEmpty else {
       return []
     }
@@ -32,7 +32,7 @@ extension Collection where Element: RandomAccessCollection, Element.Index == Int
 }
 
 extension Collection where Element: Hashable {
-  var duplicates: [Element] {
+  public var duplicates: [Element] {
     var elements = Set<Element>()
     var duplicates = Set<Element>()
 

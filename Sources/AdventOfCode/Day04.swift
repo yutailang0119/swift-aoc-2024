@@ -1,13 +1,14 @@
 import Foundation
+import ToolKit
 
 struct Day04: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
     let lines = entities.map { $0.compactMap(Word.init(rawValue:)) }
-    let table = Puzzle.Table<Word>(lines: lines)
+    let table = Table<Word>(lines)
 
-    let directions: [Puzzle.Direction] = [
+    let directions: [Direction] = [
       .top,
       .bottom,
       .left,
@@ -42,7 +43,7 @@ struct Day04: AdventDay {
 
   func part2() async throws -> Any {
     let lines = entities.map { $0.compactMap(Word.init(rawValue:)) }
-    let table = Puzzle.Table<Word>(lines: lines)
+    let table = Table<Word>(lines)
 
     var count = 0
     for a in table.positions(for: .a) {
@@ -93,6 +94,6 @@ private extension Day04 {
 
   struct Cursor {
     var word: Word
-    var position: Puzzle.Position
+    var position: Position
   }
 }
