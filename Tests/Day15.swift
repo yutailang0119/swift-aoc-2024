@@ -51,4 +51,9 @@ struct Day15Tests {
       try await #expect(String(describing: challenge.part1()) == "10092")
     }
   }
+
+  @Test func testPart2() async throws {
+    let challenge = Day15(data: testData)
+    try await #expect(String(describing: challenge.part2()) == "9021")
+  }
 }
