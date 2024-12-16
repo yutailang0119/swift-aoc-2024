@@ -69,6 +69,22 @@ private extension Day15 {
     return Puzzle.Table(lines: lines)
   }
 
+  var wideTiles: Puzzle.Table<WideTile> {
+    let lines = entities[0].split(separator: "\n")
+      .map { entity in entity.compactMap(Day15.Tile.init(rawValue:)) }
+      .map { line in
+        line.reduce(into: [WideTile]()) {
+          switch $1 {
+          case .robot: $0.append(contentsOf: [.robot, .empty])
+          case .box: $0.append(contentsOf: [.boxLeft, .boxRight])
+          case .wall: $0.append(contentsOf: [.wall, .wall])
+          case .empty: $0.append(contentsOf: [.empty, .empty])
+          }
+        }
+      }
+    return Puzzle.Table(lines: lines)
+  }
+
   var moves: [Move] {
     entities[1].compactMap(Move.init(rawValue:))
   }
