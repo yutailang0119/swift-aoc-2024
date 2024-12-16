@@ -76,6 +76,18 @@ extension Puzzle.Table {
   }
 }
 
+extension Puzzle.Table {
+  mutating func swap(_ i: Puzzle.Position, _ j: Puzzle.Position) {
+    guard let ie = element(at: i),
+      let je = element(at: j)
+    else {
+      return
+    }
+    lines[i.y][i.x] = je
+    lines[j.y][j.x] = ie
+  }
+}
+
 extension Puzzle.Table where Element: Equatable {
   func route(
     from start: Puzzle.Position,
