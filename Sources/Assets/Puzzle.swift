@@ -134,6 +134,17 @@ extension Puzzle.Direction {
       fatalError()
     }
   }
+
+  var reverse: Self {
+    switch self {
+    case .top: return .bottom
+    case .bottom: return .top
+    case .left: return .right
+    case .right: return .left
+    default:
+      fatalError()
+    }
+  }
 }
 
 extension Puzzle.Direction: CustomStringConvertible {
