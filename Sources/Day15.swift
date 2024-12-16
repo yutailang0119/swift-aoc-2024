@@ -35,37 +35,38 @@ private extension Day15 {
   func attempt(move: Move, table: Puzzle.Table<Day15.Tile>) -> Puzzle.Table<Day15.Tile> {
     struct Cursor {
       var tile: Tile
-      var positon: Puzzle.Position
+      var position: Puzzle.Position
     }
     let direction = Puzzle.Direction(move: move)
     let robot = table.positions(for: .robot).first!
 
-    var cursor: Cursor? = Cursor(tile: .robot, positon: robot)
+    var cursor: Cursor? = Cursor(tile: .robot, position: robot)
     var moved: [Cursor] = []
     while let c = cursor {
-      let p = c.positon.moved(to: direction)
-      switch table.element(at: p) {
+      let position = c.position.moved(to: direction)
+      let tile = table.element(at: position)!
+      switch tile {
       case .box:
-        moved.append(Cursor(tile: c.tile, positon: p))
-        cursor = Cursor(tile: .box, positon: p)
+        moved.append(Cursor(tile: c.tile, position: position))
+        cursor = Cursor(tile: tile, position: position)
       case .empty:
-        moved.append(Cursor(tile: c.tile, positon: p))
+        moved.append(Cursor(tile: c.tile, position: position))
         cursor = nil
       case .wall:
         moved.removeAll()
         cursor = nil
-      case .robot, nil:
+      case .robot:
         cursor = nil
       }
     }
 
     if !moved.isEmpty {
-      moved.append(Cursor(tile: .empty, positon: robot))
+      moved.append(Cursor(tile: .empty, position: robot))
     }
 
     var t = table
     for move in moved {
-      t.lines[move.positon.y][move.positon.x] = move.tile
+      t.lines[move.position.y][move.position.x] = move.tile
     }
     return t
   }
