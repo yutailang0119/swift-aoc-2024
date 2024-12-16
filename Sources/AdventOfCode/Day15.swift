@@ -187,7 +187,7 @@ private extension Day15 {
     let lines = entities[0].split(separator: "\n").map { entity in
       entity.compactMap(Day15.Tile.init(rawValue:))
     }
-    return Table(lines: lines)
+    return Table(lines)
   }
 
   var wideTiles: Table<WideTile> {
@@ -203,7 +203,7 @@ private extension Day15 {
           }
         }
       }
-    return Table(lines: lines)
+    return Table(lines)
   }
 
   var moves: [Move] {

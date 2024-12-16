@@ -5,7 +5,7 @@ struct Day10: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    let table = Table(lines: entities)
+    let table = Table(entities)
 
     let trailheads = table.positions(for: 0)
       .map { Height(scale: 0, position: $0) }
@@ -22,7 +22,7 @@ struct Day10: AdventDay {
   }
 
   func part2() async throws -> Any {
-    let table = Table(lines: entities)
+    let table = Table(entities)
 
     let trailheads = table.positions(for: 0)
       .map { Height(scale: 0, position: $0) }

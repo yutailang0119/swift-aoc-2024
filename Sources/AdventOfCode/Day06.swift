@@ -6,14 +6,14 @@ struct Day06: AdventDay {
 
   func part1() async throws -> Any {
     let grids = entities.map { $0.compactMap(Grid.init) }
-    let table = Table<Grid>(lines: grids)
+    let table = Table<Grid>(grids)
     let route = self.route(in: table)
     return Set(route).count
   }
 
   func part2() async throws -> Any {
     let grids = entities.map { $0.compactMap(Grid.init) }
-    let table = Table<Grid>(lines: grids)
+    let table = Table<Grid>(grids)
     var route = Set(self.route(in: table))
 
     guard let `guard` = table.positions(for: .guard).first else {

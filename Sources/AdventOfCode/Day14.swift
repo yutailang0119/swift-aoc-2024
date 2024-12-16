@@ -63,7 +63,7 @@ struct Day14: AdventDay {
         let lines = space.table(for: robots).lines.map { line in
           line.map { $0 == 0 ? "." : "#" }
         }
-        let t = Table<String>(lines: lines)
+        let t = Table<String>(lines)
         print("\(second): \(Array(repeating: "=", count: space.wide).joined())")
         print(t)
         print("\n")
@@ -100,7 +100,7 @@ private extension Day14 {
 
 private extension Day14.Space {
   func table(for robots: [Day14.Robot]) -> Table<Int> {
-    var table = Table<Int>(lines: Array(repeating: Array(repeating: 0, count: wide), count: tall))
+    var table = Table<Int>(Array(repeating: Array(repeating: 0, count: wide), count: tall))
     for robot in robots {
       table.lines[robot.position.y][robot.position.x] += 1
     }

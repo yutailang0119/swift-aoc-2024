@@ -6,7 +6,7 @@ struct Day04: AdventDay {
 
   func part1() async throws -> Any {
     let lines = entities.map { $0.compactMap(Word.init(rawValue:)) }
-    let table = Table<Word>(lines: lines)
+    let table = Table<Word>(lines)
 
     let directions: [Direction] = [
       .top,
@@ -43,7 +43,7 @@ struct Day04: AdventDay {
 
   func part2() async throws -> Any {
     let lines = entities.map { $0.compactMap(Word.init(rawValue:)) }
-    let table = Table<Word>(lines: lines)
+    let table = Table<Word>(lines)
 
     var count = 0
     for a in table.positions(for: .a) {

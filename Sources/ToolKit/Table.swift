@@ -3,7 +3,7 @@ import Foundation
 public struct Table<Element>: Sendable where Element: Sendable, Element: Equatable {
   public var lines: [[Element]]
 
-  public init(lines: [[Element]]) {
+  public init(_ lines: [[Element]]) {
     self.lines = lines
   }
 }

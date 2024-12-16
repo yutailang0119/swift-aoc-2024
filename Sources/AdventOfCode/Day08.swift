@@ -7,7 +7,7 @@ struct Day08: AdventDay {
   func part1() async throws -> Any {
     let entities = self.entities
     let frequencies = Set(entities.joined()).filter { $0 != "." }
-    let table = Table(lines: entities)
+    let table = Table(entities)
 
     var antinodes: Set<Position> = []
     for frequency in frequencies {
@@ -36,7 +36,7 @@ struct Day08: AdventDay {
   func part2() async throws -> Any {
     let entities = self.entities
     let frequencies = Set(entities.joined()).filter { $0 != "." }
-    let table = Table(lines: entities)
+    let table = Table(entities)
 
     var antinodes: Set<Position> = []
     for frequency in frequencies {

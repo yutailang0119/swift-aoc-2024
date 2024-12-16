@@ -5,7 +5,8 @@ struct Day12: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    let table = Table<Plant>(lines: Table(lines: entities).positions.map { $0.map(Plant.init) })
+    let t = Table(entities)
+    let table = Table<Plant>(t.positions.map { $0.map(Plant.init) })
 
     return regions(in: table).reduce(into: 0) {
       $0 += perimeters(for: $1, in: table) * $1.count
@@ -13,7 +14,8 @@ struct Day12: AdventDay {
   }
 
   func part2() async throws -> Any {
-    let table = Table<Plant>(lines: Table(lines: entities).positions.map { $0.map(Plant.init) })
+    let t = Table(entities)
+    let table = Table<Plant>(t.positions.map { $0.map(Plant.init) })
 
     return regions(in: table).reduce(into: 0) {
       $0 += sides(for: $1, in: table) * $1.count
