@@ -1,4 +1,4 @@
-public struct Direction: OptionSet, Sendable {
+public struct Direction: OptionSet, Hashable, Sendable {
   public let rawValue: Int
 
   public init(rawValue: Int) {
