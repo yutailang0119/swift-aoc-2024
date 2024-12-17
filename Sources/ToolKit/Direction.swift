@@ -23,7 +23,7 @@ public extension Direction {
     }
   }
 
-  var antiClockwise: Self {
+  var counterClockwise: Self {
     switch self {
     case .top: return .left
     case .left: return .bottom

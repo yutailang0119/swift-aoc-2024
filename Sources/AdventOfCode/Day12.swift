@@ -138,7 +138,7 @@ private extension Day12 {
         let next = table.element(at: r.position.moved(to: direction))
         if next.flatMap({ !region.contains($0) }) ?? true {
           do {
-            let moved = r.position.moved(to: direction.antiClockwise)
+            let moved = r.position.moved(to: direction.counterClockwise)
             if let rotated = table.element(at: moved),
               region.contains(rotated)
             {
