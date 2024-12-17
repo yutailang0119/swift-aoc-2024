@@ -6,7 +6,22 @@ struct Day16: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    0
+    let marks = self.entities.map {
+      $0.compactMap(Mark.init(rawValue:))
+    }
+    let positions = marks.enumerated()
+      .flatMap { y, row in
+        row.enumerated()
+          .map { x, mark in (Position(x: x, y: y), mark) }
+      }
+    let maze: [Position: Mark] = Dictionary(positions, uniquingKeysWith: { $1 })
+
+    let start = maze.first { $0.value == .start }!.key
+    let end = maze.first { $0.value == .end }!.key
+
+    let paths = Dijkstra.paths(from: start, to: end, in: maze)
+
+    return paths.map(\.score).min()!
   }
 }
 
