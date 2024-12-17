@@ -23,6 +23,33 @@ struct Day16: AdventDay {
 
     return paths.map(\.score).min()!
   }
+
+  func part2() async throws -> Any {
+    let marks = self.entities.map {
+      $0.compactMap(Mark.init(rawValue:))
+    }
+    let positions = marks.enumerated()
+      .flatMap { y, row in
+        row.enumerated()
+          .map { x, mark in (Position(x: x, y: y), mark) }
+      }
+    let maze: [Position: Mark] = Dictionary(positions, uniquingKeysWith: { $1 })
+
+    let start = maze.first { $0.value == .start }!.key
+    let end = maze.first { $0.value == .end }!.key
+
+    let paths = Dijkstra.paths(from: start, to: end, in: maze)
+
+    let min = paths.map(\.score).min()!
+    let pths = paths.filter({ $0.score == min })
+
+    var spots: Set<Position> = []
+    for path in pths {
+      spots.formUnion(path.path)
+    }
+
+    return spots.count
+  }
 }
 
 private extension Day16 {
