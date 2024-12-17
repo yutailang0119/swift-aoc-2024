@@ -1,4 +1,6 @@
+import Collections
 import Foundation
+import ToolKit
 
 struct Day16: AdventDay {
   var data: String
