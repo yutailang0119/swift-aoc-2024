@@ -26,6 +26,21 @@ private extension Day17 {
     var registerB: Int
     var registerC: Int
     var program: [Operand]
+
+    func combo(with operand: Operand) -> Int {
+      switch operand {
+      case .adv, .bxl, .bst, .jnz:
+        return operand.rawValue
+      case .bxc:
+        return registerA
+      case .out:
+        return registerB
+      case .bdv:
+        return registerC
+      case .cdv:
+        return 0
+      }
+    }
   }
 }
 
