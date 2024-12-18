@@ -15,13 +15,13 @@ struct Day17: AdventDay {
   func part2() async throws -> Any {
     struct Copy {
       var registerA: Int
-      var operand: Computer.Operand
+      var count: Int
     }
     guard let computer = data.computer else {
       return 0
     }
 
-    var copies: [Copy] = [Copy(registerA: 0, operand: .bxl)]
+    var copies: [Copy] = [Copy(registerA: 0, count: 1)]
     while !copies.isEmpty {
       let copy = copies.removeFirst()
       for operand in Computer.Operand.allCases {
@@ -33,11 +33,11 @@ struct Day17: AdventDay {
           program: computer.program
         )
         let outputs = run(to: cmptr)
-        if outputs == computer.program.suffix(copy.operand.rawValue).map(\.rawValue) {
-          if copy.operand.rawValue == computer.program.count {
+        if outputs == computer.program.suffix(copy.count).map(\.rawValue) {
+          if copy.count == computer.program.count {
             return next
           }
-          copies.append(Copy(registerA: next, operand: copy.operand.next))
+          copies.append(Copy(registerA: next, count: copy.count + 1))
         }
       }
     }
