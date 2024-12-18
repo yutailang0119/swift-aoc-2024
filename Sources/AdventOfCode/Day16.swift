@@ -139,7 +139,10 @@ private extension Day16.Dijkstra {
         {
           let increase = node.context.direction == next.direction ? 1 : 1001
           nds.append(
-            Node(context: next, path: Path(positions: node.path.positions.union([next.position]), weight: node.path.weight + increase))
+            Node(
+              context: next,
+              path: Path(positions: node.path.positions.union([next.position]), weight: node.path.weight + increase)
+            )
           )
         }
       }
