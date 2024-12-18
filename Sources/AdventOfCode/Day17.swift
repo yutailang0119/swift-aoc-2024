@@ -125,6 +125,7 @@ private extension String {
       registerA: registerA,
       registerB: registerB,
       registerC: registerC,
-      program: program.compactMap(Day17.Computer.Operand.init(rawValue:)))
+      program: program.compactMap(Day17.Computer.Operand.init(rawValue:))
+    )
   }
 }
