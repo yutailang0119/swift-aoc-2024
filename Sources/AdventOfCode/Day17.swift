@@ -14,7 +14,7 @@ struct Day17: AdventDay {
   }
 
   func part2() async throws -> Any {
-    struct Copy {
+    struct Variant {
       var registerA: Int
       var count: Int
     }
@@ -22,10 +22,10 @@ struct Day17: AdventDay {
       return 0
     }
 
-    var copies: Deque<Copy> = [Copy(registerA: 0, count: 1)]
-    while let copy = copies.popFirst() {
+    var variants: Deque<Variant> = [Variant(registerA: 0, count: 1)]
+    while let variant = variants.popFirst() {
       for operand in Computer.Operand.allCases {
-        let next = copy.registerA << 3 + operand.rawValue
+        let next = variant.registerA << 3 + operand.rawValue
         let cmptr = Computer(
           registerA: next,
           registerB: 0,
@@ -33,11 +33,11 @@ struct Day17: AdventDay {
           program: computer.program
         )
         let outputs = run(to: cmptr)
-        if outputs == computer.program.suffix(copy.count).map(\.rawValue) {
-          if copy.count == computer.program.count {
+        if outputs == computer.program.suffix(variant.count).map(\.rawValue) {
+          if variant.count == computer.program.count {
             return next
           }
-          copies.append(Copy(registerA: next, count: copy.count + 1))
+          variants.append(Variant(registerA: next, count: variant.count + 1))
         }
       }
     }
