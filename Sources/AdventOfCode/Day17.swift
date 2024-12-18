@@ -1,4 +1,5 @@
 import Foundation
+import RegexBuilder
 
 struct Day17: AdventDay {
   var data: String
@@ -25,5 +26,48 @@ private extension Day17 {
     var registerB: Int
     var registerC: Int
     var program: [Operand]
+  }
+}
+
+private extension String {
+  var computer: Day17.Computer? {
+    var registers: [String: Int] {
+      let regex = Regex {
+        Capture {
+          One("Register ")
+          OneOrMore(.word)
+        }
+        One(": ")
+        Capture {
+          OneOrMore(.digit)
+        }
+      }
+      var dictionary: [String: Int] = [:]
+      for match in matches(of: regex) {
+        let output = match.output
+        dictionary[String(output.1)] = Int(output.2)!
+      }
+      return dictionary
+    }
+    var program: [Int] {
+      let line = split(separator: "\n\n")[1]
+      let nums = line.trimmingPrefix("Program: ")
+        .trimmingCharacters(in: .newlines)
+        .split(separator: ",")
+      return nums.map { Int(String($0))! }
+    }
+
+    guard let registerA = registers["Register A"],
+      let registerB = registers["Register B"],
+      let registerC = registers["Register C"]
+    else {
+      return nil
+    }
+
+    return Day17.Computer(
+      registerA: registerA,
+      registerB: registerB,
+      registerC: registerC,
+      program: program.compactMap(Day17.Computer.Operand.init(rawValue:)))
   }
 }
