@@ -62,6 +62,19 @@ private extension Day17 {
       case out
       case bdv
       case cdv
+
+      var next: Self {
+        switch self {
+        case .adv: return .bxl
+        case .bxl: return .bst
+        case .bst: return .jnz
+        case .jnz: return .bxc
+        case .bxc: return .out
+        case .out: return .bdv
+        case .bdv: return .cdv
+        case .cdv: fatalError()
+        }
+      }
     }
 
     var registerA: Int
