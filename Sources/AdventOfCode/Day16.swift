@@ -137,9 +137,9 @@ private extension Day16.Dijkstra {
         if !node.path.positions.contains(next.position),
           dictionary[next.position]! != .wall
         {
-          let add = node.context.direction == next.direction ? 1 : 1001
+          let increase = node.context.direction == next.direction ? 1 : 1001
           nds.append(
-            Node(context: next, path: Path(positions: node.path.positions.union([next.position]), weight: node.path.weight + add))
+            Node(context: next, path: Path(positions: node.path.positions.union([next.position]), weight: node.path.weight + increase))
           )
         }
       }
