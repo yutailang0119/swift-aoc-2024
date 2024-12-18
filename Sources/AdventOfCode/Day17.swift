@@ -5,7 +5,11 @@ struct Day17: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    0
+    guard let computer = data.computer else {
+      return 0
+    }
+    let outputs = run(to: computer)
+    return outputs.map(String.init).joined(separator: ",")
   }
 }
 
