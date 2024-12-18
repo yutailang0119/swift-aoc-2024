@@ -1,3 +1,4 @@
+import Collections
 import Foundation
 import RegexBuilder
 
@@ -21,9 +22,8 @@ struct Day17: AdventDay {
       return 0
     }
 
-    var copies: [Copy] = [Copy(registerA: 0, count: 1)]
-    while !copies.isEmpty {
-      let copy = copies.removeFirst()
+    var copies: Deque<Copy> = [Copy(registerA: 0, count: 1)]
+    while let copy = copies.popFirst() {
       for operand in Computer.Operand.allCases {
         let next = copy.registerA << 3 + operand.rawValue
         let cmptr = Computer(
