@@ -8,3 +8,22 @@ struct Day17: AdventDay {
   }
 }
 
+private extension Day17 {
+  struct Computer {
+    enum Operand: Int {
+      case adv = 0
+      case bxl
+      case bst
+      case jnz
+      case bxc
+      case out
+      case bdv
+      case cdv
+    }
+
+    var registerA: Int
+    var registerB: Int
+    var registerC: Int
+    var program: [Operand]
+  }
+}
