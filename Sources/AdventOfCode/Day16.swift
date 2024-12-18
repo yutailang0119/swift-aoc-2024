@@ -21,7 +21,7 @@ struct Day16: AdventDay {
 
     let paths = Dijkstra.paths(from: start, to: end, in: maze)
 
-    return paths.map(\.score).min()!
+    return paths.map(\.weight).min()!
   }
 
   func part2() async throws -> Any {
@@ -40,12 +40,12 @@ struct Day16: AdventDay {
 
     let paths = Dijkstra.paths(from: start, to: end, in: maze)
 
-    let min = paths.map(\.score).min()!
-    let pths = paths.filter({ $0.score == min })
+    let min = paths.map(\.weight).min()!
+    let pths = paths.filter({ $0.weight == min })
 
     var spots: Set<Position> = []
     for path in pths {
-      spots.formUnion(path.path)
+      spots.formUnion(path.positions)
     }
 
     return spots.count
@@ -76,6 +76,11 @@ private extension Day16 {
 }
 
 private extension Day16.Dijkstra {
+  struct Path: Hashable {
+    var positions: Set<Position>
+    var weight: Int
+  }
+
   struct Node: Comparable {
     struct Context: Hashable {
       var position: Position
@@ -97,21 +102,15 @@ private extension Day16.Dijkstra {
     }
 
     var context: Context
-    var weight: Int
-    var histories: Set<Position>
+    var path: Path
 
     var nexts: [Context] {
       [context.forward, context.clockwise, context.counterClockwise]
     }
 
     static func < (lhs: Node, rhs: Node) -> Bool {
-      lhs.weight < rhs.weight
+      lhs.path.weight < rhs.path.weight
     }
-  }
-
-  struct Path {
-    var path: Set<Position>
-    var score: Int
   }
 
   static func paths(
@@ -124,23 +123,23 @@ private extension Day16.Dijkstra {
 
     var heap = Heap<Node>()
     heap.insert(
-      Node(context: Node.Context(position: start, direction: .right), weight: 0, histories: [start])
+      Node(context: Node.Context(position: start, direction: .right), path: Path(positions: [start], weight: 0))
     )
 
     while let node = heap.popMin() {
       if node.context.position == end {
-        paths.append(Path(path: node.histories, score: node.weight))
+        paths.append(node.path)
         continue
       }
 
       var nds: [Node] = []
       for next in node.nexts {
-        if !node.histories.contains(next.position),
+        if !node.path.positions.contains(next.position),
           dictionary[next.position]! != .wall
         {
-          let add = node.context.direction == next.direction ? 1 : 1001
+          let increase = node.context.direction == next.direction ? 1 : 1001
           nds.append(
-            Node(context: next, weight: node.weight + add, histories: node.histories.union([next.position]))
+            Node(context: next, path: Path(positions: node.path.positions.union([next.position]), weight: node.path.weight + increase))
           )
         }
       }
@@ -148,8 +147,8 @@ private extension Day16.Dijkstra {
       for nd in nds {
         let previous = scores[nd.context]
 
-        if previous == nil || nd.weight <= previous! {
-          scores[nd.context] = nd.weight
+        if previous == nil || nd.path.weight <= previous! {
+          scores[nd.context] = nd.path.weight
 
           heap.insert(nd)
         }
