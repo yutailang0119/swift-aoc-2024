@@ -10,6 +10,44 @@ struct Day17: AdventDay {
 }
 
 private extension Day17 {
+  func run(to computer: Computer) -> [Int] {
+    var computer = computer
+    var outputs: [Int] = []
+    var instructionPointer = 0
+
+    while instructionPointer < computer.program.count {
+      let opcode = computer.program[instructionPointer]
+      let operand = computer.program[instructionPointer + 1]
+      var next = instructionPointer + 2
+
+      switch opcode {
+      case .adv:
+        computer.registerA /= Int(pow(2.0, Double(computer.combo(with: operand))))
+      case .bxl:
+        computer.registerB ^= operand.rawValue
+      case .bst:
+        computer.registerB = computer.combo(with: operand) % 8
+      case .jnz:
+        if computer.registerA != 0 {
+          next = operand.rawValue
+        }
+      case .bxc:
+        computer.registerB ^= computer.registerC
+      case .out:
+        outputs.append(computer.combo(with: operand) % 8)
+      case .bdv:
+        computer.registerB = computer.registerA / Int(pow(2.0, Double(computer.combo(with: operand))))
+      case .cdv:
+        computer.registerC = computer.registerA / Int(pow(2.0, Double(computer.combo(with: operand))))
+      }
+      instructionPointer = next
+    }
+
+    return outputs
+  }
+}
+
+private extension Day17 {
   struct Computer {
     enum Operand: Int {
       case adv = 0
