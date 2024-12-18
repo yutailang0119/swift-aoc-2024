@@ -98,7 +98,7 @@ private extension Day16.Dijkstra {
 
     var context: Context
     var weight: Int
-    var histories: Set<Position>
+    var path: Set<Position>
 
     var nexts: [Context] {
       [context.forward, context.clockwise, context.counterClockwise]
@@ -124,23 +124,23 @@ private extension Day16.Dijkstra {
 
     var heap = Heap<Node>()
     heap.insert(
-      Node(context: Node.Context(position: start, direction: .right), weight: 0, histories: [start])
+      Node(context: Node.Context(position: start, direction: .right), weight: 0, path: [start])
     )
 
     while let node = heap.popMin() {
       if node.context.position == end {
-        paths.append(Path(path: node.histories, score: node.weight))
+        paths.append(Path(path: node.path, score: node.weight))
         continue
       }
 
       var nds: [Node] = []
       for next in node.nexts {
-        if !node.histories.contains(next.position),
+        if !node.path.contains(next.position),
           dictionary[next.position]! != .wall
         {
           let add = node.context.direction == next.direction ? 1 : 1001
           nds.append(
-            Node(context: next, weight: node.weight + add, histories: node.histories.union([next.position]))
+            Node(context: next, weight: node.weight + add, path: node.path.union([next.position]))
           )
         }
       }
