@@ -14,3 +14,10 @@ private extension Day18 {
       .map(String.init)
   }
 }
+
+private extension Day18 {
+  struct Byte {
+    var x: Int
+    var y: Int
+  }
+}
