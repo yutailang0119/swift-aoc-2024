@@ -76,6 +76,11 @@ private extension Day16 {
 }
 
 private extension Day16.Dijkstra {
+  struct Path {
+    var positions: Set<Position>
+    var weight: Int
+  }
+
   struct Node: Comparable {
     struct Context: Hashable {
       var position: Position
@@ -107,11 +112,6 @@ private extension Day16.Dijkstra {
     static func < (lhs: Node, rhs: Node) -> Bool {
       lhs.weight < rhs.weight
     }
-  }
-
-  struct Path {
-    var positions: Set<Position>
-    var weight: Int
   }
 
   static func paths(
