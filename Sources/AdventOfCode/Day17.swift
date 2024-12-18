@@ -11,6 +11,39 @@ struct Day17: AdventDay {
     let outputs = run(to: computer)
     return outputs.map(String.init).joined(separator: ",")
   }
+
+  func part2() async throws -> Any {
+    struct Copy {
+      var registerA: Int
+      var operand: Computer.Operand
+    }
+    guard let computer = data.computer else {
+      return 0
+    }
+
+    var copies: [Copy] = [Copy(registerA: 0, operand: .bxl)]
+    while !copies.isEmpty {
+      let copy = copies.removeFirst()
+      for operand in Computer.Operand.allCases {
+        let next = copy.registerA << 3 + operand.rawValue
+        let cmptr = Computer(
+          registerA: next,
+          registerB: 0,
+          registerC: 0,
+          program: computer.program
+        )
+        let outputs = run(to: cmptr)
+        if outputs == computer.program.suffix(copy.operand.rawValue).map(\.rawValue) {
+          if copy.operand.rawValue == computer.program.count {
+            return next
+          }
+          copies.append(Copy(registerA: next, operand: copy.operand.next))
+        }
+      }
+    }
+
+    return 0
+  }
 }
 
 private extension Day17 {
