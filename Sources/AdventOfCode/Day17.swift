@@ -53,7 +53,7 @@ private extension Day17 {
 
 private extension Day17 {
   struct Computer {
-    enum Operand: Int {
+    enum Operand: Int, CaseIterable {
       case adv = 0
       case bxl
       case bst
