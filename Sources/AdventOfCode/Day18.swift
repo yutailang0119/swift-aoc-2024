@@ -27,4 +27,13 @@ private extension Day18 {
     var x: Int
     var y: Int
   }
+
+  enum Mark: Character, CustomStringConvertible {
+    case wall = "#"
+    case empty = "."
+
+    var description: String {
+      String(rawValue)
+    }
+  }
 }
