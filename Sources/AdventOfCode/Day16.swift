@@ -21,7 +21,7 @@ struct Day16: AdventDay {
 
     let paths = Dijkstra.paths(from: start, to: end, in: maze)
 
-    return paths.map(\.score).min()!
+    return paths.map(\.weight).min()!
   }
 
   func part2() async throws -> Any {
@@ -40,12 +40,12 @@ struct Day16: AdventDay {
 
     let paths = Dijkstra.paths(from: start, to: end, in: maze)
 
-    let min = paths.map(\.score).min()!
-    let pths = paths.filter({ $0.score == min })
+    let min = paths.map(\.weight).min()!
+    let pths = paths.filter({ $0.weight == min })
 
     var spots: Set<Position> = []
     for path in pths {
-      spots.formUnion(path.path)
+      spots.formUnion(path.positions)
     }
 
     return spots.count
@@ -110,8 +110,8 @@ private extension Day16.Dijkstra {
   }
 
   struct Path {
-    var path: Set<Position>
-    var score: Int
+    var positions: Set<Position>
+    var weight: Int
   }
 
   static func paths(
@@ -129,7 +129,7 @@ private extension Day16.Dijkstra {
 
     while let node = heap.popMin() {
       if node.context.position == end {
-        paths.append(Path(path: node.path, score: node.weight))
+        paths.append(Path(positions: node.path, weight: node.weight))
         continue
       }
 
