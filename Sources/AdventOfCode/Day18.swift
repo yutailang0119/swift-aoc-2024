@@ -59,7 +59,8 @@ private extension Day18 {
       return Byte(x: Int(splited[0])!, y: Int(splited[1])!)
     }
     let fallen = bytes.prefix(nanosecond)
-    let positions = Array(repeating: Array(repeating: Mark.empty, count: space.wide + 1), count: space.tall + 1).enumerated()
+    let positions = Array(repeating: Array(repeating: Mark.empty, count: space.wide + 1), count: space.tall + 1)
+      .enumerated()
       .flatMap { y, row in
         row.enumerated()
           .map { x, mark in
@@ -143,7 +144,7 @@ private extension Day18.Dijkstra {
       for next in node.nexts {
         let mark = dictionary[next]
         if !node.path.positions.contains(next),
-           mark.map({ $0 != .wall }) ?? false
+          mark.map({ $0 != .wall }) ?? false
         {
           nds.append(
             Node(
