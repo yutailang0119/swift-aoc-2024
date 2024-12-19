@@ -14,7 +14,7 @@ struct Day18: AdventDay {
 
   func _part1(nanosecond: Int, in space: Space) -> Any {
     let path = path(nanosecond: nanosecond, in: space)
-    return path?.positions.filter { $0 != .zero }.count ?? 0
+    return path?.filter { $0 != .zero }.count ?? 0
   }
 
   func _part2(nanosecond: Int, in space: Space) -> Any {
@@ -27,7 +27,7 @@ struct Day18: AdventDay {
     var path = path(nanosecond: nanosecond, in: space)
     for i in (nanosecond + 1)..<bytes.count {
       let last = bytes.prefix(i).last!
-      if path?.positions.contains(where: { $0.x == last.x && $0.y == last.y }) ?? false {
+      if path?.contains(where: { $0.x == last.x && $0.y == last.y }) ?? false {
         let pth = self.path(nanosecond: i, in: space)
         if pth == nil {
           corrupt = last
@@ -53,7 +53,7 @@ private extension Day18 {
       .map(String.init)
   }
 
-  func path(nanosecond: Int, in space: Space) -> Dijkstra<Mark>.Path? {
+  func path(nanosecond: Int, in space: Space) -> Set<Position>? {
     let bytes = self.entities.map {
       let splited = $0.split(separator: ",")
       return Byte(x: Int(splited[0])!, y: Int(splited[1])!)
