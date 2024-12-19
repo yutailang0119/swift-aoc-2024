@@ -67,7 +67,7 @@ private extension Dijkstra {
       var nds: [Node] = []
       for next in node.nexts(to: directions) {
         if !node.path.positions.contains(next),
-           validate(elements[next])
+          validate(elements[next])
         {
           nds.append(
             Node(

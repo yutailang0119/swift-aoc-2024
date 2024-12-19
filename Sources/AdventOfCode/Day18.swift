@@ -73,7 +73,7 @@ private extension Day18 {
     let start = Position.zero
     let end = Position(x: space.wide, y: space.tall)
 
-    let dijkstra =  Dijkstra(
+    let dijkstra = Dijkstra(
       elements: memories,
       start: start,
       end: end,
