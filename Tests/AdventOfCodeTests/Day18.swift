@@ -36,4 +36,9 @@ struct Day18Tests {
     let challenge = Day18(data: testData)
     #expect(String(describing: challenge._part1(nanosecond: 12, in: Day18.Space(wide: 6, tall: 6))) == "22")
   }
+
+  @Test func testPart2() async throws {
+    let challenge = Day18(data: testData)
+    #expect(String(describing: challenge._part2(nanosecond: 12, in: Day18.Space(wide: 6, tall: 6))) == "6,1")
+  }
 }
