@@ -34,6 +34,6 @@ struct Day18Tests {
 
   @Test func testPart1() async throws {
     let challenge = Day18(data: testData)
-    try await #expect(String(describing: challenge.part1()) == "22")
+    #expect(String(describing: challenge._part1(nanosecond: 12, in: Day18.Space(wide: 6, tall: 6))) == "22")
   }
 }
