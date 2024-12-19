@@ -27,9 +27,9 @@ struct Day18: AdventDay {
     let start = Position.zero
     let end = Position(x: space.wide, y: space.tall)
 
-    let paths = Dijkstra.paths(from: start, to: end, in: memories)
+    let path = Dijkstra.path(from: start, to: end, in: memories)
 
-    return paths.first?.positions.filter { $0 != .zero }.count ?? 0
+    return path?.positions.filter { $0 != .zero }.count ?? 0
   }
 }
 
@@ -103,22 +103,22 @@ private extension Day18.Dijkstra {
     }
   }
 
-  static func paths(
+  static func path(
     from start: Position,
     to end: Position,
     in dictionary: [Position: Day18.Mark]
-  ) -> [Path] {
+  ) -> Path? {
     var weights: [Node.Context: Int] = [Node.Context(position: start, direction: .right): 0]
     var heap = Heap<Node>()
     heap.insert(
       Node(context: Node.Context(position: start, direction: .right), path: Path(positions: [start], weight: 0))
     )
 
-    var paths: [Path] = []
+    var path: Path? = nil
     while let node = heap.popMin() {
       if node.context.position == end {
-        paths.append(node.path)
-        continue
+        path = node.path
+        break
       }
 
       var nds: [Node] = []
@@ -146,6 +146,6 @@ private extension Day18.Dijkstra {
       }
     }
 
-    return paths
+    return path
   }
 }
