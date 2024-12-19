@@ -134,10 +134,9 @@ private extension Day18.Dijkstra {
     )
 
     var path: Path? = nil
-    while let node = heap.popMin() {
+    while let node = heap.popMin(), path == nil {
       if node.position == end {
         path = node.path
-        break
       }
 
       var nds: [Node] = []
