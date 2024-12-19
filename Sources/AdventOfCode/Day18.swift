@@ -12,6 +12,28 @@ struct Day18: AdventDay {
     let path = path(nanosecond: nanosecond, in: space)
     return path?.positions.filter { $0 != .zero }.count ?? 0
   }
+
+  func _part2(nanosecond: Int, in space: Space) -> Any {
+    let bytes = self.entities.map {
+      let splited = $0.split(separator: ",")
+      return Byte(x: Int(splited[0])!, y: Int(splited[1])!)
+    }
+
+    var corrupt: Byte?
+    var path = path(nanosecond: nanosecond, in: space)
+    for i in (nanosecond + 1)..<bytes.count {
+      let last = bytes.prefix(i).last!
+      if path?.positions.contains(where: { $0.x == last.x && $0.y == last.y }) ?? false {
+        let pth = self.path(nanosecond: i, in: space)
+        if pth == nil {
+          corrupt = last
+          break
+        }
+        path = pth
+      }
+    }
+    return corrupt?.description ?? ""
+  }
 }
 
 extension Day18 {
