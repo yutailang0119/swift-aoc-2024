@@ -21,23 +21,36 @@ public struct Dijkstra<Element> {
     self.directions = directions
     self.validate = validate
   }
+
+  public var path: Set<Position>? {
+    _paths(isAll: false).first?.positions
+  }
+
+  public var paths: [Set<Position>] {
+    _paths(isAll: true).map(\.positions)
+  }
 }
 
-extension Dijkstra {
-  public struct Path: Hashable {
-    public var positions: Set<Position>
-    public var weight: Int
+private extension Dijkstra {
+  struct Path: Hashable {
+    var positions: Set<Position>
+    var weight: Int
   }
 
-  public var path: Path? {
-    _paths(isAll: false).first
+  struct Node: Comparable {
+    var position: Position
+    var path: Path
+
+    func nexts(to directions: [Direction]) -> [Position] {
+      directions.map(position.moved(to:))
+    }
+
+    static func < (lhs: Node, rhs: Node) -> Bool {
+      lhs.path.weight < rhs.path.weight
+    }
   }
 
-  public var paths: [Path] {
-    _paths(isAll: true)
-  }
-
-  private func _paths(isAll: Bool) -> [Path] {
+  func _paths(isAll: Bool) -> [Path] {
     var weights: [Position: Int] = [start: 0]
     var heap = Heap<Node>()
     heap.insert(
@@ -76,20 +89,5 @@ extension Dijkstra {
     }
 
     return paths
-  }
-}
-
-private extension Dijkstra {
-  struct Node: Comparable {
-    var position: Position
-    var path: Path
-
-    func nexts(to directions: [Direction]) -> [Position] {
-      directions.map(position.moved(to:))
-    }
-
-    static func < (lhs: Node, rhs: Node) -> Bool {
-      lhs.path.weight < rhs.path.weight
-    }
   }
 }
