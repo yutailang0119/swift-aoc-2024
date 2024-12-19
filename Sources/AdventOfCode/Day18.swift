@@ -8,6 +8,10 @@ struct Day18: AdventDay {
     _part1(nanosecond: 1024, in: Space(wide: 70, tall: 70))
   }
 
+  func part2() async throws -> Any {
+    _part2(nanosecond: 1024, in: Space(wide: 70, tall: 70))
+  }
+
   func _part1(nanosecond: Int, in space: Space) -> Any {
     let path = path(nanosecond: nanosecond, in: space)
     return path?.positions.filter { $0 != .zero }.count ?? 0
