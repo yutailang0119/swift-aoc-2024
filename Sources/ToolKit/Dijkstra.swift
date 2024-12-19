@@ -38,6 +38,11 @@ private extension Dijkstra {
   }
 
   struct Node: Comparable {
+    struct Context: Hashable {
+      var position: Position
+      var direction: Direction
+    }
+
     var position: Position
     var path: Path
 
