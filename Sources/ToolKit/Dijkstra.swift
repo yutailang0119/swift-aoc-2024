@@ -43,11 +43,12 @@ private extension Dijkstra {
       var direction: Direction
     }
 
-    var position: Position
+    var context: Context
     var path: Path
 
-    func nexts(to directions: [Direction]) -> [Position] {
-      directions.map(position.moved(to:))
+    func nexts(to directions: [Direction]) -> [Context] {
+      directions.filter { $0 != context.direction.reverse }
+        .map { Context(position: context.position.moved(to: $0), direction: $0) }
     }
 
     static func < (lhs: Node, rhs: Node) -> Bool {
@@ -59,34 +60,34 @@ private extension Dijkstra {
     var weights: [Position: Int] = [start: 0]
     var heap = Heap<Node>()
     heap.insert(
-      Node(position: start, path: Path(positions: [start], weight: 0))
+      Node(context: Node.Context(position: start, direction: .right), path: Path(positions: [start], weight: 0))
     )
 
     var paths: [Path] = []
     while let node = heap.popMin() {
-      if node.position == end {
+      if node.context.position == end {
         paths.append(node.path)
         continue
       }
 
       var nds: [Node] = []
       for next in node.nexts(to: directions) {
-        if !node.path.positions.contains(next),
-          validate(elements[next])
+        if !node.path.positions.contains(next.position),
+          validate(elements[next.position])
         {
           nds.append(
             Node(
-              position: next,
-              path: Path(positions: node.path.positions.union([next]), weight: node.path.weight + 1)
+              context: next,
+              path: Path(positions: node.path.positions.union([next.position]), weight: node.path.weight + 1)
             )
           )
         }
       }
 
       for nd in nds {
-        let previous = weights[nd.position]
+        let previous = weights[nd.context.position]
         if previous == nil || nd.path.weight < previous! + (isAll ? 1 : 0) {
-          weights[nd.position] = nd.path.weight
+          weights[nd.context.position] = nd.path.weight
 
           heap.insert(nd)
         }
