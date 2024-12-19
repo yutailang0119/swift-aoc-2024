@@ -72,30 +72,16 @@ private extension Day18.Dijkstra {
   }
 
   struct Node: Comparable {
-    struct Context: Hashable {
-      var position: Position
-      var direction: Direction
-
-      var forward: Self {
-        Self(position: position.moved(to: direction), direction: direction)
-      }
-
-      var clockwise: Self {
-        let direction = self.direction.clockwise
-        return Self(position: position.moved(to: direction), direction: direction)
-      }
-
-      var counterClockwise: Self {
-        let direction = self.direction.counterClockwise
-        return Self(position: position.moved(to: direction), direction: direction)
-      }
-    }
-
-    var context: Context
+    var position: Position
     var path: Path
 
-    var nexts: [Context] {
-      [context.forward, context.clockwise, context.counterClockwise]
+    var nexts: [Position] {
+      [
+        position.moved(to: .top),
+        position.moved(to: .bottom),
+        position.moved(to: .left),
+        position.moved(to: .right),
+      ]
     }
 
     static func < (lhs: Node, rhs: Node) -> Bool {
@@ -108,38 +94,38 @@ private extension Day18.Dijkstra {
     to end: Position,
     in dictionary: [Position: Day18.Mark]
   ) -> Path? {
-    var weights: [Node.Context: Int] = [Node.Context(position: start, direction: .right): 0]
+    var weights: [Position: Int] = [start: 0]
     var heap = Heap<Node>()
     heap.insert(
-      Node(context: Node.Context(position: start, direction: .right), path: Path(positions: [start], weight: 0))
+      Node(position: start, path: Path(positions: [start], weight: 0))
     )
 
     var path: Path? = nil
     while let node = heap.popMin() {
-      if node.context.position == end {
+      if node.position == end {
         path = node.path
         break
       }
 
       var nds: [Node] = []
       for next in node.nexts {
-        let mark = dictionary[next.position]
-        if !node.path.positions.contains(next.position),
+        let mark = dictionary[next]
+        if !node.path.positions.contains(next),
            mark.map({ $0 != .wall }) ?? false
         {
           nds.append(
             Node(
-              context: next,
-              path: Path(positions: node.path.positions.union([next.position]), weight: node.path.weight + 1)
+              position: next,
+              path: Path(positions: node.path.positions.union([next]), weight: node.path.weight + 1)
             )
           )
         }
       }
 
       for nd in nds {
-        let previous = weights[nd.context]
+        let previous = weights[nd.position]
         if previous == nil || nd.path.weight < previous! {
-          weights[nd.context] = nd.path.weight
+          weights[nd.position] = nd.path.weight
 
           heap.insert(nd)
         }
