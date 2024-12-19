@@ -9,26 +9,7 @@ struct Day18: AdventDay {
   }
 
   func _part1(nanosecond: Int, in space: Space) -> Any {
-    let bytes = self.entities.map {
-      let splited = $0.split(separator: ",")
-      return Byte(x: Int(splited[0])!, y: Int(splited[1])!)
-    }
-    let fallen = bytes.prefix(nanosecond)
-    let positions = Array(repeating: Array(repeating: Mark.empty, count: space.wide + 1), count: space.tall + 1).enumerated()
-      .flatMap { y, row in
-        row.enumerated()
-          .map { x, mark in
-            let m = fallen.contains { $0.x == x && $0.y == y } ? Mark.wall : mark
-            return (Position(x: x, y: y), m)
-          }
-      }
-    let memories: [Position: Mark] = Dictionary(positions, uniquingKeysWith: { $1 })
-
-    let start = Position.zero
-    let end = Position(x: space.wide, y: space.tall)
-
-    let path = Dijkstra.path(from: start, to: end, in: memories)
-
+    let path = path(nanosecond: nanosecond, in: space)
     return path?.positions.filter { $0 != .zero }.count ?? 0
   }
 }
