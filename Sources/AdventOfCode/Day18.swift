@@ -51,9 +51,13 @@ private extension Day18 {
 }
 
 private extension Day18 {
-  struct Byte {
+  struct Byte: CustomStringConvertible {
     var x: Int
     var y: Int
+
+    var description: String {
+      "\(x),\(y)"
+    }
   }
 
   enum Mark: Character, CustomStringConvertible {
