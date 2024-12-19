@@ -5,7 +5,7 @@ struct Day18: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    0
+    _part1(nanosecond: 1024, in: Space(wide: 70, tall: 70))
   }
 
   func _part1(nanosecond: Int, in space: Space) -> Any {
