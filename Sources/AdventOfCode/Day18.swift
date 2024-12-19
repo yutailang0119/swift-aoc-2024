@@ -53,7 +53,7 @@ private extension Day18 {
       .map(String.init)
   }
 
-  func path(nanosecond: Int, in space: Space) -> Dijkstra.Path? {
+  func path(nanosecond: Int, in space: Space) -> Dijkstra<Mark>.Path? {
     let bytes = self.entities.map {
       let splited = $0.split(separator: ",")
       return Byte(x: Int(splited[0])!, y: Int(splited[1])!)
@@ -73,7 +73,15 @@ private extension Day18 {
     let start = Position.zero
     let end = Position(x: space.wide, y: space.tall)
 
-    return Dijkstra.path(from: start, to: end, in: memories)
+    let dijkstra =  Dijkstra(
+      elements: memories,
+      start: start,
+      end: end,
+      directions: [.top, .bottom, .left, .right]
+    ) { mark in
+      mark.map({ $0 != .wall }) ?? false
+    }
+    return dijkstra.path
   }
 }
 
