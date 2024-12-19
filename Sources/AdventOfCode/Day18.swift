@@ -53,7 +53,7 @@ private extension Day18 {
       .map(String.init)
   }
 
-  func path(nanosecond: Int, in space: Space) -> Dijkstra.Path? {
+  func path(nanosecond: Int, in space: Space) -> Dijkstra<Mark>.Path? {
     let bytes = self.entities.map {
       let splited = $0.split(separator: ",")
       return Byte(x: Int(splited[0])!, y: Int(splited[1])!)
@@ -73,7 +73,15 @@ private extension Day18 {
     let start = Position.zero
     let end = Position(x: space.wide, y: space.tall)
 
-    return Dijkstra.path(from: start, to: end, in: memories)
+    let dijkstra =  Dijkstra(
+      elements: memories,
+      start: start,
+      end: end,
+      directions: [.top, .bottom, .left, .right]
+    ) { mark in
+      mark.map({ $0 != .wall }) ?? false
+    }
+    return dijkstra.path
   }
 }
 
@@ -94,77 +102,5 @@ private extension Day18 {
     var description: String {
       String(rawValue)
     }
-  }
-
-  enum Dijkstra {}
-}
-
-private extension Day18.Dijkstra {
-  struct Path: Hashable {
-    var positions: Set<Position>
-    var weight: Int
-  }
-
-  struct Node: Comparable {
-    var position: Position
-    var path: Path
-
-    var nexts: [Position] {
-      [
-        position.moved(to: .top),
-        position.moved(to: .bottom),
-        position.moved(to: .left),
-        position.moved(to: .right),
-      ]
-    }
-
-    static func < (lhs: Node, rhs: Node) -> Bool {
-      lhs.path.weight < rhs.path.weight
-    }
-  }
-
-  static func path(
-    from start: Position,
-    to end: Position,
-    in dictionary: [Position: Day18.Mark]
-  ) -> Path? {
-    var weights: [Position: Int] = [start: 0]
-    var heap = Heap<Node>()
-    heap.insert(
-      Node(position: start, path: Path(positions: [start], weight: 0))
-    )
-
-    var path: Path? = nil
-    while let node = heap.popMin(), path == nil {
-      if node.position == end {
-        path = node.path
-      }
-
-      var nds: [Node] = []
-      for next in node.nexts {
-        let mark = dictionary[next]
-        if !node.path.positions.contains(next),
-          mark.map({ $0 != .wall }) ?? false
-        {
-          nds.append(
-            Node(
-              position: next,
-              path: Path(positions: node.path.positions.union([next]), weight: node.path.weight + 1)
-            )
-          )
-        }
-      }
-
-      for nd in nds {
-        let previous = weights[nd.position]
-        if previous == nil || nd.path.weight < previous! {
-          weights[nd.position] = nd.path.weight
-
-          heap.insert(nd)
-        }
-      }
-    }
-
-    return path
   }
 }
