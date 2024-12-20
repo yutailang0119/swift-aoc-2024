@@ -12,6 +12,16 @@ struct Day19: AdventDay {
     let possibles = designs.map { self.available(patterns: patterns, design: $0, memo: &memo) }
     return possibles.count { $0 != 0 }
   }
+
+  func part2() async throws -> Any {
+    let entities = self.entities
+    let patterns = entities[0].map(Pattern.init(value:))
+    let designs = entities[1].map { Design(value: $0) }
+
+    var memo: [Design: Int] = [:]
+    let possibles = designs.map { self.available(patterns: patterns, design: $0, memo: &memo) }
+    return possibles.reduce(0, +)
+  }
 }
 
 private extension Day19 {
