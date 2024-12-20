@@ -18,7 +18,7 @@ struct Day15: AdventDay {
       var targets: [Cell] = []
       while let c = cursor {
         let nextPosition = c.position.moved(to: direction)
-        let nextTile = table.element(at: nextPosition)!
+        let nextTile = table[at: nextPosition]!
 
         switch nextTile {
         case .box:
@@ -79,7 +79,7 @@ struct Day15: AdventDay {
           var nexts: [Cell] = []
           for c in cursors {
             let nextPosition = c.position.moved(to: direction)
-            let nextTile = table.element(at: nextPosition)!
+            let nextTile = table[at: nextPosition]!
             let next = Cell(tile: nextTile, position: nextPosition)
 
             switch nextTile {
@@ -118,7 +118,7 @@ struct Day15: AdventDay {
         var cursor: Cell? = targets.last?.first
         while let c = cursor {
           let nextPosition = c.position.moved(to: direction)
-          let nextTile = table.element(at: nextPosition)!
+          let nextTile = table[at: nextPosition]!
           switch nextTile {
           case .boxLeft, .boxRight:
             let n = nextPosition.moved(to: direction)

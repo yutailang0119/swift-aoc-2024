@@ -29,7 +29,7 @@ public extension Table {
     var cursor: Position? = start
     while let c = cursor {
       let next = c.moved(to: direction)
-      if let element = element(at: next) {
+      if let element = self[at: next] {
         elements.append(element)
         cursor = next
       } else {
@@ -42,11 +42,11 @@ public extension Table {
   func route(from start: Position, to direction: Direction, until element: Element? = nil) -> [Position] {
     var positions: [Position] = []
     var p = start
-    var next = self.element(at: p.moved(to: direction))
+    var next = self[at: p.moved(to: direction)]
     while next != nil, next != element {
       positions.append(p)
       p = p.moved(to: direction)
-      next = self.element(at: p)
+      next = self[at: p]
     }
     return positions
   }
@@ -76,8 +76,8 @@ public extension Table {
 
 public extension Table {
   mutating func swap(_ i: Position, _ j: Position) {
-    guard let ie = element(at: i),
-      let je = element(at: j)
+    guard let ie = self[at: i],
+      let je = self[at: j]
     else {
       return
     }
