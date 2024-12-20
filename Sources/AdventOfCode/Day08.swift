@@ -19,12 +19,12 @@ struct Day08: AdventDay {
         let p = lhs - rhs
 
         let antinode1 = lhs + p
-        if table.element(at: antinode1) != nil {
+        if table[at: antinode1] != nil {
           antinodes.insert(antinode1)
         }
 
         let antinode2 = rhs - p
-        if table.element(at: antinode2) != nil {
+        if table[at: antinode2] != nil {
           antinodes.insert(antinode2)
         }
       }
@@ -49,7 +49,7 @@ struct Day08: AdventDay {
 
         var antinode1: Position? = lhs + p
         while let a = antinode1 {
-          if table.element(at: a) != nil {
+          if table[at: a] != nil {
             antinodes.insert(a)
             antinode1 = a + p
           } else {
@@ -59,7 +59,7 @@ struct Day08: AdventDay {
 
         var antinode2: Position? = rhs - p
         while let a = antinode2 {
-          if table.element(at: a) != nil {
+          if table[at: a] != nil {
             antinodes.insert(a)
             antinode2 = a - p
           } else {
@@ -71,7 +71,7 @@ struct Day08: AdventDay {
 
     var t = table
     for antinode in antinodes {
-      t.lines[antinode.y][antinode.x] = "#"
+      t[at: antinode] = "#"
     }
 
     let count = t.lines.reduce(0) { c, line in

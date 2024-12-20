@@ -25,7 +25,7 @@ struct Day06: AdventDay {
       for position in route {
         group.addTask {
           var t = table
-          t.lines[position.y][position.x] = .obstruction
+          t[at: position] = .obstruction
 
           var routes: [[Position]] = []
           var cursor = `guard`
@@ -40,7 +40,7 @@ struct Day06: AdventDay {
                 routes.append(route)
               }
               if let last = routes.joined().last,
-                t.element(at: last.moved(to: direction)) == .obstruction
+                t[at: last.moved(to: direction)] == .obstruction
               {
                 cursor = last
                 direction = direction.clockwise
@@ -83,7 +83,7 @@ private extension Day06 {
           routes.append(route)
         }
         if let last = routes.joined().last,
-          table.element(at: last.moved(to: direction)) == .obstruction
+          table[at: last.moved(to: direction)] == .obstruction
         {
           cursor = last
           direction = direction.clockwise

@@ -53,7 +53,7 @@ private extension Day10 {
     var stps: [[Height]] = []
     for direction in directions {
       let p = last.position.moved(to: direction)
-      guard let scl = table.element(at: p) else {
+      guard let scl = table[at: p] else {
         continue
       }
       let next = Height(scale: scl, position: p)

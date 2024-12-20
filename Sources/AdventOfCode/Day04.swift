@@ -30,7 +30,7 @@ struct Day04: AdventDay {
             break
           }
           let nextPosition = c.position.moved(to: direction)
-          if nextWord == table.element(at: nextPosition) {
+          if nextWord == table[at: nextPosition] {
             cursor = Cursor(word: nextWord, position: nextPosition)
           } else {
             cursor = nil
@@ -48,14 +48,14 @@ struct Day04: AdventDay {
     var count = 0
     for a in table.positions(for: .a) {
       let mas1 = Set([
-        table.element(at: a.moved(to: [.top, .left])),
-        table.element(at: a),
-        table.element(at: a.moved(to: [.bottom, .right])),
+        table[at: a.moved(to: [.top, .left])],
+        table[at: a],
+        table[at: a.moved(to: [.bottom, .right])],
       ])
       let mas2 = Set([
-        table.element(at: a.moved(to: [.top, .right])),
-        table.element(at: a),
-        table.element(at: a.moved(to: [.bottom, .left])),
+        table[at: a.moved(to: [.top, .right])],
+        table[at: a],
+        table[at: a.moved(to: [.bottom, .left])],
       ])
       let expected = Set<Word>([.m, .a, .s])
       if mas1 == expected,

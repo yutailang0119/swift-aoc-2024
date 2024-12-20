@@ -77,7 +77,7 @@ private extension Day12 {
           if contained.contains(position) {
             plnt = nil
           } else {
-            if let element = table.element(at: position),
+            if let element = table[at: position],
               element.element == plant.element
             {
               contained.insert(position)
@@ -100,7 +100,7 @@ private extension Day12 {
           if contained.contains(position) {
             plnt = nil
           } else {
-            if let element = table.element(at: position),
+            if let element = table[at: position],
               element.element == plant.element
             {
               contained.insert(position)
@@ -122,7 +122,7 @@ private extension Day12 {
     for r in region {
       for direction in [Direction.top, .right, .bottom, .left] {
         let position = r.position.moved(to: direction)
-        let next = table.element(at: position)
+        let next = table[at: position]
         if next?.element != r.element {
           perimeters += 1
         }
@@ -135,14 +135,14 @@ private extension Day12 {
     var sides = 0
     for r in region {
       for direction in [Direction.top, .right, .bottom, .left] {
-        let next = table.element(at: r.position.moved(to: direction))
+        let next = table[at: r.position.moved(to: direction)]
         if next.flatMap({ !region.contains($0) }) ?? true {
           do {
             let moved = r.position.moved(to: direction.counterClockwise)
-            if let rotated = table.element(at: moved),
+            if let rotated = table[at: moved],
               region.contains(rotated)
             {
-              let e = table.element(at: moved.moved(to: direction))
+              let e = table[at: moved.moved(to: direction)]
               if e.flatMap({ !region.contains($0) }) ?? true,
                 moved < r
               {
@@ -153,10 +153,10 @@ private extension Day12 {
 
           do {
             let moved = r.position.moved(to: direction.clockwise)
-            if let rotated = table.element(at: moved),
+            if let rotated = table[at: moved],
               region.contains(rotated)
             {
-              let e = table.element(at: moved.moved(to: direction))
+              let e = table[at: moved.moved(to: direction)]
               if e.flatMap({ !region.contains($0) }) ?? true,
                 moved < r
               {

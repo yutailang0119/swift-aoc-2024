@@ -102,7 +102,7 @@ private extension Day14.Space {
   func table(for robots: [Day14.Robot]) -> Table<Int> {
     var table = Table<Int>(Array(repeating: Array(repeating: 0, count: wide), count: tall))
     for robot in robots {
-      table.lines[robot.position.y][robot.position.x] += 1
+      table[at: robot.position]! += 1
     }
     return table
   }
