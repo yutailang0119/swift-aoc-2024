@@ -25,7 +25,7 @@ struct Day06: AdventDay {
       for position in route {
         group.addTask {
           var t = table
-          t.lines[position.y][position.x] = .obstruction
+          t[at: position] = .obstruction
 
           var routes: [[Position]] = []
           var cursor = `guard`

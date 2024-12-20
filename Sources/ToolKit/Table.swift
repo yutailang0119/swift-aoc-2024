@@ -90,7 +90,7 @@ public extension Table {
     else {
       return
     }
-    lines[i.y][i.x] = je
-    lines[j.y][j.x] = ie
+    self[at: i] = je
+    self[at: j] = ie
   }
 }

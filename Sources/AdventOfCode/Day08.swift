@@ -71,7 +71,7 @@ struct Day08: AdventDay {
 
     var t = table
     for antinode in antinodes {
-      t.lines[antinode.y][antinode.x] = "#"
+      t[at: antinode] = "#"
     }
 
     let count = t.lines.reduce(0) { c, line in

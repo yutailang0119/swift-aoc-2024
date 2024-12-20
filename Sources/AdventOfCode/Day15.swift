@@ -41,7 +41,7 @@ struct Day15: AdventDay {
 
       var t = table
       for target in targets {
-        t.lines[target.position.y][target.position.x] = target.tile
+        t[at: target.position] = target.tile
       }
       return t
     }
@@ -145,19 +145,19 @@ struct Day15: AdventDay {
 
       var tbl = table
       if !targets.isEmpty {
-        tbl.lines[robot.y][robot.x] = .empty
+        tbl[at: robot] = .empty
       }
       for target in targets.joined() {
         let p = target.position.moved(to: direction)
-        tbl.lines[p.y][p.x] = target.tile
+        tbl[at: p] = target.tile
       }
       for (y, line) in tbl.lines.enumerated() {
         for (x, tile) in line.enumerated() {
           switch tile {
           case .boxLeft:
-            tbl.lines[y][x + 1] = .boxRight
+            tbl[at: Position(x: x + 1, y: y)] = .boxRight
           case .boxRight:
-            tbl.lines[y][x - 1] = .boxLeft
+            tbl[at: Position(x: x - 1, y: y)] = .boxLeft
           default:
             break
           }
