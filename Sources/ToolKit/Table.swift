@@ -20,7 +20,7 @@ public extension Table {
     lines.reduce(0) { $0 + $1.count }
   }
 
-  func element(at position: Position) -> Element? {
+  subscript(at position: Position) -> Element? {
     lines[safe: position.y]?[safe: position.x]
   }
 
