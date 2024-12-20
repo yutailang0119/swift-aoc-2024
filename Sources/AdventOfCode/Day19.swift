@@ -45,7 +45,7 @@ private extension Day19 {
     var value: String
   }
 
-  struct Design {
+  struct Design: Hashable {
     var value: String
   }
 }
