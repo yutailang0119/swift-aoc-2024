@@ -16,6 +16,23 @@ private extension Day19 {
     outputs.append(splited[1].split(separator: "\n").map(String.init))
     return outputs
   }
+
+  func available(patterns: [Pattern], design: Design) -> Int {
+    if design.value.isEmpty {
+      return 1
+    } else {
+      var count = 0
+      for pattern in patterns {
+        if design.value.hasPrefix(pattern.value) {
+          count += available(
+            patterns: patterns,
+            design: Design(value: String(design.value.trimmingPrefix(pattern.value)))
+          )
+        }
+      }
+      return count
+    }
+  }
 }
 
 private extension Day19 {
