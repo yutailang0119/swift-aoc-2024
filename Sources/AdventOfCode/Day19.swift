@@ -8,7 +8,8 @@ struct Day19: AdventDay {
     let patterns = entities[0].map(Pattern.init(value:))
     let designs = entities[1].map { Design(value: $0) }
 
-    let possibles = designs.map { self.available(patterns: patterns, design: $0) }
+    var memo: [Design: Int] = [:]
+    let possibles = designs.map { self.available(patterns: patterns, design: $0, memo: &memo) }
     return possibles.count { $0 != 0 }
   }
 }
@@ -22,19 +23,25 @@ private extension Day19 {
     return outputs
   }
 
-  func available(patterns: [Pattern], design: Design) -> Int {
-    if design.value.isEmpty {
+  func available(patterns: [Pattern], design: Design, memo: inout [Design: Int]) -> Int {
+    guard !design.value.isEmpty else {
       return 1
+    }
+    if let count = memo[design] {
+      return count
     } else {
       var count = 0
       for pattern in patterns {
         if design.value.hasPrefix(pattern.value) {
           count += available(
             patterns: patterns,
-            design: Design(value: String(design.value.trimmingPrefix(pattern.value)))
+            design: Design(value: String(design.value.trimmingPrefix(pattern.value))),
+            memo: &memo
           )
         }
       }
+
+      memo[design] = count
       return count
     }
   }
