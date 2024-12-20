@@ -4,7 +4,12 @@ struct Day19: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    0
+    let entities = self.entities
+    let patterns = entities[0].map(Pattern.init(value:))
+    let designs = entities[1].map { Design(value: $0) }
+
+    let possibles = designs.map { self.available(patterns: patterns, design: $0) }
+    return possibles.count { $0 != 0 }
   }
 }
 
