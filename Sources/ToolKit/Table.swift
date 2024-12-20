@@ -21,7 +21,16 @@ public extension Table {
   }
 
   subscript(at position: Position) -> Element? {
-    lines[safe: position.y]?[safe: position.x]
+    get {
+      lines[safe: position.y]?[safe: position.x]
+    }
+    set {
+      if let newValue,
+        lines[safe: position.y]?[safe: position.x] != nil
+      {
+        lines[position.y][position.x] = newValue
+      }
+    }
   }
 
   func elements(from start: Position, to direction: Direction) -> [Element] {
