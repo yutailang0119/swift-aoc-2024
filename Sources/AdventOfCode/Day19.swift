@@ -17,3 +17,13 @@ private extension Day19 {
     return outputs
   }
 }
+
+private extension Day19 {
+  struct Pattern {
+    var value: String
+  }
+
+  struct Design {
+    var value: String
+  }
+}
