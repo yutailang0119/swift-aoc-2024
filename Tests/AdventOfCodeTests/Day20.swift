@@ -24,6 +24,6 @@ struct Day20Tests {
 
   @Test func testPart1() async throws {
     let challenge = Day20(data: testData)
-    #expect(String(describing: challenge._part1(lower: 2)) == "44")
+    #expect(String(describing: challenge._part1(cheatingRule: 2, lower: 2)) == "44")
   }
 }

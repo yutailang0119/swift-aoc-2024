@@ -5,11 +5,11 @@ struct Day20: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    _part1(lower: 100)
+    _part1(cheatingRule: 2, lower: 100)
   }
 
-  func _part1(lower: Int) -> Any {
-    cheats(lower: lower)
+  func _part1(cheatingRule: Int, lower: Int) -> Any {
+    cheats(cheatingRule: cheatingRule, lower: lower)
       .filter { $0.key >= lower }
       .reduce(0) { $0 + $1.value }
   }
@@ -22,7 +22,7 @@ private extension Day20 {
     }
   }
 
-  func cheats(lower: Int) -> [Int: Int] {
+  func cheats(cheatingRule: Int, lower: Int) -> [Int: Int] {
     let marks = self.entities.map {
       $0.compactMap(Mark.init(rawValue:))
     }
@@ -49,7 +49,7 @@ private extension Day20 {
 
     var cheats = [Int: Int]()
     for (picosecond, position) in route {
-      let tracks = route[picosecond...].filter { $0.element.distance(to: position) <= 2 }
+      let tracks = route[picosecond...].filter { $0.element.distance(to: position) <= cheatingRule }
       for track in tracks {
         let saved = track.offset - picosecond - track.element.distance(to: position)
         cheats[saved, default: 0] += 1
