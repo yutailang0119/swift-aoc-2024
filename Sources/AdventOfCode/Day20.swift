@@ -29,9 +29,3 @@ private extension Day20 {
     }
   }
 }
-
-private extension Position {
-  func distance(to other: Position) -> Int {
-    abs(x - other.x) + abs(y - other.y)
-  }
-}
