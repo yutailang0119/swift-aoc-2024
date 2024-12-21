@@ -59,10 +59,12 @@ private extension Day20 {
 
     var cheats = [Int: Int]()
     for (picosecond, position) in route {
-      let tracks = route[picosecond...].filter { $0.element.distance(to: position) <= cheatingRule }
-      for track in tracks {
-        let saved = track.offset - picosecond - track.element.distance(to: position)
-        cheats[saved, default: 0] += 1
+      let warps = route[picosecond...].filter { $0.element.distance(to: position) <= cheatingRule }
+      for warp in warps {
+        let saved = warp.offset - picosecond - warp.element.distance(to: position)
+        if saved > 0 {
+          cheats[saved, default: 0] += 1
+        }
       }
     }
 
