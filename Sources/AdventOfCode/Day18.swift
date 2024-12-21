@@ -53,7 +53,7 @@ private extension Day18 {
       .map(String.init)
   }
 
-  func path(nanosecond: Int, in space: Space) -> Set<Position>? {
+  func path(nanosecond: Int, in space: Space) -> OrderedSet<Position>? {
     let bytes = self.entities.map {
       let splited = $0.split(separator: ",")
       return Byte(x: Int(splited[0])!, y: Int(splited[1])!)
