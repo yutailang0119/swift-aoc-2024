@@ -5,7 +5,7 @@ struct Day20: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    0
+    _part1(lower: 100)
   }
 
   func _part1(lower: Int) -> Any {
