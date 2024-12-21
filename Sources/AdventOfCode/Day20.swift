@@ -15,3 +15,16 @@ private extension Day20 {
     }
   }
 }
+
+private extension Day20 {
+  enum Mark: Character, CustomStringConvertible {
+    case start = "S"
+    case end = "E"
+    case wall = "#"
+    case empty = "."
+
+    var description: String {
+      String(rawValue)
+    }
+  }
+}
