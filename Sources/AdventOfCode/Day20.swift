@@ -8,7 +8,17 @@ struct Day20: AdventDay {
     _part1(cheatingRule: 2, lower: 100)
   }
 
+  func part2() async throws -> Any {
+    _part2(cheatingRule: 20, lower: 100)
+  }
+
   func _part1(cheatingRule: Int, lower: Int) -> Any {
+    cheats(cheatingRule: cheatingRule, lower: lower)
+      .filter { $0.key >= lower }
+      .reduce(0) { $0 + $1.value }
+  }
+
+  func _part2(cheatingRule: Int, lower: Int) -> Any {
     cheats(cheatingRule: cheatingRule, lower: lower)
       .filter { $0.key >= lower }
       .reduce(0) { $0 + $1.value }
