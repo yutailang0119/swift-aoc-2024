@@ -22,18 +22,18 @@ public struct Dijkstra<Element> {
     self.validate = validate
   }
 
-  public var path: Set<Position>? {
+  public var path: OrderedSet<Position>? {
     _paths(isAll: false).first?.positions
   }
 
-  public var paths: [Set<Position>] {
+  public var paths: [OrderedSet<Position>] {
     _paths(isAll: true).map(\.positions)
   }
 }
 
 private extension Dijkstra {
   struct Path: Hashable {
-    var positions: Set<Position>
+    var positions: OrderedSet<Position>
     var weight: Int
   }
 
