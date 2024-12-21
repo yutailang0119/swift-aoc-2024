@@ -1,4 +1,5 @@
 import Foundation
+import ToolKit
 
 struct Day20: AdventDay {
   var data: String
@@ -26,5 +27,11 @@ private extension Day20 {
     var description: String {
       String(rawValue)
     }
+  }
+}
+
+private extension Position {
+  func distance(to other: Position) -> Int {
+    abs(x - other.x) + abs(y - other.y)
   }
 }
