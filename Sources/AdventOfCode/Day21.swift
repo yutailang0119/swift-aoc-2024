@@ -18,6 +18,10 @@ private extension Day21 {
   struct Input {
     var rawValue: String
 
+    var keypads: [NumericKeypad] {
+      rawValue.compactMap(NumericKeypad.init(rawValue:))
+    }
+
     var number: Int {
       Int(String(rawValue.dropLast(1))) ?? 0
     }
