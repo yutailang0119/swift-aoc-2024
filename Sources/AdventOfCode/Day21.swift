@@ -22,6 +22,25 @@ struct Day21: AdventDay {
       directionalMemo: &directionalMemo
     )
   }
+
+  func part2() async throws -> Any {
+    let entities = self.entities
+    let inputs = entities.map(Input.init)
+
+    let keypadSequences = self.keypadSequences
+
+    var numericMemo: [NumericContext: Int] = [:]
+    var directionalMemo: [DirectionalContext: Int] = [:]
+
+    return press(
+      inputs: inputs,
+      depth: 26,
+      numberKeypadSequences: keypadSequences.numeric,
+      directionalKeypadSequences: keypadSequences.directional,
+      numericMemo: &numericMemo,
+      directionalMemo: &directionalMemo
+    )
+  }
 }
 
 private extension Day21 {
