@@ -104,6 +104,108 @@ private extension Day21 {
 }
 
 private extension Day21 {
+  func press(
+    inputs: [Input],
+    depth: Int,
+    numberKeypadSequences: [SequenceKey<NumericKeypad>: [[DirectionalKeypad]]],
+    directionalKeypadSequences: [SequenceKey<DirectionalKeypad>: [[DirectionalKeypad]]],
+    numericMemo: inout [NumericContext: [DirectionalKeypad]],
+    directionalMemo: inout [DirectionalContext: [DirectionalKeypad]]
+  ) -> Int {
+    var sum = 0
+    for input in inputs {
+      var previous: NumericKeypad = .a
+      var expand: [DirectionalKeypad] = []
+      for keypad in input.keypads {
+        expand.append(
+          contentsOf: numericKeypad(
+            numberKeypadSequences: numberKeypadSequences,
+            directionalKeypadSequences: directionalKeypadSequences,
+            context: NumericContext(previous: previous, current: keypad, depth: depth),
+            numericMemo: &numericMemo,
+            directionalMemo: &directionalMemo
+          )
+        )
+        previous = keypad
+      }
+      sum += expand.count * input.number
+    }
+    return sum
+  }
+
+  func numericKeypad(
+    numberKeypadSequences: [SequenceKey<NumericKeypad>: [[DirectionalKeypad]]],
+    directionalKeypadSequences: [SequenceKey<DirectionalKeypad>: [[DirectionalKeypad]]],
+    context: NumericContext,
+    numericMemo: inout [NumericContext: [DirectionalKeypad]],
+    directionalMemo: inout [DirectionalContext: [DirectionalKeypad]]
+  ) -> [DirectionalKeypad] {
+    if let numeric = numericMemo[context] {
+      return numeric
+    }
+
+    var output: [DirectionalKeypad] = []
+    for keypads in numberKeypadSequences[SequenceKey(start: context.previous, end: context.current)]! {
+      var previous = DirectionalKeypad.a
+      var expand: [DirectionalKeypad] = []
+      for keypad in keypads {
+        expand.append(
+          contentsOf: directionalKeypad(
+            sequences: directionalKeypadSequences,
+            context: DirectionalContext(previous: previous, current: keypad, depth: context.depth - 1),
+            in: &directionalMemo
+          )
+        )
+        previous = keypad
+      }
+      if output.isEmpty {
+        output = expand
+      } else if output.count > expand.count {
+        output = expand
+      }
+    }
+    numericMemo[context] = output
+    return output
+  }
+
+  func directionalKeypad(
+    sequences: [SequenceKey<DirectionalKeypad>: [[DirectionalKeypad]]],
+    context: DirectionalContext,
+    in memo: inout [DirectionalContext: [DirectionalKeypad]]
+  ) -> [DirectionalKeypad] {
+    if let directional = memo[context] {
+      return directional
+    }
+    if context.depth == 0 {
+      return [context.current]
+    }
+
+    var output: [DirectionalKeypad] = []
+    for steps in sequences[SequenceKey(start: context.previous, end: context.current)]! {
+      var previous = DirectionalKeypad.a
+      var expand: [DirectionalKeypad] = []
+      for step in steps {
+        expand.append(
+          contentsOf: directionalKeypad(
+            sequences: sequences,
+            context: DirectionalContext(previous: previous, current: step, depth: context.depth - 1),
+            in: &memo
+          )
+        )
+        previous = step
+      }
+      if output.isEmpty {
+        output = expand
+      } else if output.count > expand.count {
+        output = expand
+      }
+    }
+    memo[context] = output
+    return output
+  }
+}
+
+private extension Day21 {
   struct Input {
     var rawValue: String
 
@@ -128,6 +230,12 @@ private extension Day21 {
     case eight = "8"
     case nine = "9"
     case a = "A"
+  }
+
+  struct NumericContext: Hashable {
+    var previous: NumericKeypad
+    var current: NumericKeypad
+    var depth: Int
   }
 
   enum DirectionalKeypad: Character, CaseIterable {
@@ -157,5 +265,16 @@ private extension Day21 {
       default: fatalError()
       }
     }
+  }
+
+  struct DirectionalContext: Hashable {
+    var previous: DirectionalKeypad
+    var current: DirectionalKeypad
+    var depth: Int
+  }
+
+  struct SequenceKey<Keypad: Hashable>: Hashable {
+    var start: Keypad
+    var end: Keypad
   }
 }
