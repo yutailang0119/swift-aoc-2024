@@ -10,8 +10,8 @@ struct Day21: AdventDay {
 
     let keypadSequences = self.keypadSequences
 
-    var numericMemo: [NumericContext: [DirectionalKeypad]] = [:]
-    var directionalMemo: [DirectionalContext: [DirectionalKeypad]] = [:]
+    var numericMemo: [NumericContext: Int] = [:]
+    var directionalMemo: [DirectionalContext: Int] = [:]
 
     return press(
       inputs: inputs,
@@ -124,26 +124,24 @@ private extension Day21 {
     depth: Int,
     numberKeypadSequences: [SequenceKey<NumericKeypad>: [[DirectionalKeypad]]],
     directionalKeypadSequences: [SequenceKey<DirectionalKeypad>: [[DirectionalKeypad]]],
-    numericMemo: inout [NumericContext: [DirectionalKeypad]],
-    directionalMemo: inout [DirectionalContext: [DirectionalKeypad]]
+    numericMemo: inout [NumericContext: Int],
+    directionalMemo: inout [DirectionalContext: Int]
   ) -> Int {
     var sum = 0
     for input in inputs {
       var previous: NumericKeypad = .a
-      var expand: [DirectionalKeypad] = []
+      var count = 0
       for keypad in input.keypads {
-        expand.append(
-          contentsOf: numericKeypad(
-            numberKeypadSequences: numberKeypadSequences,
-            directionalKeypadSequences: directionalKeypadSequences,
-            context: NumericContext(previous: previous, current: keypad, depth: depth),
-            numericMemo: &numericMemo,
-            directionalMemo: &directionalMemo
-          )
+        count += numericKeypad(
+          numberKeypadSequences: numberKeypadSequences,
+          directionalKeypadSequences: directionalKeypadSequences,
+          context: NumericContext(previous: previous, current: keypad, depth: depth),
+          numericMemo: &numericMemo,
+          directionalMemo: &directionalMemo
         )
         previous = keypad
       }
-      sum += expand.count * input.number
+      sum += count * input.number
     }
     return sum
   }
@@ -152,31 +150,27 @@ private extension Day21 {
     numberKeypadSequences: [SequenceKey<NumericKeypad>: [[DirectionalKeypad]]],
     directionalKeypadSequences: [SequenceKey<DirectionalKeypad>: [[DirectionalKeypad]]],
     context: NumericContext,
-    numericMemo: inout [NumericContext: [DirectionalKeypad]],
-    directionalMemo: inout [DirectionalContext: [DirectionalKeypad]]
-  ) -> [DirectionalKeypad] {
+    numericMemo: inout [NumericContext: Int],
+    directionalMemo: inout [DirectionalContext: Int]
+  ) -> Int {
     if let numeric = numericMemo[context] {
       return numeric
     }
 
-    var output: [DirectionalKeypad] = []
+    var output = Int.max
     for keypads in numberKeypadSequences[SequenceKey(start: context.previous, end: context.current)]! {
       var previous = DirectionalKeypad.a
-      var expand: [DirectionalKeypad] = []
+      var count = 0
       for keypad in keypads {
-        expand.append(
-          contentsOf: directionalKeypad(
-            sequences: directionalKeypadSequences,
-            context: DirectionalContext(previous: previous, current: keypad, depth: context.depth - 1),
-            in: &directionalMemo
-          )
+        count += directionalKeypad(
+          sequences: directionalKeypadSequences,
+          context: DirectionalContext(previous: previous, current: keypad, depth: context.depth - 1),
+          in: &directionalMemo
         )
         previous = keypad
       }
-      if output.isEmpty {
-        output = expand
-      } else if output.count > expand.count {
-        output = expand
+      if count < output {
+        output = count
       }
     }
     numericMemo[context] = output
@@ -186,33 +180,29 @@ private extension Day21 {
   func directionalKeypad(
     sequences: [SequenceKey<DirectionalKeypad>: [[DirectionalKeypad]]],
     context: DirectionalContext,
-    in memo: inout [DirectionalContext: [DirectionalKeypad]]
-  ) -> [DirectionalKeypad] {
+    in memo: inout [DirectionalContext: Int]
+  ) -> Int {
     if let directional = memo[context] {
       return directional
     }
     if context.depth == 0 {
-      return [context.current]
+      return 1
     }
 
-    var output: [DirectionalKeypad] = []
+    var output = Int.max
     for steps in sequences[SequenceKey(start: context.previous, end: context.current)]! {
       var previous = DirectionalKeypad.a
-      var expand: [DirectionalKeypad] = []
+      var count = 0
       for step in steps {
-        expand.append(
-          contentsOf: directionalKeypad(
-            sequences: sequences,
-            context: DirectionalContext(previous: previous, current: step, depth: context.depth - 1),
-            in: &memo
-          )
+        count += directionalKeypad(
+          sequences: sequences,
+          context: DirectionalContext(previous: previous, current: step, depth: context.depth - 1),
+          in: &memo
         )
         previous = step
       }
-      if output.isEmpty {
-        output = expand
-      } else if output.count > expand.count {
-        output = expand
+      if count < output {
+        output = count
       }
     }
     memo[context] = output
