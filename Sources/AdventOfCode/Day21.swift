@@ -13,3 +13,13 @@ private extension Day21 {
     data.split(separator: "\n").map(String.init)
   }
 }
+
+private extension Day21 {
+  struct Input {
+    var rawValue: String
+
+    var number: Int {
+      Int(String(rawValue.dropLast(1))) ?? 0
+    }
+  }
+}
