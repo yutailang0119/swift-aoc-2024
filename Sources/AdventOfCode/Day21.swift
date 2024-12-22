@@ -5,7 +5,22 @@ struct Day21: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    0
+    let entities = self.entities
+    let inputs = entities.map(Input.init)
+
+    let keypadSequences = self.keypadSequences
+
+    var numericMemo: [NumericContext: [DirectionalKeypad]] = [:]
+    var directionalMemo: [DirectionalContext: [DirectionalKeypad]] = [:]
+
+    return press(
+      inputs: inputs,
+      depth: 3,
+      numberKeypadSequences: keypadSequences.numeric,
+      directionalKeypadSequences: keypadSequences.directional,
+      numericMemo: &numericMemo,
+      directionalMemo: &directionalMemo
+    )
   }
 }
 
