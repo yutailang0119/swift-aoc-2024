@@ -20,6 +20,17 @@ extension Day22 {
       Secret(rawValue: rawValue % 16777216)
     }
   }
+
+  func generate(from secret: Secret) -> Secret {
+    var secret = secret
+    secret = secret.mix(secret.rawValue * 64)
+    secret = secret.prune()
+    secret = secret.mix(secret.rawValue / 32)
+    secret = secret.prune()
+    secret = secret.mix(secret.rawValue * 2048)
+    secret = secret.prune()
+    return secret
+  }
 }
 
 private extension Day22 {
