@@ -253,17 +253,6 @@ private extension Day21 {
     case right = ">"
     case a = "A"
 
-    init?(rawValue: Character) {
-      switch rawValue {
-      case "^": self = .up
-      case "<": self = .left
-      case "v": self = .down
-      case ">": self = .right
-      case "A": self = .a
-      default: return nil
-      }
-    }
-
     init(direction: Direction) {
       switch direction {
       case .top: self = .up
