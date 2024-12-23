@@ -71,4 +71,16 @@ private extension Day22 {
 
     return prices
   }
+
+  func changes(with prices: [Price]) -> [String: Int] {
+    var dictionary: [String: Int] = [:]
+    for window in prices.windows(ofCount: 4) {
+      let key = window.map { "\($0.change)" }.joined(separator: ",")
+      if dictionary[key] != nil {
+        continue
+      }
+      dictionary[key] = window.last!.digit
+    }
+    return dictionary
+  }
 }
