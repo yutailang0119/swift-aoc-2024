@@ -12,7 +12,7 @@ struct Day22: AdventDay {
     for secret in secrets {
       var secret = secret
       for _ in 0..<2000 {
-        secret = generate(from: secret)
+        secret = secret.generate()
       }
       sum += secret.rawValue
     }
@@ -46,17 +46,17 @@ extension Day22 {
     func prune() -> Secret {
       Secret(rawValue: rawValue % 16777216)
     }
-  }
 
-  func generate(from secret: Secret) -> Secret {
-    var secret = secret
-    secret = secret.mix(secret.rawValue * 64)
-    secret = secret.prune()
-    secret = secret.mix(secret.rawValue / 32)
-    secret = secret.prune()
-    secret = secret.mix(secret.rawValue * 2048)
-    secret = secret.prune()
-    return secret
+    func generate() -> Secret {
+      var secret = self
+      secret = secret.mix(secret.rawValue * 64)
+      secret = secret.prune()
+      secret = secret.mix(secret.rawValue / 32)
+      secret = secret.prune()
+      secret = secret.mix(secret.rawValue * 2048)
+      secret = secret.prune()
+      return secret
+    }
   }
 }
 
@@ -78,7 +78,7 @@ private extension Day22 {
     var previous = secret.rawValue % 10
     var prices: [Price] = []
     for _ in 0..<count {
-      secret = generate(from: secret)
+      secret = secret.generate()
       let digit = secret.rawValue % 10
       prices.append(Price(digit: digit, change: digit - previous))
       previous = digit

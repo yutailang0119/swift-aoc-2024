@@ -36,15 +36,11 @@ struct Day22Tests {
       let secret = Day22.Secret(rawValue: 100000000)
       #expect(secret.prune().rawValue == 16113920)
     }
-  }
-
-  @Test func testGenerate() async throws {
     do {
-      let challenge = Day22(data: "")
       var secret = Day22.Secret(rawValue: 123)
       var numbers: [Int] = []
       for _ in 0..<10 {
-        secret = challenge.generate(from: secret)
+        secret = secret.generate()
         numbers.append(secret.rawValue)
       }
       #expect(
