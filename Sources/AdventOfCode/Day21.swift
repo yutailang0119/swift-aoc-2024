@@ -87,14 +87,11 @@ private extension Day21 {
            | 0 | A |
            +---+---+
        */
-      let keypads = [
-        Position(x: 0, y: 0): NumericKeypad.seven, Position(x: 1, y: 0): NumericKeypad.eight,
-        Position(x: 2, y: 0): NumericKeypad.nine,
-        Position(x: 0, y: 1): NumericKeypad.four, Position(x: 1, y: 1): NumericKeypad.five,
-        Position(x: 2, y: 1): NumericKeypad.six,
-        Position(x: 0, y: 2): NumericKeypad.one, Position(x: 1, y: 2): NumericKeypad.two,
-        Position(x: 2, y: 2): NumericKeypad.three,
-        Position(x: 1, y: 3): NumericKeypad.zero, Position(x: 2, y: 3): NumericKeypad.a,
+      let keypads: [Position: NumericKeypad] = [
+        Position(x: 0, y: 0): .seven, Position(x: 1, y: 0): .eight, Position(x: 2, y: 0): .nine,
+        Position(x: 0, y: 1): .four, Position(x: 1, y: 1): .five, Position(x: 2, y: 1): .six,
+        Position(x: 0, y: 2): .one, Position(x: 1, y: 2): .two, Position(x: 2, y: 2): .three,
+        Position(x: 1, y: 3): .zero, Position(x: 2, y: 3): .a,
       ]
       var sequences: [SequenceKey<NumericKeypad>: [[DirectionalKeypad]]] = [:]
       let numerics = NumericKeypad.allCases
@@ -113,10 +110,9 @@ private extension Day21 {
        | < | v | > |
        +---+---+---+
        */
-      let keypads = [
-        Position(x: 1, y: 0): DirectionalKeypad.up, Position(x: 2, y: 0): DirectionalKeypad.a,
-        Position(x: 0, y: 1): DirectionalKeypad.left, Position(x: 1, y: 1): DirectionalKeypad.down,
-        Position(x: 2, y: 1): DirectionalKeypad.right,
+      let keypads: [Position: DirectionalKeypad] = [
+        Position(x: 1, y: 0): .up, Position(x: 2, y: 0): .a,
+        Position(x: 0, y: 1): .left, Position(x: 1, y: 1): .down, Position(x: 2, y: 1): .right,
       ]
 
       var sequences: [SequenceKey<DirectionalKeypad>: [[DirectionalKeypad]]] = [:]
