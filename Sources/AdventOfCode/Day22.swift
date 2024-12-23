@@ -50,4 +50,9 @@ private extension Day22 {
     data.split(separator: "\n")
       .compactMap { Int(String($0)) }
   }
+
+  struct Price {
+    var digit: Int
+    var change: Int
+  }
 }
