@@ -10,11 +10,7 @@ struct Day22: AdventDay {
 
     var sum = 0
     for secret in secrets {
-      var secret = secret
-      for _ in 0..<2000 {
-        secret = secret.generate()
-      }
-      sum += secret.rawValue
+      sum += secret.generates(to: 2000).last?.rawValue ?? 0
     }
 
     return sum
