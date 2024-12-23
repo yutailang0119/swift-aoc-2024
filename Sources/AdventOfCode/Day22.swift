@@ -56,3 +56,19 @@ private extension Day22 {
     var change: Int
   }
 }
+
+private extension Day22 {
+  func prices(from secret: Secret, count: Int) -> [Price] {
+    var secret = secret
+    var previous = secret.rawValue % 10
+    var prices: [Price] = []
+    for _ in 0..<count {
+      secret = generate(from: secret)
+      let digit = secret.rawValue % 10
+      prices.append(Price(digit: digit, change: digit - previous))
+      previous = digit
+    }
+
+    return prices
+  }
+}
