@@ -50,7 +50,7 @@ private extension Day21 {
       directional: [SequenceKey<DirectionalKeypad>: [[DirectionalKeypad]]]
     )
   {
-    func steps<Keypad>(
+    func sequence<Keypad>(
       start: Keypad,
       end: Keypad,
       in dictionary: [Position: Keypad],
@@ -67,9 +67,9 @@ private extension Day21 {
           continue
         }
         if !visited.contains(next) {
-          let steps = steps(start: next, end: end, in: dictionary, visited: visited.union([start]))
+          let sequence = sequence(start: next, end: end, in: dictionary, visited: visited.union([start]))
           let k = DirectionalKeypad(direction: direction)
-          outputs.append(contentsOf: steps.map { [k] + $0 })
+          outputs.append(contentsOf: sequence.map { [k] + $0 })
         }
       }
       return outputs
@@ -97,7 +97,7 @@ private extension Day21 {
       let numerics = NumericKeypad.allCases
       for start in numerics {
         for end in numerics {
-          sequences[SequenceKey(start: start, end: end)] = steps(start: start, end: end, in: keypads, visited: [])
+          sequences[SequenceKey(start: start, end: end)] = sequence(start: start, end: end, in: keypads, visited: [])
         }
       }
       return sequences
@@ -119,7 +119,7 @@ private extension Day21 {
       let directionals = DirectionalKeypad.allCases
       for start in directionals {
         for end in directionals {
-          sequences[SequenceKey(start: start, end: end)] = steps(start: start, end: end, in: keypads, visited: [])
+          sequences[SequenceKey(start: start, end: end)] = sequence(start: start, end: end, in: keypads, visited: [])
         }
       }
       return sequences
@@ -143,9 +143,9 @@ private extension Day21 {
       var count = 0
       for keypad in input.keypads {
         count += numericKeypad(
+          context: NumericContext(previous: previous, current: keypad, depth: depth),
           numberKeypadSequences: numberKeypadSequences,
           directionalKeypadSequences: directionalKeypadSequences,
-          context: NumericContext(previous: previous, current: keypad, depth: depth),
           memo: &memo
         )
         previous = keypad
@@ -156,9 +156,9 @@ private extension Day21 {
   }
 
   func numericKeypad(
+    context: NumericContext,
     numberKeypadSequences: [SequenceKey<NumericKeypad>: [[DirectionalKeypad]]],
     directionalKeypadSequences: [SequenceKey<DirectionalKeypad>: [[DirectionalKeypad]]],
-    context: NumericContext,
     memo: inout [DirectionalContext: Int]
   ) -> Int {
     var output = Int.max
@@ -167,8 +167,8 @@ private extension Day21 {
       var count = 0
       for keypad in keypads {
         count += directionalKeypad(
-          sequences: directionalKeypadSequences,
           context: DirectionalContext(previous: previous, current: keypad, depth: context.depth - 1),
+          sequences: directionalKeypadSequences,
           memo: &memo
         )
         previous = keypad
@@ -181,8 +181,8 @@ private extension Day21 {
   }
 
   func directionalKeypad(
-    sequences: [SequenceKey<DirectionalKeypad>: [[DirectionalKeypad]]],
     context: DirectionalContext,
+    sequences: [SequenceKey<DirectionalKeypad>: [[DirectionalKeypad]]],
     memo: inout [DirectionalContext: Int]
   ) -> Int {
     if let directional = memo[context] {
@@ -198,8 +198,8 @@ private extension Day21 {
       var count = 0
       for step in steps {
         count += directionalKeypad(
-          sequences: sequences,
           context: DirectionalContext(previous: previous, current: step, depth: context.depth - 1),
+          sequences: sequences,
           memo: &memo
         )
         previous = step
@@ -240,12 +240,6 @@ private extension Day21 {
     case a = "A"
   }
 
-  struct NumericContext: Hashable {
-    var previous: NumericKeypad
-    var current: NumericKeypad
-    var depth: Int
-  }
-
   enum DirectionalKeypad: Character, CaseIterable {
     case up = "^"
     case left = "<"
@@ -262,6 +256,12 @@ private extension Day21 {
       default: fatalError()
       }
     }
+  }
+
+  struct NumericContext: Hashable {
+    var previous: NumericKeypad
+    var current: NumericKeypad
+    var depth: Int
   }
 
   struct DirectionalContext: Hashable {
