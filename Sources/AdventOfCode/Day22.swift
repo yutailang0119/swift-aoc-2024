@@ -8,6 +8,20 @@ struct Day22: AdventDay {
   }
 }
 
+extension Day22 {
+  struct Secret {
+    var rawValue: Int
+
+    func mix(_ number: Int) -> Secret {
+      Secret(rawValue: rawValue ^ number)
+    }
+
+    func prune() -> Secret {
+      Secret(rawValue: rawValue % 16777216)
+    }
+  }
+}
+
 private extension Day22 {
   var entities: [Int] {
     data.split(separator: "\n")
