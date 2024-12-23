@@ -10,7 +10,7 @@ struct Day21: AdventDay {
 
     let keypadSequences = self.keypadSequences
 
-    var memo: [DirectionalContext: Int] = [:]
+    var memo: [KeypadContext<DirectionalKeypad>: Int] = [:]
 
     return press(
       inputs: inputs,
@@ -27,7 +27,7 @@ struct Day21: AdventDay {
 
     let keypadSequences = self.keypadSequences
 
-    var memo: [DirectionalContext: Int] = [:]
+    var memo: [KeypadContext<DirectionalKeypad>: Int] = [:]
 
     return press(
       inputs: inputs,
@@ -135,7 +135,7 @@ private extension Day21 {
     depth: Int,
     numberKeypadSequences: [SequenceKey<NumericKeypad>: [[DirectionalKeypad]]],
     directionalKeypadSequences: [SequenceKey<DirectionalKeypad>: [[DirectionalKeypad]]],
-    memo: inout [DirectionalContext: Int]
+    memo: inout [KeypadContext<DirectionalKeypad>: Int]
   ) -> Int {
     var sum = 0
     for input in inputs {
@@ -143,7 +143,7 @@ private extension Day21 {
       var count = 0
       for keypad in input.keypads {
         count += numericKeypad(
-          context: NumericContext(previous: previous, current: keypad, depth: depth),
+          context: KeypadContext(previous: previous, current: keypad, depth: depth),
           numberKeypadSequences: numberKeypadSequences,
           directionalKeypadSequences: directionalKeypadSequences,
           memo: &memo
@@ -156,10 +156,10 @@ private extension Day21 {
   }
 
   func numericKeypad(
-    context: NumericContext,
+    context: KeypadContext<NumericKeypad>,
     numberKeypadSequences: [SequenceKey<NumericKeypad>: [[DirectionalKeypad]]],
     directionalKeypadSequences: [SequenceKey<DirectionalKeypad>: [[DirectionalKeypad]]],
-    memo: inout [DirectionalContext: Int]
+    memo: inout [KeypadContext<DirectionalKeypad>: Int]
   ) -> Int {
     var output = Int.max
     for keypads in numberKeypadSequences[SequenceKey(start: context.previous, end: context.current)]! {
@@ -167,7 +167,7 @@ private extension Day21 {
       var count = 0
       for keypad in keypads {
         count += directionalKeypad(
-          context: DirectionalContext(previous: previous, current: keypad, depth: context.depth - 1),
+          context: KeypadContext(previous: previous, current: keypad, depth: context.depth - 1),
           sequences: directionalKeypadSequences,
           memo: &memo
         )
@@ -181,9 +181,9 @@ private extension Day21 {
   }
 
   func directionalKeypad(
-    context: DirectionalContext,
+    context: KeypadContext<DirectionalKeypad>,
     sequences: [SequenceKey<DirectionalKeypad>: [[DirectionalKeypad]]],
-    memo: inout [DirectionalContext: Int]
+    memo: inout [KeypadContext<DirectionalKeypad>: Int]
   ) -> Int {
     if let directional = memo[context] {
       return directional
@@ -198,7 +198,7 @@ private extension Day21 {
       var count = 0
       for step in steps {
         count += directionalKeypad(
-          context: DirectionalContext(previous: previous, current: step, depth: context.depth - 1),
+          context: KeypadContext(previous: previous, current: step, depth: context.depth - 1),
           sequences: sequences,
           memo: &memo
         )
@@ -258,15 +258,9 @@ private extension Day21 {
     }
   }
 
-  struct NumericContext: Hashable {
-    var previous: NumericKeypad
-    var current: NumericKeypad
-    var depth: Int
-  }
-
-  struct DirectionalContext: Hashable {
-    var previous: DirectionalKeypad
-    var current: DirectionalKeypad
+  struct KeypadContext<KeyPad: Hashable>: Hashable {
+    var previous: KeyPad
+    var current: KeyPad
     var depth: Int
   }
 
