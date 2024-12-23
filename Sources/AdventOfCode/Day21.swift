@@ -161,7 +161,7 @@ private extension Day21 {
     context: NumericContext,
     memo: inout [DirectionalContext: Int]
   ) -> Int {
-    var output: Int? = nil
+    var output = Int.max
     for keypads in numberKeypadSequences[SequenceKey(start: context.previous, end: context.current)]! {
       var previous = DirectionalKeypad.a
       var count = 0
@@ -173,11 +173,11 @@ private extension Day21 {
         )
         previous = keypad
       }
-      if output.map({ $0 > count }) ?? true {
+      if count < output {
         output = count
       }
     }
-    return output ?? 0
+    return output
   }
 
   func directionalKeypad(
@@ -192,7 +192,7 @@ private extension Day21 {
       return 1
     }
 
-    var output: Int? = nil
+    var output = Int.max
     for steps in sequences[SequenceKey(start: context.previous, end: context.current)]! {
       var previous = DirectionalKeypad.a
       var count = 0
@@ -204,12 +204,12 @@ private extension Day21 {
         )
         previous = step
       }
-      if output.map({ $0 > count }) ?? true {
+      if count < output {
         output = count
       }
     }
     memo[context] = output
-    return output ?? 0
+    return output
   }
 }
 
