@@ -15,6 +15,18 @@ struct Day22Tests {
     try await #expect(String(describing: challenge.part1()) == "37327623")
   }
 
+  @Test func testPart2() async throws {
+    let testData = """
+      1
+      2
+      3
+      2024
+
+      """
+    let challenge = Day22(data: testData)
+    try await #expect(String(describing: challenge.part2()) == "23")
+  }
+
   @Test func testSecret() async throws {
     do {
       let secret = Day22.Secret(rawValue: 42)

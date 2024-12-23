@@ -1,3 +1,4 @@
+import Algorithms
 import Foundation
 
 struct Day22: AdventDay {
@@ -17,6 +18,20 @@ struct Day22: AdventDay {
     }
 
     return sum
+  }
+
+  func part2() async throws -> Any {
+    let entities = self.entities
+    let secrets = entities.map(Secret.init(rawValue:))
+    let prices = secrets.map { self.prices(from: $0, count: 2000) }
+    let changes = prices.map(changes(with:))
+
+    let aggregates = changes.reduce(into: [String: Int]()) {
+      for key in $1.keys {
+        $0[key, default: 0] += $1[key] ?? 0
+      }
+    }
+    return aggregates.values.max() ?? 0
   }
 }
 
