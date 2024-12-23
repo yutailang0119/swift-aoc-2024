@@ -11,6 +11,11 @@ struct Day22Tests {
 
     """
 
+  @Test func testPart1() async throws {
+    let challenge = Day22(data: testData)
+    try await #expect(String(describing: challenge.part1()) == "37327623")
+  }
+
   @Test func testSecret() async throws {
     do {
       let secret = Day22.Secret(rawValue: 42)
@@ -46,10 +51,5 @@ struct Day22Tests {
         ]
       )
     }
-  }
-
-  @Test func testPart1() async throws {
-    let challenge = Day22(data: testData)
-    try await #expect(String(describing: challenge.part1()) == "37327623")
   }
 }
