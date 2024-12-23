@@ -87,6 +87,16 @@ private extension Day22 {
 }
 
 private extension Day22.Secret {
+  func generates(to count: Int) -> [Day22.Secret] {
+    var secret = self
+    var secrets: [Day22.Secret] = []
+    for _ in 0..<count {
+      secret = secret.generate()
+      secrets.append(secret)
+    }
+    return secrets
+  }
+
   func prices(to count: Int) -> [Day22.Price] {
     var secret = self
     var previous = secret.rawValue % 10
