@@ -19,9 +19,9 @@ struct Day22: AdventDay {
   func part2() async throws -> Any {
     let entities = self.entities
     let secrets = entities.map(Secret.init(rawValue:))
+
     let prices = secrets.map { $0.prices(to: 2000) }
     let changes = prices.map(changes(with:))
-
     let aggregates = changes.reduce(into: [String: Int]()) {
       for key in $1.keys {
         $0[key, default: 0] += $1[key] ?? 0
