@@ -84,10 +84,10 @@ private extension Day04 {
 
     var next: Word? {
       switch self {
-      case .x: return .m
-      case .m: return .a
-      case .a: return .s
-      case .s: return nil
+      case .x: .m
+      case .m: .a
+      case .a: .s
+      case .s: nil
       }
     }
   }

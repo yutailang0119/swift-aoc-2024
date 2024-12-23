@@ -115,31 +115,25 @@ private extension Day09 {
 
     var isSpace: Bool {
       switch self {
-      case .zero: return false
-      case .number: return false
-      case .space: return true
+      case .zero: false
+      case .number: false
+      case .space: true
       }
     }
 
     var nums: [Int] {
       switch self {
-      case .zero(let count):
-        return Array(repeating: 0, count: count)
-      case .number(let num, let count):
-        return Array(repeating: num, count: count)
-      case .space(let count):
-        return Array(repeating: 0, count: count)
+      case .zero(let count): Array(repeating: 0, count: count)
+      case .number(let num, let count): Array(repeating: num, count: count)
+      case .space(let count): Array(repeating: 0, count: count)
       }
     }
 
     var description: String {
       switch self {
-      case .zero(let count):
-        return Array(repeating: "0", count: count).joined()
-      case .number(let num, let count):
-        return Array(repeating: "\(num)", count: count).joined()
-      case .space(let count):
-        return Array(repeating: ".", count: count).joined()
+      case .zero(let count): Array(repeating: "0", count: count).joined()
+      case .number(let num, let count): Array(repeating: "\(num)", count: count).joined()
+      case .space(let count): Array(repeating: ".", count: count).joined()
       }
     }
   }

@@ -14,32 +14,30 @@ public struct Direction: OptionSet, Hashable, Sendable {
 public extension Direction {
   var clockwise: Self {
     switch self {
-    case .top: return .right
-    case .right: return .bottom
-    case .bottom: return .left
-    case .left: return .top
-    default:
-      fatalError()
+    case .top: .right
+    case .right: .bottom
+    case .bottom: .left
+    case .left: .top
+    default: fatalError()
     }
   }
 
   var counterClockwise: Self {
     switch self {
-    case .top: return .left
-    case .left: return .bottom
-    case .bottom: return .right
-    case .right: return .top
-    default:
-      fatalError()
+    case .top: .left
+    case .left: .bottom
+    case .bottom: .right
+    case .right: .top
+    default: fatalError()
     }
   }
 
   var reverse: Self {
     switch self {
-    case .top: return .bottom
-    case .bottom: return .top
-    case .left: return .right
-    case .right: return .left
+    case .top: .bottom
+    case .bottom: .top
+    case .left: .right
+    case .right: .left
     default:
       fatalError()
     }
@@ -49,23 +47,23 @@ public extension Direction {
 extension Direction: CustomStringConvertible {
   public var description: String {
     switch self {
-    case .top: return ".top"
-    case .bottom: return ".bottom"
-    case .left: return ".left"
-    case .right: return ".right"
-    case [.top, .bottom]: return "[.top, .bottom]"
-    case [.top, .left]: return "[.top, .left]"
-    case [.top, .right]: return "[.top, .right]"
-    case [.bottom, .left]: return "[.bottom, .leftt]"
-    case [.bottom, .right]: return "[.bottom, .right]"
-    case [.top, .bottom]: return "[.top, .bottom]"
-    case [.left, .right]: return "[.left, .right]"
-    case [.top, .bottom, .left]: return "[.top, .bottom, .left]"
-    case [.top, .bottom, .right]: return "[.top, .bottom, .right]"
-    case [.top, .left, .right]: return "[.top, .left, .right]"
-    case [.bottom, .left, .right]: return "[.bottom, .left, .right]"
-    case [.top, .bottom, .left, .right]: return "[.top, .bottom, .left, .right]"
-    default: return ""
+    case .top: ".top"
+    case .bottom: ".bottom"
+    case .left: ".left"
+    case .right: ".right"
+    case [.top, .bottom]: "[.top, .bottom]"
+    case [.top, .left]: "[.top, .left]"
+    case [.top, .right]: "[.top, .right]"
+    case [.bottom, .left]: "[.bottom, .leftt]"
+    case [.bottom, .right]: "[.bottom, .right]"
+    case [.top, .bottom]: "[.top, .bottom]"
+    case [.left, .right]: "[.left, .right]"
+    case [.top, .bottom, .left]: "[.top, .bottom, .left]"
+    case [.top, .bottom, .right]: "[.top, .bottom, .right]"
+    case [.top, .left, .right]: "[.top, .left, .right]"
+    case [.bottom, .left, .right]: "[.bottom, .left, .right]"
+    case [.top, .bottom, .left, .right]: "[.top, .bottom, .left, .right]"
+    default: ""
     }
   }
 }
