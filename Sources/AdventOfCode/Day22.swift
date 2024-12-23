@@ -4,7 +4,19 @@ struct Day22: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    0
+    let entities = self.entities
+    let secrets = entities.map(Secret.init(rawValue:))
+
+    var sum = 0
+    for secret in secrets {
+      var secret = secret
+      for _ in 0..<2000 {
+        secret = generate(from: secret)
+      }
+      sum += secret.rawValue
+    }
+
+    return sum
   }
 }
 
