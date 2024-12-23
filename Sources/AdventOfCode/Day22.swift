@@ -23,7 +23,7 @@ struct Day22: AdventDay {
   func part2() async throws -> Any {
     let entities = self.entities
     let secrets = entities.map(Secret.init(rawValue:))
-    let prices = secrets.map { self.prices(from: $0, count: 2000) }
+    let prices = secrets.map { $0.prices(to: 2000) }
     let changes = prices.map(changes(with:))
 
     let aggregates = changes.reduce(into: [String: Int]()) {
@@ -73,20 +73,6 @@ private extension Day22 {
 }
 
 private extension Day22 {
-  func prices(from secret: Secret, count: Int) -> [Price] {
-    var secret = secret
-    var previous = secret.rawValue % 10
-    var prices: [Price] = []
-    for _ in 0..<count {
-      secret = secret.generate()
-      let digit = secret.rawValue % 10
-      prices.append(Price(digit: digit, change: digit - previous))
-      previous = digit
-    }
-
-    return prices
-  }
-
   func changes(with prices: [Price]) -> [String: Int] {
     var dictionary: [String: Int] = [:]
     for window in prices.windows(ofCount: 4) {
@@ -97,5 +83,21 @@ private extension Day22 {
       dictionary[key] = window.last!.digit
     }
     return dictionary
+  }
+}
+
+private extension Day22.Secret {
+  func prices(to count: Int) -> [Day22.Price] {
+    var secret = self
+    var previous = secret.rawValue % 10
+    var prices: [Day22.Price] = []
+    for _ in 0..<count {
+      secret = secret.generate()
+      let digit = secret.rawValue % 10
+      prices.append(Day22.Price(digit: digit, change: digit - previous))
+      previous = digit
+    }
+
+    return prices
   }
 }
