@@ -75,3 +75,12 @@ private extension Day23 {
     var connections: Set<String>
   }
 }
+
+private extension String {
+  func isConnected(to network: Set<String>, in connections: [Day23.Connection]) -> Bool {
+    network.allSatisfy { n in
+      self == n
+        || connections.contains { ($0.a == self && $0.b == n) || ($0.a == n && $0.b == self) }
+    }
+  }
+}
