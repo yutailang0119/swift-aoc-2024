@@ -4,7 +4,20 @@ struct Day23: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    0
+    let computers = self.computers
+
+    var list: Set<Set<String>> = []
+    for computer in computers.filter({ $0.key.hasPrefix("t") }) {
+      for combination in computer.value.connections.combinations(ofCount: 2) {
+        let a = combination[0]
+        let b = combination[1]
+        if computers[a]!.connections.contains(b) {
+          list.insert([computer.key, a, b])
+        }
+      }
+    }
+
+    return list.count
   }
 }
 
