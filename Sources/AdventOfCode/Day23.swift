@@ -13,3 +13,15 @@ private extension Day23 {
     data.split(separator: "\n").map(String.init)
   }
 }
+
+private extension Day23 {
+  struct Connection {
+    var a: String
+    var b: String
+  }
+
+  struct Computer {
+    var name: String
+    var connections: Set<String>
+  }
+}
