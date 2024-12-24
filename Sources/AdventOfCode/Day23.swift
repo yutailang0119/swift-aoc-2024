@@ -6,18 +6,18 @@ struct Day23: AdventDay {
   func part1() async throws -> Any {
     let computers = self.computers
 
-    var list: Set<Set<String>> = []
+    var networks: Set<Set<String>> = []
     for computer in computers.filter({ $0.key.hasPrefix("t") }) {
       for combination in computer.value.connections.combinations(ofCount: 2) {
         let a = combination[0]
         let b = combination[1]
         if computers[a]!.connections.contains(b) {
-          list.insert([computer.key, a, b])
+          networks.insert([computer.key, a, b])
         }
       }
     }
 
-    return list.count
+    return networks.count
   }
 
   func part2() async throws -> Any {
