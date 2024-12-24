@@ -52,6 +52,29 @@ private extension Day23 {
 
     return computers
   }
+
+  func network(from start: Computer, in connections: [Connection]) -> Set<String> {
+    var network: Set<String> = [start.name]
+    var deque: Deque<String> = [start.name]
+    while let dq = deque.popFirst() {
+      var nexts = Set(
+        connections
+          .compactMap { $0.remaining(dq) }
+          .filter { !network.contains($0) && $0.isConnected(to: network, in: connections) }
+      )
+      network.formUnion(nexts)
+
+      for n in network {
+        if !n.isConnected(to: network, in: connections) {
+          network.remove(n)
+          nexts.remove(n)
+        }
+      }
+      deque.append(contentsOf: nexts)
+    }
+
+    return network
+  }
 }
 
 private extension Day23 {
