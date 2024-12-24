@@ -19,6 +19,25 @@ struct Day23: AdventDay {
 
     return list.count
   }
+
+  func part2() async throws -> Any {
+    let connections = self.connections
+    let computers = self.computers
+
+    var networks: Set<Set<String>> = []
+    for computer in computers {
+      if networks.contains(where: { $0.contains(computer.key) }) {
+        continue
+      }
+      networks.insert(
+        network(from: computer.value, in: connections)
+      )
+    }
+
+    return networks.max { $0.count < $1.count }!
+      .sorted()
+      .joined(separator: ",")
+  }
 }
 
 private extension Day23 {
