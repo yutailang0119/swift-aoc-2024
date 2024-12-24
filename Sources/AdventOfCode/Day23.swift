@@ -58,6 +58,16 @@ private extension Day23 {
   struct Connection {
     var a: String
     var b: String
+
+    func remaining(_ name: String) -> String? {
+      if name == a {
+        return b
+      } else if name == b {
+        return a
+      } else {
+        return nil
+      }
+    }
   }
 
   struct Computer {
