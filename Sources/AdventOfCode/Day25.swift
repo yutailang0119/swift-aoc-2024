@@ -19,6 +19,16 @@ private extension Day25 {
 }
 
 private extension Day25 {
+  struct Schematic {
+    var rows: [[Mark]]
+
+    var heights: [Int] {
+      rows.transposed().map { column in
+        column.count { $0 == .filled } - 1
+      }
+    }
+  }
+
   enum Mark: Character, CustomStringConvertible {
     case filled = "#"
     case empty = "."
