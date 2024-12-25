@@ -14,6 +14,26 @@ private extension Day24 {
       $0.split(separator: "\n").map(String.init)
     }
   }
+
+  var wires: [Wire] {
+    entities[0].map {
+      let splited = $0.split(separator: ": ")
+      let value = Int(splited[1])!
+      return Wire(name: String(splited[0]), bool: value == 1)
+    }
+  }
+
+  var gates: [Gate] {
+    entities[1].map {
+      let splited = $0.split(separator: " ")
+      return Gate(
+        a: String(splited[0]),
+        b: String(splited[2]),
+        operation: Gate.Operation(rawValue: String(splited[1]))!,
+        output: String(splited[4])
+      )
+    }
+  }
 }
 
 private extension Day24 {
