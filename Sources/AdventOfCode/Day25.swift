@@ -17,3 +17,10 @@ private extension Day25 {
     }
   }
 }
+
+private extension Day25 {
+  enum Mark: Character {
+    case filled = "#"
+    case empty = "."
+  }
+}
