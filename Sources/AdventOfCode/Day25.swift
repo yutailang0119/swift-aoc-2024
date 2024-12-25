@@ -19,8 +19,12 @@ private extension Day25 {
 }
 
 private extension Day25 {
-  enum Mark: Character {
+  enum Mark: Character, CustomStringConvertible {
     case filled = "#"
     case empty = "."
+
+    var description: String {
+      String(rawValue)
+    }
   }
 }
