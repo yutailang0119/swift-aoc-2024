@@ -1,10 +1,34 @@
+import Collections
 import Foundation
 
 struct Day24: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    0
+    var values: [String: Bool] = self.wires
+      .reduce(into: [:]) { $0[$1.name] = $1.bool }
+
+    var gates: Deque<Gate> = Deque(self.gates)
+    while let gate = gates.popFirst() {
+      guard let a = values[gate.a],
+        let b = values[gate.b]
+      else {
+        gates.append(gate)
+        continue
+      }
+      values[gate.output] = gate.operation.operate(a, b)
+    }
+
+    let zs = values.filter { $0.key.hasPrefix("z") }
+      .sorted { $0.key > $1.key }
+      .map(\.value)
+
+    var binary = 0
+    for z in zs {
+      binary = (binary << 1) | (z ? 1 : 0)
+    }
+
+    return binary
   }
 }
 
