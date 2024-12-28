@@ -159,3 +159,9 @@ private extension Bool {
     self ? 1 : 0
   }
 }
+
+private extension Int {
+  var bit: String {
+    self < 10 ? "0\(self)" : "\(self)"
+  }
+}
