@@ -51,8 +51,8 @@ private extension Day24 {
     entities[1].map {
       let splited = $0.split(separator: " ")
       return Gate(
-        a: String(splited[0]),
-        b: String(splited[2]),
+        a: Gate.Input(splited[0]),
+        b: Gate.Input(splited[2]),
         operation: Gate.Operation(rawValue: String(splited[1]))!,
         output: String(splited[4])
       )
@@ -101,8 +101,8 @@ private extension Day24 {
       }
     }
 
-    var a: String
-    var b: String
+    var a: Input
+    var b: Input
     var operation: Operation
     var output: String
   }
