@@ -67,6 +67,23 @@ private extension Day24 {
   }
 
   struct Gate {
+    enum Input {
+      case x(Int)
+      case y(Int)
+      case gate(String)
+
+      init(_ s: Substring) {
+        switch s.first {
+        case "x":
+          self = .x(Int(s.dropFirst())!)
+        case "y":
+          self = .y(Int(s.dropFirst())!)
+        default:
+          self = .gate(String(s))
+        }
+      }
+    }
+
     enum Operation: String {
       case and = "AND"
       case or = "OR"
