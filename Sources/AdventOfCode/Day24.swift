@@ -59,12 +59,6 @@ private extension Day24 {
     return gates.reduce(into: [:]) { $0[$1.output] = $1 }
   }
 
-  func gate(_ name: String) -> String {
-    let start = name.first!
-    let bit = Int(name.dropFirst())!
-    return bit < 10 ? "\(start)0\(bit)" : "\(start)\(bit)"
-  }
-
   func value(
     _ string: String,
     caching: Int?,
