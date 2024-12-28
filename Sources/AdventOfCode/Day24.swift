@@ -29,6 +29,39 @@ struct Day24: AdventDay {
 
     return binary
   }
+
+  func part2() async throws -> Any {
+    var xs: [Bool] = []
+    var ys: [Bool] = []
+    for wire in self.wires.sorted(by: { $0.name < $1.name }) {
+      switch wire.name.first {
+      case "x":
+        xs.append(wire.bool)
+      case "y":
+        ys.append(wire.bool)
+      default:
+        continue
+      }
+    }
+
+    var gates: [String: Gate] = self.gates
+    var corrects: Set<Int> = []
+    var outputs: [[String]] = Array(repeating: [], count: xs.count)
+    var dependencies: [String: Set<String>] = [:]
+
+    let swaps = swaps(
+      depth: 0,
+      corrects: &corrects,
+      outputs: &outputs,
+      dependencies: &dependencies,
+      xs: &xs,
+      ys: &ys,
+      in: &gates
+    )
+    assert(swaps?.count == 8)
+
+    return swaps?.sorted().joined(separator: ",") ?? ""
+  }
 }
 
 private extension Day24 {
