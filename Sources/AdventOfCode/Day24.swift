@@ -100,22 +100,17 @@ private extension Day24 {
     in gates: inout [String: Gate]
   ) -> Bool {
     let gate = gates[string]!
-    var cache = false
     if let caching,
       let dependency = gate.dependency,
-       dependency < caching
+       dependency < caching,
+       let cached = gate.cached
     {
-      if let cached = gate.cached {
-        return cached
-      }
-      cache = true
+      return cached
     }
     let a = value(for: gate.a, caching: caching, xs: xs, ys: ys, in: &gates)
     let b = value(for: gate.b, caching: caching, xs: xs, ys: ys, in: &gates)
     let binary = gate.operation.operate(a, b)
-    if cache {
-      gates[string]!.cached = binary
-    }
+    gates[string]!.cached = binary
     return binary
   }
 
