@@ -24,7 +24,7 @@ struct Day24: AdventDay {
       .sorted { $0.key > $1.key }
     for z in zs {
       let zValue = value(z.key, caching: nil, xs: xs, ys: ys, in: &gates)
-      binary = (binary << 1) | (zValue ? 1 : 0)
+      binary = (binary << 1) | zValue.int
     }
 
     return binary
@@ -151,5 +151,11 @@ private extension Day24 {
     var output: String
     var cached: Bool?
     var dependency: Int?
+  }
+}
+
+private extension Bool {
+  var int: Int {
+    self ? 1 : 0
   }
 }
