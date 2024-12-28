@@ -5,27 +5,26 @@ struct Day24: AdventDay {
   var data: String
 
   func part1() async throws -> Any {
-    var values: [String: Bool] = self.wires
-      .reduce(into: [:]) { $0[$1.name] = $1.bool }
-
-    var gates: Deque<Gate> = Deque(self.gates)
-    while let gate = gates.popFirst() {
-      guard let a = values[gate.a],
-        let b = values[gate.b]
-      else {
-        gates.append(gate)
+    var xs: [Bool] = []
+    var ys: [Bool] = []
+    for wire in self.wires.sorted(by: { $0.name < $1.name }) {
+      switch wire.name.first {
+      case "x":
+        xs.append(wire.bool)
+      case "y":
+        ys.append(wire.bool)
+      default:
         continue
       }
-      values[gate.output] = gate.operation.operate(a, b)
     }
 
-    let zs = values.filter { $0.key.hasPrefix("z") }
-      .sorted { $0.key > $1.key }
-      .map(\.value)
-
+    var gates: [String: Gate] = self.gates
     var binary = 0
+    let zs = gates.filter { $0.key.hasPrefix("z") }
+      .sorted { $0.key > $1.key }
     for z in zs {
-      binary = (binary << 1) | (z ? 1 : 0)
+      let zValue = value(z.key, caching: nil, xs: xs, ys: ys, in: &gates)
+      binary = (binary << 1) | (zValue ? 1 : 0)
     }
 
     return binary
@@ -47,8 +46,8 @@ private extension Day24 {
     }
   }
 
-  var gates: [Gate] {
-    entities[1].map {
+  var gates: [String: Gate] {
+    let gates = entities[1].map {
       let splited = $0.split(separator: " ")
       return Gate(
         a: Gate.Input(splited[0]),
@@ -56,6 +55,51 @@ private extension Day24 {
         operation: Gate.Operation(rawValue: String(splited[1]))!,
         output: String(splited[4])
       )
+    }
+    return gates.reduce(into: [:]) { $0[$1.output] = $1 }
+  }
+
+  func value(
+    _ string: String,
+    caching: Int?,
+    xs: [Bool],
+    ys: [Bool],
+    in gates: inout [String: Gate]
+  ) -> Bool {
+    let gate = gates[string]!
+    var cache = false
+    if let caching,
+      let high = gate.dependency,
+      high < caching
+    {
+      if let cached = gate.cached {
+        return cached
+      }
+      cache = true
+    }
+    let a = value(for: gate.a, caching: caching, xs: xs, ys: ys, in: &gates)
+    let b = value(for: gate.b, caching: caching, xs: xs, ys: ys, in: &gates)
+    let binary = gate.operation.operate(a, b)
+    if cache {
+      gates[string]!.cached = binary
+    }
+    return binary
+  }
+
+  func value(
+    for input: Gate.Input,
+    caching: Int?,
+    xs: [Bool],
+    ys: [Bool],
+    in gates: inout [String: Gate]
+  ) -> Bool {
+    switch input {
+    case .x(let i):
+      return xs[i]
+    case .y(let i):
+      return ys[i]
+    case .gate(let string):
+      return value(string, caching: caching, xs: xs, ys: ys, in: &gates)
     }
   }
 }
@@ -105,5 +149,7 @@ private extension Day24 {
     var b: Input
     var operation: Operation
     var output: String
+    var cached: Bool?
+    var dependency: Int?
   }
 }
