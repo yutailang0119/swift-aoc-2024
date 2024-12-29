@@ -1,3 +1,4 @@
+import Collections
 import Foundation
 
 struct Day23: AdventDay {

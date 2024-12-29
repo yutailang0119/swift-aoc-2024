@@ -1,3 +1,4 @@
+import Algorithms
 import Foundation
 
 struct Day09: AdventDay {
