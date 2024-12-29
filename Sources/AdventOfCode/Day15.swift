@@ -52,7 +52,7 @@ struct Day15: AdventDay {
       table = attempt(move: move, table: table)
     }
 
-    return table.positions.joined()
+    return table.tuples.joined()
       .filter { $0.0 == .box }
       .reduce(0) { $0 + 100 * $1.1.y + $1.1.x }
   }
@@ -172,7 +172,7 @@ struct Day15: AdventDay {
       table = attempt(move: move, table: table)
     }
 
-    return table.positions.joined()
+    return table.tuples.joined()
       .filter { $0.0 == .boxLeft }
       .reduce(0) { $0 + 100 * $1.1.y + $1.1.x }
   }

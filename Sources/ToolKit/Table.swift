@@ -72,7 +72,7 @@ public extension Table {
     return positions
   }
 
-  var positions: [[(Element, Position)]] {
+  var tuples: [[(Element, Position)]] {
     lines.enumerated().reduce(into: [[(Element, Position)]]()) { lns, y in
       lns.append(
         y.element.enumerated().map {
